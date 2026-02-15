@@ -1,0 +1,22 @@
+{
+  "name": "교원 성과상여금 계산기",
+  "short_name": "성과급계산기",
+  "description": "교원 및 교육전문직원 성과상여금 S/A/B 등급별 자동 계산",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f0f4f8",
+  "theme_color": "#4299e1",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
