@@ -3,229 +3,49 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>교원 성과상여금 계산기 - S/A/B 등급별 자동 계산</title>
-<meta name="description" content="교원 및 교육전문직원 성과상여금을 자동으로 계산합니다. 지급기준액, S/A/B 인원비율, 차등지급률을 입력하면 등급별 총지급액을 즉시 확인할 수 있습니다.">
-<meta name="keywords" content="교원 성과급, 성과상여금 계산기, 교사 성과급, S등급 A등급 B등급, 차등지급률, 지급기준액">
-<meta name="author" content="teacherbonus">
-<meta property="og:title" content="교원 성과상여금 계산기">
-<meta property="og:description" content="지급기준액, S/A/B 비율, 차등지급률을 입력하면 등급별 성과상여금을 자동 계산합니다.">
+<title>티처툴 - 선생님을 위한 교육 도구 모음</title>
+<meta name="description" content="선생님을 위한 실용 도구 모음. 성과급 계산기, 자리 배치, 랜덤 번호 추출 등 교육 현장에 필요한 도구를 제공합니다.">
+<meta name="keywords" content="교사 도구, 선생님 도구, 성과급 계산기, 자리 배치, 랜덤 번호, 교육 도구">
+<meta property="og:title" content="티처툴 - 선생님을 위한 교육 도구 모음">
+<meta property="og:description" content="성과급 계산기, 자리 배치, 랜덤 번호 추출 등 선생님에게 필요한 실용 도구 모음">
 <meta property="og:type" content="website">
 <meta name="google-adsense-account" content="ca-pub-2843268090165223">
 <meta name="theme-color" content="#4299e1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="css/common.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2843268090165223" crossorigin="anonymous"></script>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { height: 100%; }
-  body {
-    font-family: 'Pretendard', 'Noto Sans KR', -apple-system, sans-serif;
-    background: #f0f4f8;
-    color: #1a202c;
-    min-height: 100vh;
-    min-height: 100dvh;
-    padding: 20px;
-    padding-top: max(20px, env(safe-area-inset-top));
-    padding-bottom: max(20px, env(safe-area-inset-bottom));
-    padding-left: max(20px, env(safe-area-inset-left));
-    padding-right: max(20px, env(safe-area-inset-right));
-    -webkit-text-size-adjust: 100%;
-  }
-  .container { max-width: 820px; margin: 0 auto; }
-  h1 { text-align: center; font-size: 1.5rem; font-weight: 700; color: #2d3748; margin-bottom: 4px; }
-  .subtitle { text-align: center; font-size: 0.82rem; color: #718096; margin-bottom: 20px; }
-  .card {
-    background: #fff; border-radius: 12px; padding: 22px;
-    margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-  }
-  .card-title {
-    font-size: 0.95rem; font-weight: 700; color: #2d3748;
-    margin-bottom: 14px; padding-bottom: 7px; border-bottom: 2px solid #e2e8f0;
-  }
-  .input-group { margin-bottom: 14px; }
-  .input-group:last-child { margin-bottom: 0; }
-  .input-group > label {
-    display: block; font-size: 0.84rem; font-weight: 600; color: #4a5568; margin-bottom: 5px;
-  }
-  .hint { font-weight: 400; color: #a0aec0; font-size: 0.76rem; }
-  .input-row { display: flex; gap: 10px; align-items: center; }
-  .input-row .field { flex: 1; text-align: center; }
-  .input-row .field label { font-size: 0.76rem; color: #718096; margin-bottom: 3px; display: block; }
-  input[type="number"] {
-    width: 100%; padding: 9px 11px; border: 1.5px solid #e2e8f0; border-radius: 8px;
-    font-size: 16px; color: #2d3748; transition: border-color 0.2s; text-align: right;
-    -webkit-appearance: none; appearance: none;
-  }
-  input[type="number"]:focus { outline: none; border-color: #4299e1; box-shadow: 0 0 0 3px rgba(66,153,225,0.15); }
-  .slider-container { display: flex; align-items: center; gap: 12px; }
-  input[type="range"] {
-    flex: 1; height: 6px; -webkit-appearance: none; appearance: none;
-    background: #e2e8f0; border-radius: 3px; outline: none;
-  }
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%;
-    background: #4299e1; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-  }
-  .slider-value { min-width: 52px; text-align: center; font-size: 1rem; font-weight: 700; color: #4299e1; }
-  .ratio-sum { font-size: 0.76rem; color: #a0aec0; margin-top: 5px; text-align: right; }
-  .ratio-sum.error { color: #e53e3e; font-weight: 600; }
-  .ratio-sum.ok { color: #38a169; }
-
-  .result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
-  .result-card { border-radius: 10px; padding: 14px; text-align: center; }
-  .result-card.grade-s { background: linear-gradient(135deg, #ebf8ff, #bee3f8); border: 1.5px solid #90cdf4; }
-  .result-card.grade-a { background: linear-gradient(135deg, #f0fff4, #c6f6d5); border: 1.5px solid #9ae6b4; }
-  .result-card.grade-b { background: linear-gradient(135deg, #fffaf0, #fefcbf); border: 1.5px solid #fbd38d; }
-  .grade-label { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 3px; }
-  .grade-s .grade-label { color: #2b6cb0; }
-  .grade-a .grade-label { color: #276749; }
-  .grade-b .grade-label { color: #c05621; }
-  .grade-amount { font-size: 1.3rem; font-weight: 800; margin-bottom: 2px; }
-  .grade-s .grade-amount { color: #2b6cb0; }
-  .grade-a .grade-amount { color: #276749; }
-  .grade-b .grade-amount { color: #c05621; }
-  .grade-sub { font-size: 0.7rem; color: #718096; line-height: 1.4; }
-  .diff-amount { font-size: 0.82rem; text-align: center; color: #e53e3e; font-weight: 700; margin-top: 6px; }
-
-  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-  .detail-table th { background: #f7fafc; padding: 7px 9px; text-align: center; font-weight: 600; color: #4a5568; border-bottom: 2px solid #e2e8f0; }
-  .detail-table td { padding: 7px 9px; text-align: right; border-bottom: 1px solid #edf2f7; color: #2d3748; }
-  .detail-table td:first-child { text-align: center; font-weight: 600; color: #4a5568; }
-  .compare-table th { background: #f7fafc; padding: 5px 7px; text-align: center; font-weight: 600; color: #4a5568; border-bottom: 2px solid #e2e8f0; font-size: 0.76rem; }
-  .compare-table td { padding: 5px 7px; text-align: right; border-bottom: 1px solid #edf2f7; color: #2d3748; }
-  .compare-table td:first-child { text-align: center; font-weight: 600; color: #4a5568; }
-  .compare-table tr.active { background: #ebf8ff; font-weight: 700; }
-
-  .formula-box {
-    background: #f7fafc; border-radius: 8px; padding: 12px 14px;
-    font-size: 0.76rem; color: #4a5568; line-height: 1.7; margin-top: 10px;
-  }
-  .formula-box code { background: #edf2f7; padding: 1px 5px; border-radius: 4px; font-size: 0.74rem; }
-  .footer { text-align: center; font-size: 0.7rem; color: #a0aec0; margin-top: 14px; line-height: 1.5; }
-
-  .ad-container {
-    margin: 14px 0; text-align: center; min-height: 50px;
-    overflow: hidden; border-radius: 8px;
-  }
-  .ad-container ins { display: block; }
-
-  @media (max-width: 600px) {
-    body { padding: 12px; padding-top: max(12px, env(safe-area-inset-top)); padding-bottom: max(12px, env(safe-area-inset-bottom)); }
-    .card { padding: 14px; }
-    .result-grid { grid-template-columns: 1fr; }
-    .grade-amount { font-size: 1.15rem; }
-    h1 { font-size: 1.25rem; }
-    .input-row { flex-direction: column; gap: 8px; }
-    .compare-table { font-size: 0.74rem; }
-    .compare-table th, .compare-table td { padding: 4px 3px; }
-  }
-
-  @media (max-width: 360px) {
-    h1 { font-size: 1.1rem; }
-    .card { padding: 12px; }
-    .grade-amount { font-size: 1.05rem; }
-  }
-
-  @media (display-mode: standalone) {
-    body { padding-top: max(20px, env(safe-area-inset-top)); }
-  }
-</style>
 </head>
 <body>
+<script src="js/nav.js"></script>
+
 <div class="container">
-  <h1>교원 성과상여금 계산기</h1>
-  <p class="subtitle">교원 및 교육전문직원 성과상여금 기본모델 기준</p>
-
-  <div class="card">
-    <div class="card-title">변수 입력</div>
-    <div class="input-group">
-      <label>1. 지급기준액 (원) <span class="hint">교사/장학사/교육연구사 기준</span></label>
-      <input type="number" id="baseAmount" value="3997900" step="100" min="0" inputmode="numeric">
-    </div>
-    <div class="input-group">
-      <label>2. 등급별 인원 배정비율 (%) <span class="hint">합계 = 100%</span></label>
-      <div class="input-row">
-        <div class="field"><label>S등급</label><input type="number" id="ratioS" value="30" min="1" max="98" step="1" inputmode="numeric"></div>
-        <div class="field"><label>A등급</label><input type="number" id="ratioA" value="50" min="1" max="98" step="1" inputmode="numeric"></div>
-        <div class="field"><label>B등급</label><input type="number" id="ratioB" value="20" min="1" max="98" step="1" inputmode="numeric"></div>
-      </div>
-      <div class="ratio-sum" id="ratioSum">합계: 100%</div>
-    </div>
-    <div class="input-group">
-      <label>3. 차등지급률 <span class="hint">50% ~ 100% (단위기관의 장이 자율 선택)</span></label>
-      <div class="slider-container">
-        <input type="range" id="diffRate" min="50" max="100" step="10" value="70">
-        <span class="slider-value" id="diffRateValue">70%</span>
-      </div>
-    </div>
+  <div class="hero">
+    <h1>티처툴</h1>
+    <p>선생님을 위한 교육 도구 모음</p>
   </div>
 
-  <div class="card">
-    <div class="card-title">등급별 총지급액</div>
-    <div class="result-grid">
-      <div class="result-card grade-s">
-        <div class="grade-label">S등급 (<span id="labelS">30</span>%)</div>
-        <div class="grade-amount" id="totalS">0원</div>
-        <div class="grade-sub">균등 <span id="eqS">0</span><br>+ 차등 <span id="dfS">0</span></div>
-      </div>
-      <div class="result-card grade-a">
-        <div class="grade-label">A등급 (<span id="labelA">50</span>%)</div>
-        <div class="grade-amount" id="totalA">0원</div>
-        <div class="grade-sub">균등 <span id="eqA">0</span><br>+ 차등 <span id="dfA">0</span></div>
-      </div>
-      <div class="result-card grade-b">
-        <div class="grade-label">B등급 (<span id="labelB">20</span>%)</div>
-        <div class="grade-amount" id="totalB">0원</div>
-        <div class="grade-sub">균등 <span id="eqB">0</span><br>+ 차등 <span id="dfB">0</span></div>
-      </div>
-    </div>
-    <div class="diff-amount">S - B 차액: <span id="diffSB">0</span>원</div>
+  <div class="tool-grid">
+    <a class="tool-card" href="bonus.html">
+      <div class="tool-icon">&#128176;</div>
+      <div class="tool-name">성과급 계산기</div>
+      <div class="tool-desc">지급기준액, S/A/B 비율, 차등지급률로 성과상여금 자동 계산</div>
+    </a>
+    <a class="tool-card" href="seating.html">
+      <span class="tool-badge">준비중</span>
+      <div class="tool-icon">&#128186;</div>
+      <div class="tool-name">자리 배치</div>
+      <div class="tool-desc">학생 수와 좌석 배열을 입력하면 랜덤 자리 배치 생성</div>
+    </a>
+    <a class="tool-card" href="random.html">
+      <span class="tool-badge">준비중</span>
+      <div class="tool-icon">&#127922;</div>
+      <div class="tool-name">랜덤 번호 추출</div>
+      <div class="tool-desc">범위와 개수를 지정하여 중복 없는 랜덤 번호 추출</div>
+    </a>
   </div>
 
-  <!-- Ad: between results and details -->
-  <div class="ad-container">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-2843268090165223"
-         data-ad-slot="auto"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-  </div>
-
-  <div class="card">
-    <div class="card-title">산출 내역</div>
-    <table class="detail-table">
-      <thead><tr><th>항목</th><th>값</th><th>산식</th></tr></thead>
-      <tbody>
-        <tr><td>지급기준액</td><td id="detBase">0</td><td>입력값</td></tr>
-        <tr><td>조정지급액 (E)</td><td id="detAdj">0</td><td>지급기준액 × 110%</td></tr>
-        <tr><td>차등지급률 (R)</td><td id="detRate">0</td><td>입력값</td></tr>
-        <tr><td>균등지급액</td><td id="detEq">0</td><td>E × (1-R), 10원 미만 절사</td></tr>
-        <tr><td>등급별 지급률</td><td>S=70%, A=50%, B=35%</td><td>규정 고정값</td></tr>
-        <tr><td>가중합 (W)</td><td id="detW">0</td><td>Σ(비율 × 지급률)</td></tr>
-      </tbody>
-    </table>
-    <div class="formula-box">
-      <strong>계산 공식</strong><br>
-      <code>조정지급액(E)</code> = 지급기준액 × 110%<br>
-      <code>균등지급액</code> = floor(E × (1-R) / 10) × 10<br>
-      <code>W</code> = S비율×0.70 + A비율×0.50 + B비율×0.35<br>
-      <code>차등지급액(X)</code> = floor(E × R × 지급률(X) / W / 10) × 10<br>
-      <code>총지급액(X)</code> = 균등지급액 + 차등지급액(X)<br>
-      <span style="color:#a0aec0">※ 끝전처리: 균등/차등 각각 10원 미만 절사 후 합산</span>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">차등지급률별 비교표</div>
-    <table class="compare-table" id="compareTable">
-      <thead><tr><th>차등지급률</th><th>S등급</th><th>A등급</th><th>B등급</th><th>차액(S-B)</th></tr></thead>
-      <tbody></tbody>
-    </table>
-  </div>
-
-  <!-- Ad: bottom of page -->
   <div class="ad-container">
     <ins class="adsbygoogle"
          style="display:block"
@@ -236,125 +56,12 @@
   </div>
 
   <div class="footer">
-    ※ 등급별 지급률: S=70%, A=50%, B=35% (규정 고정) / 조정지급액 = 지급기준액 × 110%<br>
-    ※ 「공무원수당 등에 관한 규정」 별표 2의3 기준 / 끝전처리: 10원 미만 절사
+    티처툴 &mdash; 선생님의 업무를 돕는 실용 도구 모음
   </div>
 </div>
 
 <script>
-const GRADE_RATES = { S: 0.70, A: 0.50, B: 0.35 };
-const PAYMENT_RATE = 1.1;
-
-function floor10(n) {
-  return Math.floor(n / 10) * 10;
-}
-
-function formatNum(n) {
-  return n.toLocaleString('ko-KR');
-}
-
-function getInputs() {
-  return {
-    base: Number(document.getElementById('baseAmount').value) || 0,
-    s: Number(document.getElementById('ratioS').value) || 0,
-    a: Number(document.getElementById('ratioA').value) || 0,
-    b: Number(document.getElementById('ratioB').value) || 0,
-    rate: Number(document.getElementById('diffRate').value) || 50,
-  };
-}
-
-function calculate(base, s, a, b, ratePercent) {
-  const sp = s / 100;
-  const ap = a / 100;
-  const bp = b / 100;
-  const R = ratePercent / 100;
-
-  const E = base * PAYMENT_RATE;
-  const equal = floor10(E * (1 - R));
-  const W = sp * GRADE_RATES.S + ap * GRADE_RATES.A + bp * GRADE_RATES.B;
-
-  const diffS = floor10(E * R * GRADE_RATES.S / W);
-  const diffA = floor10(E * R * GRADE_RATES.A / W);
-  const diffB = floor10(E * R * GRADE_RATES.B / W);
-
-  return {
-    E, equal, W,
-    diffS, diffA, diffB,
-    totalS: equal + diffS,
-    totalA: equal + diffA,
-    totalB: equal + diffB,
-  };
-}
-
-function updateUI() {
-  var inputs = getInputs();
-  var base = inputs.base, s = inputs.s, a = inputs.a, b = inputs.b, rate = inputs.rate;
-  var sum = s + a + b;
-
-  var sumEl = document.getElementById('ratioSum');
-  if (sum === 100) {
-    sumEl.textContent = '합계: 100%';
-    sumEl.className = 'ratio-sum ok';
-  } else {
-    sumEl.textContent = '합계: ' + sum + '% (100%가 되어야 합니다)';
-    sumEl.className = 'ratio-sum error';
-  }
-
-  document.getElementById('labelS').textContent = s;
-  document.getElementById('labelA').textContent = a;
-  document.getElementById('labelB').textContent = b;
-  document.getElementById('diffRateValue').textContent = rate + '%';
-
-  if (sum !== 100 || base <= 0) return;
-
-  var r = calculate(base, s, a, b, rate);
-
-  document.getElementById('totalS').textContent = formatNum(r.totalS) + '원';
-  document.getElementById('totalA').textContent = formatNum(r.totalA) + '원';
-  document.getElementById('totalB').textContent = formatNum(r.totalB) + '원';
-  document.getElementById('eqS').textContent = formatNum(r.equal) + '원';
-  document.getElementById('eqA').textContent = formatNum(r.equal) + '원';
-  document.getElementById('eqB').textContent = formatNum(r.equal) + '원';
-  document.getElementById('dfS').textContent = formatNum(r.diffS) + '원';
-  document.getElementById('dfA').textContent = formatNum(r.diffA) + '원';
-  document.getElementById('dfB').textContent = formatNum(r.diffB) + '원';
-  document.getElementById('diffSB').textContent = formatNum(r.totalS - r.totalB);
-
-  document.getElementById('detBase').textContent = formatNum(base) + '원';
-  document.getElementById('detAdj').textContent = formatNum(Math.round(r.E)) + '원';
-  document.getElementById('detRate').textContent = rate + '%';
-  document.getElementById('detEq').textContent = formatNum(r.equal) + '원';
-  document.getElementById('detW').textContent = r.W.toFixed(4);
-
-  var tbody = document.querySelector('#compareTable tbody');
-  tbody.innerHTML = '';
-  for (var rt = 50; rt <= 100; rt += 10) {
-    var c = calculate(base, s, a, b, rt);
-    var tr = document.createElement('tr');
-    if (rt === rate) tr.className = 'active';
-    tr.innerHTML =
-      '<td>' + rt + '%</td>' +
-      '<td>' + formatNum(c.totalS) + '</td>' +
-      '<td>' + formatNum(c.totalA) + '</td>' +
-      '<td>' + formatNum(c.totalB) + '</td>' +
-      '<td>' + formatNum(c.totalS - c.totalB) + '</td>';
-    tbody.appendChild(tr);
-  }
-}
-
-document.getElementById('baseAmount').addEventListener('input', updateUI);
-document.getElementById('ratioS').addEventListener('input', updateUI);
-document.getElementById('ratioA').addEventListener('input', updateUI);
-document.getElementById('ratioB').addEventListener('input', updateUI);
-document.getElementById('diffRate').addEventListener('input', updateUI);
-
-updateUI();
-
-// Initialize AdSense ads
-try {
-  (adsbygoogle = window.adsbygoogle || []).push({});
-  (adsbygoogle = window.adsbygoogle || []).push({});
-} catch(e) {}
+try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
 </script>
 </body>
 </html>

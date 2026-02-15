@@ -1,7 +1,7 @@
 {
-  "name": "교원 성과상여금 계산기",
-  "short_name": "성과급계산기",
-  "description": "교원 및 교육전문직원 성과상여금 S/A/B 등급별 자동 계산",
+  "name": "티처툴 - 선생님을 위한 교육 도구",
+  "short_name": "티처툴",
+  "description": "성과급 계산기, 자리 배치, 랜덤 번호 추출 등 선생님을 위한 실용 도구 모음",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f0f4f8",
