@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>자리 배치 관리 - 티처툴</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#744210">
+<link rel="stylesheet" href="css/common.css">
+<style>
+/* ===== Text Input & Textarea ===== */
+input[type="text"], textarea {
+  width: 100%; padding: 9px 11px; border: 1.5px solid #e2e8f0; border-radius: 8px;
+  font-size: 15px; color: #2d3748; transition: border-color 0.2s;
+  -webkit-appearance: none; appearance: none; box-sizing: border-box;
+  font-family: inherit;
+}
+input[type="text"]:focus, textarea:focus {
+  outline: none; border-color: #d69e2e; box-shadow: 0 0 0 3px rgba(214,158,46,0.2);
+}
+textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
+
+/* ===== Buttons ===== */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 9px 16px; border: none; border-radius: 8px;
+  font-size: 0.85rem; font-weight: 600; cursor: pointer;
+  transition: background 0.15s, transform 0.1s; white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: #d69e2e; color: #fff; }
+.btn-primary:hover { background: #b7791f; }
+.btn-secondary { background: #edf2f7; color: #4a5568; }
+.btn-secondary:hover { background: #e2e8f0; }
+.btn-danger { background: #e53e3e; color: #fff; }
+.btn-danger:hover { background: #c53030; }
+.btn-large { width: 100%; padding: 13px; font-size: 1rem; margin-top: 14px; }
+
+/* ===== Admin Header ===== */
+.admin-header {
+  background: linear-gradient(135deg, #744210, #92400e);
+  color: #fff; border-radius: 12px; padding: 18px 22px; margin-bottom: 14px;
+}
+.admin-header h1 { font-size: 1.2rem; font-weight: 800; margin-bottom: 4px; }
+.admin-header p { font-size: 0.8rem; opacity: 0.85; line-height: 1.5; }
+
+/* ===== Board Selector ===== */
+.board-selector { display: flex; gap: 6px; flex-wrap: wrap; }
+.board-btn {
+  padding: 7px 14px; border: 1.5px solid #e2e8f0; border-radius: 8px;
+  background: #fff; color: #718096; font-size: 0.82rem; font-weight: 600;
+  cursor: pointer; transition: all 0.15s;
+}
+.board-btn.active { border-color: #d69e2e; background: #fffff0; color: #744210; }
+
+/* ===== CSV Row ===== */
+.csv-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.csv-status { font-size: 0.79rem; margin-top: 6px; min-height: 18px; }
+.csv-status.ok { color: #38a169; }
+.csv-status.error { color: #e53e3e; }
+
+/* ===== Admin Grid Area ===== */
+.admin-seat-outer { display: flex; flex-direction: column; overflow-x: auto; }
+.board-strip {
+  background: #2d3748; color: #fff; text-align: center;
+  font-size: 0.82rem; font-weight: 700; letter-spacing: 2px;
+  border-radius: 6px; padding: 7px; flex-shrink: 0; margin-bottom: 8px;
+}
+.board-strip.side {
+  writing-mode: vertical-rl; padding: 0 7px; margin-bottom: 0; margin-right: 8px;
+  min-height: 80px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.admin-grid { display: grid; gap: 6px; flex: 1; }
+
+/* Admin desk cells */
+.admin-cell {
+  border: 1.5px solid #e2e8f0; border-radius: 8px;
+  background: #f7fafc; min-height: 58px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  position: relative; cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+  padding: 6px 4px; -webkit-tap-highlight-color: transparent;
+}
+.admin-cell:hover { border-color: #d69e2e; background: #fffff0; transform: scale(1.02); }
+.admin-cell.assigned { background: #fffff0; border-color: #d69e2e; }
+.admin-cell.assigned:hover { background: #fefce8; }
+.admin-cell-num {
+  position: absolute; top: 3px; left: 5px;
+  font-size: 0.58rem; color: #cbd5e0; font-weight: 400;
+}
+.admin-cell-name {
+  font-size: 0.88rem; font-weight: 700; color: #2d3748;
+  text-align: center; word-break: keep-all;
+}
+.admin-cell.empty-slot .admin-cell-name { color: #cbd5e0; font-size: 0.75rem; font-weight: 400; }
+
+/* ===== Student Pool ===== */
+.pool-title { font-size: 0.85rem; font-weight: 700; color: #2d3748; margin-bottom: 8px; }
+.student-pool { display: flex; flex-wrap: wrap; gap: 6px; min-height: 36px; }
+.pool-chip {
+  display: inline-flex; align-items: center; gap: 3px;
+  background: #ebf8ff; color: #2b6cb0; font-size: 0.78rem; font-weight: 600;
+  padding: 4px 10px; border-radius: 8px; border: 1.5px solid #bee3f8;
+  cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent;
+}
+.pool-chip:hover { background: #bee3f8; border-color: #90cdf4; }
+.pool-chip .chip-num { color: #90cdf4; font-size: 0.62rem; margin-right: 2px; }
+
+/* ===== Save Status ===== */
+.save-status { font-size: 0.82rem; margin-top: 8px; text-align: center; min-height: 20px; }
+.save-status.ok { color: #38a169; font-weight: 600; }
+.save-status.error { color: #e53e3e; }
+
+/* ===== Saved Presets List ===== */
+.preset-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; border: 1.5px solid #e2e8f0; border-radius: 8px;
+  margin-bottom: 8px; font-size: 0.85rem;
+}
+.preset-item-info { color: #2d3748; font-weight: 600; }
+.preset-item-date { font-size: 0.72rem; color: #a0aec0; margin-top: 2px; }
+.preset-empty { font-size: 0.82rem; color: #a0aec0; text-align: center; padding: 12px; }
+
+/* ===== Modal ===== */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  z-index: 500; display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.modal-box {
+  background: #fff; border-radius: 14px; padding: 22px;
+  width: 100%; max-width: 380px; max-height: 80vh;
+  display: flex; flex-direction: column; gap: 12px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.modal-title { font-size: 1rem; font-weight: 800; color: #2d3748; }
+.modal-sub { font-size: 0.8rem; color: #718096; }
+.modal-list {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  overflow-y: auto; flex: 1; padding: 4px 0;
+}
+.modal-student-btn {
+  padding: 7px 14px; border: 1.5px solid #e2e8f0; border-radius: 8px;
+  background: #f7fafc; color: #2d3748; font-size: 0.82rem; font-weight: 600;
+  cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent;
+}
+.modal-student-btn:hover { background: #ebf8ff; border-color: #90cdf4; color: #2b6cb0; }
+.modal-actions {
+  display: flex; gap: 8px; padding-top: 8px; border-top: 1px solid #e2e8f0;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
+  .board-btn { padding: 6px 10px; font-size: 0.78rem; }
+  .admin-cell { min-height: 48px; }
+  .admin-cell-name { font-size: 0.78rem; }
+}
+</style>
+</head>
+<body style="background:#faf5eb;">
+
+<div class="container" style="padding-top:20px;">
+
+  <!-- Admin Header -->
+  <div class="admin-header">
+    <h1>&#128274; 자리 배치 관리자</h1>
+    <p>이 페이지에서 자리를 미리 배정하면, 자리 배치 페이지에서 슬롯머신 효과로 공개됩니다.<br>
+       이 URL은 학생들에게 공개하지 마세요.</p>
+  </div>
+
+  <!-- Settings Card -->
+  <div class="card">
+    <div class="card-title">&#9881; 설정</div>
+
+    <div class="input-group">
+      <label>학년 / 반</label>
+      <div class="input-row">
+        <div class="field">
+          <label>학년</label>
+          <input type="number" id="adminGrade" value="3" min="1" max="6" inputmode="numeric">
+        </div>
+        <div class="field">
+          <label>반</label>
+          <input type="number" id="adminClass" value="1" min="1" max="20" inputmode="numeric">
+        </div>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>좌석 배열 <span class="hint">열 수 × 줄 수</span></label>
+      <div class="input-row">
+        <div class="field">
+          <label>열 수</label>
+          <input type="number" id="adminCols" value="5" min="1" max="12" inputmode="numeric">
+        </div>
+        <div class="field">
+          <label>줄 수</label>
+          <input type="number" id="adminRows" value="6" min="1" max="10" inputmode="numeric">
+        </div>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>칠판 위치</label>
+      <div class="board-selector" id="adminBoardSelector">
+        <button class="board-btn active" data-side="top">위 (앞쪽)</button>
+        <button class="board-btn" data-side="bottom">아래 (뒤쪽)</button>
+        <button class="board-btn" data-side="left">왼쪽</button>
+        <button class="board-btn" data-side="right">오른쪽</button>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>학생 명단 <span class="hint">한 줄에 한 명 또는 CSV 업로드</span></label>
+      <textarea id="adminStudentInput" placeholder="홍길동&#10;김영희&#10;박민수&#10;..."></textarea>
+      <div class="csv-row">
+        <label class="btn btn-secondary" for="adminCsvInput">&#128196; CSV 업로드</label>
+        <input type="file" id="adminCsvInput" accept=".csv" style="display:none">
+      </div>
+      <div class="csv-status" id="adminCsvStatus"></div>
+    </div>
+
+    <button class="btn btn-primary btn-large" id="btnAdminApply">&#9654; 그리드 생성</button>
+  </div>
+
+  <!-- Work Card -->
+  <div class="card" id="adminWorkCard" style="display:none">
+    <div class="card-title">&#128196; 자리 배정</div>
+    <p style="font-size:0.8rem;color:#718096;margin-bottom:12px;">
+      빈 자리 또는 이미 배정된 자리를 클릭하여 학생을 배정하세요.
+    </p>
+
+    <div class="admin-seat-outer" id="adminSeatOuter">
+      <div class="board-strip" id="adminBoardStrip">&#9633; 칠판</div>
+      <div class="admin-grid" id="adminGrid"></div>
+    </div>
+
+    <div style="margin-top:14px;">
+      <div class="pool-title">미배정 학생 <span id="unassignedCount" style="color:#4299e1;">0</span>명</div>
+      <div class="student-pool" id="studentPool"></div>
+    </div>
+
+    <button class="btn btn-primary btn-large" id="btnAdminSave">&#128190; 저장하기</button>
+    <div class="save-status" id="saveStatus"></div>
+  </div>
+
+  <!-- Saved Presets Card -->
+  <div class="card">
+    <div class="card-title">&#128218; 저장된 배치 목록</div>
+    <div id="savedPresetsList">
+      <div class="preset-empty">저장된 배치가 없습니다.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Student Select Modal -->
+<div class="modal-overlay" id="modalOverlay" style="display:none">
+  <div class="modal-box">
+    <div class="modal-title" id="modalTitle">학생 배정</div>
+    <div class="modal-sub" id="modalSub"></div>
+    <div class="modal-list" id="modalList"></div>
+    <div class="modal-actions">
+      <button class="btn btn-danger" id="btnModalClear" style="flex:1">배정 해제</button>
+      <button class="btn btn-secondary" id="btnModalClose" style="flex:1">취소</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // ===== Admin State =====
+  var adminState = {
+    grade: '3', classNum: '1',
+    rows: 6, cols: 5, boardSide: 'top',
+    students: [],
+    assignments: {},   // 'row,col': '이름'
+    selectedCell: null // { row, col }
+  };
+
+  // ===== Pure Helpers =====
+
+  function escapeHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function parseCSV(text) {
+    text = text.replace(/^\uFEFF/, '');
+    var lines = text.split(/\r?\n/).filter(function(l) { return l.trim(); });
+    var students = [];
+    var start = (lines[0] && (lines[0].includes('번호') || lines[0].includes('이름'))) ? 1 : 0;
+    for (var i = start; i < lines.length; i++) {
+      var parts = lines[i].split(',');
+      var name = (parts.length >= 2 ? parts[1] : parts[0]).trim().replace(/\r/g, '');
+      if (name && !/^\d+$/.test(name)) students.push(name);
+    }
+    return students;
+  }
+
+  function getAssignedNames() {
+    return Object.values(adminState.assignments);
+  }
+
+  function getUnassigned() {
+    var assigned = getAssignedNames();
+    return adminState.students.filter(function(s) { return assigned.indexOf(s) === -1; });
+  }
+
+  // ===== Board Layout =====
+
+  function updateAdminBoardLayout() {
+    var outer = document.getElementById('adminSeatOuter');
+    var strip = document.getElementById('adminBoardStrip');
+    strip.className = 'board-strip';
+    strip.style.cssText = '';
+    if (adminState.boardSide === 'top') {
+      outer.style.flexDirection = 'column';
+      strip.style.marginBottom = '8px';
+    } else if (adminState.boardSide === 'bottom') {
+      outer.style.flexDirection = 'column-reverse';
+      strip.style.marginTop = '8px';
+    } else if (adminState.boardSide === 'left') {
+      outer.style.flexDirection = 'row';
+      strip.className = 'board-strip side';
+      strip.style.marginRight = '8px';
+    } else if (adminState.boardSide === 'right') {
+      outer.style.flexDirection = 'row-reverse';
+      strip.className = 'board-strip side';
+      strip.style.marginLeft = '8px';
+    }
+  }
+
+  // ===== Render Admin Grid =====
+
+  function renderAdminGrid() {
+    var grid = document.getElementById('adminGrid');
+    grid.style.gridTemplateColumns = 'repeat(' + adminState.cols + ', 1fr)';
+    var html = '';
+    for (var r = 0; r < adminState.rows; r++) {
+      for (var c = 0; c < adminState.cols; c++) {
+        var key = r + ',' + c;
+        var name = adminState.assignments[key] || null;
+        var cls = 'admin-cell' + (name ? ' assigned' : ' empty-slot');
+        html += '<div class="' + cls + '" data-row="' + r + '" data-col="' + c + '">' +
+          '<div class="admin-cell-num">' + (r * adminState.cols + c + 1) + '</div>' +
+          '<div class="admin-cell-name">' + (name ? escapeHtml(name) : '+ 배정') + '</div>' +
+          '</div>';
+      }
+    }
+    grid.innerHTML = html;
+    grid.querySelectorAll('.admin-cell').forEach(function(cell) {
+      cell.addEventListener('click', function() {
+        onAdminCellClick(Number(cell.dataset.row), Number(cell.dataset.col));
+      });
+    });
+  }
+
+  function renderStudentPool() {
+    var pool = document.getElementById('studentPool');
+    var count = document.getElementById('unassignedCount');
+    var unassigned = getUnassigned();
+    count.textContent = unassigned.length;
+    if (unassigned.length === 0) {
+      pool.innerHTML = '<span style="font-size:0.8rem;color:#a0aec0;">모든 학생이 배정되었습니다 ✓</span>';
+      return;
+    }
+    pool.innerHTML = unassigned.map(function(name, i) {
+      var globalIdx = adminState.students.indexOf(name);
+      return '<div class="pool-chip" data-name="' + escapeHtml(name) + '">' +
+        '<span class="chip-num">' + (globalIdx + 1) + '</span>' + escapeHtml(name) + '</div>';
+    }).join('');
+    pool.querySelectorAll('.pool-chip').forEach(function(chip) {
+      chip.addEventListener('click', function() {
+        if (adminState.selectedCell) {
+          assignStudent(chip.dataset.name);
+        }
+      });
+    });
+  }
+
+  // ===== Modal =====
+
+  function onAdminCellClick(row, col) {
+    adminState = Object.assign({}, adminState, { selectedCell: { row: row, col: col } });
+    openModal(row, col);
+  }
+
+  function openModal(row, col) {
+    var key = row + ',' + col;
+    var currentName = adminState.assignments[key] || null;
+    var pos = (row + 1) + '줄 ' + (col + 1) + '번 자리';
+    document.getElementById('modalTitle').textContent = pos;
+    document.getElementById('modalSub').textContent = currentName
+      ? ('현재: ' + currentName + ' — 다른 학생을 선택하거나 해제하세요')
+      : '배정할 학생을 선택하세요';
+
+    var unassigned = getUnassigned();
+    // Also include currently assigned student for re-assignment
+    var available = currentName ? unassigned.concat([currentName]).sort(function(a,b) {
+      return adminState.students.indexOf(a) - adminState.students.indexOf(b);
+    }) : unassigned;
+
+    document.getElementById('modalList').innerHTML = available.map(function(name) {
+      var isCurrent = name === currentName;
+      return '<button class="modal-student-btn' + (isCurrent ? '" style="border-color:#d69e2e;background:#fffff0;' : '"') +
+        '" data-name="' + escapeHtml(name) + '">' + escapeHtml(name) + '</button>';
+    }).join('');
+
+    document.querySelectorAll('.modal-student-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() { assignStudent(btn.dataset.name); });
+    });
+
+    document.getElementById('btnModalClear').style.display = currentName ? '' : 'none';
+    document.getElementById('modalOverlay').style.display = 'flex';
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').style.display = 'none';
+    adminState = Object.assign({}, adminState, { selectedCell: null });
+  }
+
+  function assignStudent(name) {
+    var sel = adminState.selectedCell;
+    if (!sel) return;
+    var key = sel.row + ',' + sel.col;
+    var newAssign = Object.assign({}, adminState.assignments);
+    // Remove from any existing seat
+    Object.keys(newAssign).forEach(function(k) {
+      if (newAssign[k] === name) delete newAssign[k];
+    });
+    newAssign[key] = name;
+    adminState = Object.assign({}, adminState, { assignments: newAssign });
+    closeModal();
+    renderAdminGrid();
+    renderStudentPool();
+  }
+
+  function clearCell() {
+    var sel = adminState.selectedCell;
+    if (!sel) return;
+    var key = sel.row + ',' + sel.col;
+    var newAssign = Object.assign({}, adminState.assignments);
+    delete newAssign[key];
+    adminState = Object.assign({}, adminState, { assignments: newAssign });
+    closeModal();
+    renderAdminGrid();
+    renderStudentPool();
+  }
+
+  // ===== localStorage =====
+
+  function savePreset() {
+    if (adminState.students.length === 0) {
+      showSaveStatus('학생 명단이 비어 있습니다.', 'error'); return;
+    }
+    var key = 'teachertool_seating_v1_' + adminState.grade + '_' + adminState.classNum;
+    var payload = {
+      version: 1,
+      grade: adminState.grade,
+      class: adminState.classNum,
+      rows: adminState.rows,
+      cols: adminState.cols,
+      boardSide: adminState.boardSide,
+      students: adminState.students.slice(),
+      assignments: Object.assign({}, adminState.assignments),
+      savedAt: new Date().toISOString()
+    };
+    try {
+      localStorage.setItem(key, JSON.stringify(payload));
+      // Update index
+      var indexKey = 'teachertool_seating_v1_index';
+      var index = [];
+      try { index = JSON.parse(localStorage.getItem(indexKey) || '[]'); } catch(e) {}
+      var id = adminState.grade + '_' + adminState.classNum;
+      if (index.indexOf(id) === -1) index = index.concat([id]);
+      localStorage.setItem(indexKey, JSON.stringify(index));
+      showSaveStatus('저장 완료! ' + adminState.grade + '학년 ' + adminState.classNum + '반 배치가 저장되었습니다.', 'ok');
+      renderSavedPresets();
+    } catch(e) {
+      showSaveStatus('저장 실패: ' + e.message, 'error');
+    }
+  }
+
+  function deletePreset(id) {
+    if (!confirm('이 배치를 삭제하시겠습니까?')) return;
+    try {
+      var storageKey = 'teachertool_seating_v1_' + id;
+      localStorage.removeItem(storageKey);
+      var indexKey = 'teachertool_seating_v1_index';
+      var index = [];
+      try { index = JSON.parse(localStorage.getItem(indexKey) || '[]'); } catch(e) {}
+      index = index.filter(function(x) { return x !== id; });
+      localStorage.setItem(indexKey, JSON.stringify(index));
+      renderSavedPresets();
+    } catch(e) {}
+  }
+
+  function loadPresetIntoEditor(id) {
+    var key = 'teachertool_seating_v1_' + id;
+    var raw = null;
+    try { raw = localStorage.getItem(key); } catch(e) {}
+    if (!raw) return;
+    try {
+      var preset = JSON.parse(raw);
+      adminState = Object.assign({}, adminState, {
+        grade: preset.grade, classNum: preset.class,
+        rows: preset.rows, cols: preset.cols, boardSide: preset.boardSide,
+        students: preset.students.slice(),
+        assignments: Object.assign({}, preset.assignments)
+      });
+      document.getElementById('adminGrade').value = preset.grade;
+      document.getElementById('adminClass').value = preset.class;
+      document.getElementById('adminRows').value = preset.rows;
+      document.getElementById('adminCols').value = preset.cols;
+      updateAdminBoardBtnActive(preset.boardSide);
+      document.getElementById('adminStudentInput').value = preset.students.join('\n');
+      document.getElementById('adminWorkCard').style.display = '';
+      updateAdminBoardLayout();
+      renderAdminGrid();
+      renderStudentPool();
+    } catch(e) {}
+  }
+
+  function renderSavedPresets() {
+    var container = document.getElementById('savedPresetsList');
+    var indexKey = 'teachertool_seating_v1_index';
+    var index = [];
+    try { index = JSON.parse(localStorage.getItem(indexKey) || '[]'); } catch(e) {}
+    if (index.length === 0) {
+      container.innerHTML = '<div class="preset-empty">저장된 배치가 없습니다.</div>';
+      return;
+    }
+    container.innerHTML = index.map(function(id) {
+      var key = 'teachertool_seating_v1_' + id;
+      var raw = null;
+      try { raw = localStorage.getItem(key); } catch(e) {}
+      if (!raw) return '';
+      var preset;
+      try { preset = JSON.parse(raw); } catch(e) { return ''; }
+      var parts = id.split('_');
+      var dateStr = '';
+      if (preset.savedAt) {
+        var d = new Date(preset.savedAt);
+        dateStr = d.getFullYear() + '.' + (d.getMonth()+1) + '.' + d.getDate();
+      }
+      var assignCount = Object.keys(preset.assignments || {}).length;
+      return '<div class="preset-item">' +
+        '<div>' +
+          '<div class="preset-item-info">' + parts[0] + '학년 ' + parts[1] + '반 — ' +
+            preset.students.length + '명 / 배정 ' + assignCount + '석</div>' +
+          (dateStr ? '<div class="preset-item-date">저장: ' + dateStr + '</div>' : '') +
+        '</div>' +
+        '<div style="display:flex;gap:6px;">' +
+          '<button class="btn btn-secondary" data-load="' + id + '" style="font-size:0.75rem;padding:6px 10px;">불러오기</button>' +
+          '<button class="btn btn-danger" data-del="' + id + '" style="font-size:0.75rem;padding:6px 10px;">삭제</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    container.querySelectorAll('[data-load]').forEach(function(btn) {
+      btn.addEventListener('click', function() { loadPresetIntoEditor(btn.dataset.load); });
+    });
+    container.querySelectorAll('[data-del]').forEach(function(btn) {
+      btn.addEventListener('click', function() { deletePreset(btn.dataset.del); });
+    });
+  }
+
+  function showSaveStatus(msg, type) {
+    var el = document.getElementById('saveStatus');
+    el.textContent = msg;
+    el.className = 'save-status ' + (type || '');
+    setTimeout(function() { el.textContent = ''; el.className = 'save-status'; }, 4000);
+  }
+
+  function updateAdminBoardBtnActive(side) {
+    document.querySelectorAll('#adminBoardSelector .board-btn').forEach(function(b) {
+      b.classList.toggle('active', b.dataset.side === side);
+    });
+  }
+
+  // ===== Apply Settings → Show Grid =====
+
+  function applySettings() {
+    var grade = document.getElementById('adminGrade').value;
+    var cls = document.getElementById('adminClass').value;
+    var rows = Math.max(1, Number(document.getElementById('adminRows').value) || 6);
+    var cols = Math.max(1, Number(document.getElementById('adminCols').value) || 5);
+
+    var rawText = document.getElementById('adminStudentInput').value.trim();
+    var students = rawText.split(/\r?\n/).map(function(l) { return l.trim(); }).filter(Boolean);
+
+    if (students.length === 0) {
+      alert('학생 명단을 입력해주세요.'); return;
+    }
+
+    adminState = Object.assign({}, adminState, {
+      grade: grade, classNum: cls,
+      rows: rows, cols: cols,
+      students: students,
+      assignments: {}  // Reset assignments on re-apply
+    });
+
+    document.getElementById('adminWorkCard').style.display = '';
+    updateAdminBoardLayout();
+    renderAdminGrid();
+    renderStudentPool();
+    document.getElementById('adminWorkCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  // ===== Init =====
+
+  function init() {
+    document.getElementById('adminBoardSelector').addEventListener('click', function(e) {
+      var btn = e.target.closest ? e.target.closest('.board-btn') : null;
+      if (!btn) return;
+      updateAdminBoardBtnActive(btn.dataset.side);
+      adminState = Object.assign({}, adminState, { boardSide: btn.dataset.side });
+      if (document.getElementById('adminWorkCard').style.display !== 'none') {
+        updateAdminBoardLayout();
+      }
+    });
+
+    document.getElementById('adminCsvInput').addEventListener('change', function(e) {
+      var file = e.target.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        var students = parseCSV(ev.target.result);
+        var el = document.getElementById('adminCsvStatus');
+        if (students.length === 0) {
+          el.textContent = '학생을 찾을 수 없습니다.'; el.className = 'csv-status error'; return;
+        }
+        el.textContent = students.length + '명 불러왔습니다'; el.className = 'csv-status ok';
+        document.getElementById('adminStudentInput').value = students.join('\n');
+      };
+      reader.readAsText(file, 'UTF-8');
+    });
+
+    document.getElementById('btnAdminApply').addEventListener('click', applySettings);
+    document.getElementById('btnAdminSave').addEventListener('click', savePreset);
+
+    document.getElementById('btnModalClear').addEventListener('click', clearCell);
+    document.getElementById('btnModalClose').addEventListener('click', closeModal);
+    document.getElementById('modalOverlay').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+
+    renderSavedPresets();
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
