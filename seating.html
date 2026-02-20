@@ -37,14 +37,7 @@ input[type="text"]:focus {
 .btn-secondary:hover { background: #e2e8f0; }
 .btn-large { width: 100%; padding: 13px; font-size: 1rem; margin-top: 14px; }
 
-/* ===== Board Selector ===== */
-.board-selector { display: flex; gap: 6px; flex-wrap: wrap; }
-.board-btn {
-  padding: 7px 14px; border: 1.5px solid #e2e8f0; border-radius: 8px;
-  background: #fff; color: #718096; font-size: 0.82rem; font-weight: 600;
-  cursor: pointer; transition: all 0.15s;
-}
-.board-btn.active { border-color: #4299e1; background: #ebf8ff; color: #2b6cb0; }
+/* (board selector removed) */
 
 /* ===== CSV Row ===== */
 .csv-row { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -76,15 +69,12 @@ input[type="text"]:focus {
 
 /* ===== Board Strip ===== */
 .board-strip {
-  background: #2d3748; color: #fff; text-align: center;
-  font-size: 0.82rem; font-weight: 700; letter-spacing: 2px;
-  border-radius: 6px; padding: 7px; flex-shrink: 0; margin-bottom: 8px;
-}
-.board-strip.side {
-  writing-mode: vertical-rl; text-orientation: mixed;
-  padding: 0 7px; margin-bottom: 0; margin-right: 8px;
-  min-height: 80px; border-radius: 6px;
-  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(180deg, #276749 0%, #1e4d37 100%);
+  color: #d4f5e2; text-align: center;
+  font-size: 0.82rem; font-weight: 700; letter-spacing: 3px;
+  border-radius: 6px; padding: 8px 7px; flex-shrink: 0; margin-bottom: 10px;
+  border-bottom: 3px solid #144d33;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
 }
 
 /* ===== Seating Grid ===== */
@@ -92,34 +82,35 @@ input[type="text"]:focus {
 
 /* ===== Desk Cells ===== */
 .desk-cell {
-  border: 1.5px solid #e2e8f0; border-radius: 8px;
-  background: #f7fafc; min-height: 58px;
+  border: 1.5px solid #c9a96e; border-radius: 8px;
+  background: #fef9e7; min-height: 58px;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   position: relative; user-select: none;
   transition: border-color 0.15s, background 0.15s, transform 0.15s;
   padding: 6px 4px; cursor: default;
   -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 1px 3px rgba(180,130,60,0.12);
 }
-.desk-cell.empty { border-style: dashed; }
+.desk-cell.empty { border-style: dashed; border-color: #e0c898; background: #fffdf5; }
 .desk-cell.shuffling {
-  background: #fef9e7; border-color: #f6ad55;
-  animation: deskShake 0.08s infinite alternate;
+  background: #fef3c7; border-color: #f6ad55;
+  animation: deskFlash 0.16s infinite alternate;
 }
 .desk-cell.about-reveal {
-  border-color: #4299e1;
+  border-color: #276749;
   animation: deskPulse 0.25s ease-in-out 3;
 }
 .desk-cell.revealed {
-  background: #fff; border-color: #90cdf4;
+  background: #fef9e7; border-color: #276749;
   animation: deskReveal 0.45s ease-out both;
 }
 .desk-cell.done-phase { cursor: grab; }
-.desk-cell.done-phase:hover { border-color: #4299e1; background: #f0f9ff; }
-.desk-cell.dragging { opacity: 0.45; border: 2px dashed #4299e1; background: #ebf8ff; cursor: grabbing; }
+.desk-cell.done-phase:hover { border-color: #276749; background: #f0fff4; }
+.desk-cell.dragging { opacity: 0.45; border: 2px dashed #276749; background: #e6f9ee; cursor: grabbing; }
 .desk-cell.drag-over {
-  border-color: #4299e1; background: #bee3f8;
-  transform: scale(1.06); box-shadow: 0 2px 8px rgba(66,153,225,0.3);
+  border-color: #276749; background: #c6f6d5;
+  transform: scale(1.06); box-shadow: 0 2px 8px rgba(39,103,73,0.25);
 }
 
 .desk-seat-num {
@@ -127,7 +118,7 @@ input[type="text"]:focus {
   font-size: 0.58rem; color: #cbd5e0; font-weight: 400; line-height: 1;
 }
 .desk-name {
-  font-size: 0.92rem; font-weight: 700; color: #2d3748;
+  font-size: 0.92rem; font-weight: 700; color: #3d2b10;
   text-align: center; word-break: keep-all; line-height: 1.25;
 }
 
@@ -145,18 +136,18 @@ input[type="text"]:focus {
 .print-message { display: none; }
 
 /* ===== Keyframes ===== */
-@keyframes deskShake {
-  0% { transform: translate(-1px, -0.5px) rotate(-0.4deg); }
-  100% { transform: translate(1px, 0.5px) rotate(0.4deg); }
+@keyframes deskFlash {
+  0% { background: #fef3c7; border-color: #f6ad55; }
+  100% { background: #fde68a; border-color: #ed8936; }
 }
 @keyframes deskPulse {
-  0%, 100% { background: #fef9e7; }
-  50% { background: #bee3f8; border-color: #63b3ed; }
+  0%, 100% { background: #fef9e7; border-color: #c9a96e; }
+  50% { background: #c6f6d5; border-color: #276749; }
 }
 @keyframes deskReveal {
-  0% { transform: scale(0.75) rotateY(90deg); opacity: 0; }
-  65% { transform: scale(1.06) rotateY(-4deg); }
-  100% { transform: scale(1) rotateY(0deg); opacity: 1; }
+  0% { transform: scale(0.82); opacity: 0; }
+  65% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 /* ===== Responsive ===== */
@@ -196,16 +187,17 @@ input[type="text"]:focus {
   .card { box-shadow: none; padding: 0; margin: 0; }
 
   .board-strip {
-    background: #000 !important; color: #fff !important;
+    background: #276749 !important; color: #d4f5e2 !important;
     -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 5px;
   }
   .desk-cell {
-    border: 1px solid #888 !important; background: white !important;
+    border: 1px solid #c9a96e !important; background: #fffdf5 !important;
     animation: none !important; transform: none !important;
     border-radius: 4px !important; min-height: 0 !important;
+    box-shadow: none !important;
   }
-  .desk-name { font-size: 0.85rem !important; }
-  .desk-seat-num { color: #aaa !important; }
+  .desk-name { font-size: 0.85rem !important; color: #3d2b10 !important; }
+  .desk-seat-num { color: #c9a96e !important; }
   .seating-grid { gap: 3px !important; }
 }
 </style>
@@ -243,16 +235,6 @@ input[type="text"]:focus {
           <label>줄 수</label>
           <input type="number" id="inputRows" value="6" min="1" max="10" inputmode="numeric">
         </div>
-      </div>
-    </div>
-
-    <div class="input-group">
-      <label>칠판 위치</label>
-      <div class="board-selector" id="boardSelector">
-        <button class="board-btn active" data-side="top">위 (앞쪽)</button>
-        <button class="board-btn" data-side="bottom">아래 (뒤쪽)</button>
-        <button class="board-btn" data-side="left">왼쪽</button>
-        <button class="board-btn" data-side="right">오른쪽</button>
       </div>
     </div>
 
@@ -467,25 +449,7 @@ input[type="text"]:focus {
   }
 
   function updateBoardLayout() {
-    var outer = document.getElementById('seatOuter');
-    var strip = document.getElementById('boardStrip');
-    strip.className = 'board-strip';
-    strip.style.cssText = '';
-    if (state.boardSide === 'top') {
-      outer.style.flexDirection = 'column';
-      strip.style.marginBottom = '8px';
-    } else if (state.boardSide === 'bottom') {
-      outer.style.flexDirection = 'column-reverse';
-      strip.style.marginTop = '8px';
-    } else if (state.boardSide === 'left') {
-      outer.style.flexDirection = 'row';
-      strip.className = 'board-strip side';
-      strip.style.marginRight = '8px';
-    } else if (state.boardSide === 'right') {
-      outer.style.flexDirection = 'row-reverse';
-      strip.className = 'board-strip side';
-      strip.style.marginLeft = '8px';
-    }
+    document.getElementById('seatOuter').style.flexDirection = 'column';
   }
 
   function updatePrintHeader() {
@@ -523,11 +487,10 @@ input[type="text"]:focus {
         var preset = JSON.parse(raw);
         state = Object.assign({}, state, {
           hasPreset: true, currentPreset: preset, grade: grade, classNum: cls,
-          rows: preset.rows, cols: preset.cols, boardSide: preset.boardSide
+          rows: preset.rows, cols: preset.cols
         });
         document.getElementById('inputCols').value = preset.cols;
         document.getElementById('inputRows').value = preset.rows;
-        updateBoardBtnActive(preset.boardSide);
         if (preset.students && preset.students.length) {
           state = Object.assign({}, state, { students: preset.students.slice() });
           renderStudentTags();
@@ -542,11 +505,6 @@ input[type="text"]:focus {
     document.getElementById('presetNotice').style.display = 'none';
   }
 
-  function updateBoardBtnActive(side) {
-    document.querySelectorAll('.board-btn').forEach(function(b) {
-      b.classList.toggle('active', b.dataset.side === side);
-    });
-  }
 
   // ===== Animation =====
 
@@ -769,12 +727,6 @@ input[type="text"]:focus {
     });
     document.getElementById('inputMessage').addEventListener('input', function() {
       state = Object.assign({}, state, { teacherMessage: this.value });
-    });
-    document.getElementById('boardSelector').addEventListener('click', function(e) {
-      var btn = e.target.closest ? e.target.closest('.board-btn') : null;
-      if (!btn) return;
-      updateBoardBtnActive(btn.dataset.side);
-      state = Object.assign({}, state, { boardSide: btn.dataset.side });
     });
     document.getElementById('btnDownload').addEventListener('click', downloadTemplate);
     document.getElementById('csvInput').addEventListener('change', function(e) {
