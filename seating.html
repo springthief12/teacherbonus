@@ -63,8 +63,9 @@ input[type="text"]:focus {
 }
 
 /* ===== Seating Area ===== */
+#seatingCard { padding: 14px; overflow: hidden; }
 .seat-outer {
-  display: flex; flex-direction: column; overflow-x: auto;
+  display: flex; flex-direction: column;
 }
 
 /* ===== Board Strip ===== */
@@ -110,7 +111,7 @@ input[type="text"]:focus {
 .desk-cell.dragging { opacity: 0.45; border: 2px dashed #276749; background: #e6f9ee; cursor: grabbing; }
 .desk-cell.drag-over {
   border-color: #276749; background: #c6f6d5;
-  transform: scale(1.06); box-shadow: 0 2px 8px rgba(39,103,73,0.25);
+  box-shadow: inset 0 0 0 2px #276749;
 }
 
 .desk-seat-num {
@@ -146,15 +147,17 @@ input[type="text"]:focus {
 }
 @keyframes deskReveal {
   0% { transform: scale(0.82); opacity: 0; }
-  65% { transform: scale(1.05); opacity: 1; }
+  70% { transform: scale(1.0); opacity: 1; }
   100% { transform: scale(1); opacity: 1; }
 }
 
 /* ===== Responsive ===== */
 @media (max-width: 600px) {
-  .board-btn { padding: 6px 10px; font-size: 0.78rem; }
-  .desk-cell { min-height: 48px; }
-  .desk-name { font-size: 0.78rem; }
+  #seatingCard { padding: 10px; }
+  .seating-grid { gap: 5px; }
+  .desk-cell { min-height: 44px; padding: 4px 2px; }
+  .desk-name { font-size: 0.75rem; }
+  .desk-seat-num { font-size: 0.52rem; }
 }
 
 /* ===== Print ===== */
