@@ -100,7 +100,7 @@ input[type="text"]:focus {
 }
 .desk-cell.about-reveal {
   border-color: #276749;
-  animation: deskPulse 0.25s ease-in-out 3;
+  animation: deskPulse 0.55s ease-in-out infinite;
 }
 .desk-cell.revealed {
   background: #fef9e7; border-color: #276749;
@@ -114,12 +114,12 @@ input[type="text"]:focus {
   box-shadow: inset 0 0 0 2px #276749;
 }
 
-.desk-seat-num {
-  position: absolute; top: 3px; left: 5px;
-  font-size: 0.58rem; color: #cbd5e0; font-weight: 400; line-height: 1;
+.desk-num {
+  font-size: 0.64rem; font-weight: 600; color: #9b7540;
+  text-align: center; line-height: 1; margin-bottom: 2px;
 }
 .desk-name {
-  font-size: 0.92rem; font-weight: 700; color: #3d2b10;
+  font-size: 0.9rem; font-weight: 700; color: #3d2b10;
   text-align: center; word-break: keep-all; line-height: 1.25;
 }
 
@@ -156,8 +156,8 @@ input[type="text"]:focus {
   #seatingCard { padding: 10px; }
   .seating-grid { gap: 5px; }
   .desk-cell { min-height: 44px; padding: 4px 2px; }
+  .desk-num { font-size: 0.56rem; }
   .desk-name { font-size: 0.75rem; }
-  .desk-seat-num { font-size: 0.52rem; }
 }
 
 /* ===== Print ===== */
@@ -199,8 +199,8 @@ input[type="text"]:focus {
     border-radius: 4px !important; min-height: 0 !important;
     box-shadow: none !important;
   }
-  .desk-name { font-size: 0.85rem !important; color: #3d2b10 !important; }
-  .desk-seat-num { color: #c9a96e !important; }
+  .desk-num { font-size: 0.68rem !important; color: #9b7540 !important; }
+  .desk-name { font-size: 0.88rem !important; color: #3d2b10 !important; }
   .seating-grid { gap: 3px !important; }
 }
 </style>
@@ -345,19 +345,19 @@ input[type="text"]:focus {
 
   function assignRandom(students, r, c) {
     var total = r * c;
-    var names;
+    var pool;
     if (students.length === 0) {
-      names = [];
-      for (var k = 1; k <= total; k++) names.push(k + '번');
+      pool = [];
+      for (var k = 1; k <= total; k++) pool.push({ num: String(k), name: '' });
     } else {
-      names = students.slice();
+      pool = students.slice();
     }
-    names = shuffleArray(names);
+    pool = shuffleArray(pool);
     var seats = buildEmptySeats(r, c);
     var idx = 0;
     for (var ri = 0; ri < r; ri++) {
       for (var ci = 0; ci < c; ci++) {
-        seats[ri][ci] = idx < names.length ? names[idx] : null;
+        seats[ri][ci] = idx < pool.length ? pool[idx] : null;
         idx++;
       }
     }
@@ -367,16 +367,23 @@ input[type="text"]:focus {
   function assignFromPreset(preset, r, c) {
     var seats = buildEmptySeats(r, c);
     var assignedNames = [];
+    // preset.students 가 문자열 배열일 수도 있으므로 객체로 정규화
+    var studentObjs = (preset.students || []).map(function(s, i) {
+      return typeof s === 'string' ? { num: String(i + 1), name: s } : s;
+    });
+    var nameToObj = {};
+    studentObjs.forEach(function(s) { nameToObj[s.name] = s; });
     Object.keys(preset.assignments).forEach(function(key) {
       var parts = key.split(',');
       var pr = Number(parts[0]), pc = Number(parts[1]);
       if (pr < r && pc < c) {
-        seats[pr][pc] = preset.assignments[key];
-        assignedNames.push(preset.assignments[key]);
+        var name = preset.assignments[key];
+        seats[pr][pc] = nameToObj[name] || { num: '', name: name };
+        assignedNames.push(name);
       }
     });
     var unassigned = shuffleArray(
-      preset.students.filter(function(s) { return assignedNames.indexOf(s) === -1; })
+      studentObjs.filter(function(s) { return assignedNames.indexOf(s.name) === -1; })
     );
     var ui = 0;
     for (var ri = 0; ri < r; ri++) {
@@ -402,8 +409,10 @@ input[type="text"]:focus {
     var start = (lines[0] && (lines[0].includes('번호') || lines[0].includes('이름'))) ? 1 : 0;
     for (var i = start; i < lines.length; i++) {
       var parts = lines[i].split(',');
-      var name = (parts.length >= 2 ? parts[1] : parts[0]).trim().replace(/\r/g, '');
-      if (name && !/^\d+$/.test(name)) students.push(name);
+      var num = (parts[0] || '').trim().replace(/\r/g, '');
+      var name = (parts.length >= 2 ? parts[1] : '').trim().replace(/\r/g, '');
+      if (!name) continue;
+      students.push({ num: num, name: name });
     }
     return students;
   }
@@ -417,12 +426,15 @@ input[type="text"]:focus {
 
   // ===== Rendering =====
 
-  function makeCellHTML(r, c, name, extraClass) {
-    var cls = 'desk-cell' + (extraClass ? ' ' + extraClass : '') + (!name ? ' empty' : '');
-    return '<div class="' + cls + '" data-row="' + r + '" data-col="' + c + '">' +
-      '<div class="desk-seat-num">' + (r * state.cols + c + 1) + '</div>' +
-      '<div class="desk-name">' + (name ? escapeHtml(name) : '') + '</div>' +
-      '</div>';
+  function makeCellHTML(r, c, student, extraClass) {
+    var isEmpty = !student;
+    var cls = 'desk-cell' + (extraClass ? ' ' + extraClass : '') + (isEmpty ? ' empty' : '');
+    var inner = '<div class="desk-name"></div>';
+    if (student) {
+      inner = (student.num ? '<div class="desk-num">' + escapeHtml(student.num) + '번</div>' : '') +
+              '<div class="desk-name">' + escapeHtml(student.name || student.num + '번') + '</div>';
+    }
+    return '<div class="' + cls + '" data-row="' + r + '" data-col="' + c + '">' + inner + '</div>';
   }
 
   function escapeHtml(s) {
@@ -435,8 +447,8 @@ input[type="text"]:focus {
     var html = '';
     for (var r = 0; r < state.rows; r++) {
       for (var c = 0; c < state.cols; c++) {
-        var name = state.seats[r] ? state.seats[r][c] : null;
-        html += makeCellHTML(r, c, name, '');
+        var student = state.seats[r] ? state.seats[r][c] : null;
+        html += makeCellHTML(r, c, student, '');
       }
     }
     grid.innerHTML = html;
@@ -446,8 +458,8 @@ input[type="text"]:focus {
   function renderStudentTags() {
     var container = document.getElementById('studentTags');
     if (state.students.length === 0) { container.innerHTML = ''; return; }
-    container.innerHTML = state.students.map(function(name, i) {
-      return '<div class="student-tag"><span class="tag-num">' + (i + 1) + '. </span>' + escapeHtml(name) + '</div>';
+    container.innerHTML = state.students.map(function(s) {
+      return '<div class="student-tag"><span class="tag-num">' + escapeHtml(s.num) + '. </span>' + escapeHtml(s.name || s.num + '번') + '</div>';
     }).join('');
   }
 
@@ -495,7 +507,10 @@ input[type="text"]:focus {
         document.getElementById('inputCols').value = preset.cols;
         document.getElementById('inputRows').value = preset.rows;
         if (preset.students && preset.students.length) {
-          state = Object.assign({}, state, { students: preset.students.slice() });
+          var normalized = preset.students.map(function(s, i) {
+            return typeof s === 'string' ? { num: String(i + 1), name: s } : s;
+          });
+          state = Object.assign({}, state, { students: normalized });
           renderStudentTags();
         }
         document.getElementById('presetNotice').style.display = 'flex';
@@ -528,19 +543,22 @@ input[type="text"]:focus {
 
   function startShuffle(finalSeats) {
     var grid = document.getElementById('seatingGrid');
-    var pool = state.students.length > 0 ? state.students.slice() :
-      (function() { var a = []; for (var i = 1; i <= state.rows * state.cols; i++) a.push(String(i)); return a; })();
+    var pool = state.students.length > 0
+      ? state.students.map(function(s) { return s.name || s.num + '번'; })
+      : (function() { var a = []; for (var i = 1; i <= state.rows * state.cols; i++) a.push(i + '번'); return a; })();
     grid.querySelectorAll('.desk-cell').forEach(function(cell) { cell.classList.add('shuffling'); });
     shuffleTimer = setInterval(function() {
       grid.querySelectorAll('.desk-cell').forEach(function(cell) {
-        cell.querySelector('.desk-name').textContent = pool[Math.floor(Math.random() * pool.length)];
+        var nameEl = cell.querySelector('.desk-name');
+        if (nameEl) nameEl.textContent = pool[Math.floor(Math.random() * pool.length)];
       });
     }, 80);
     setTimeout(function() {
       clearInterval(shuffleTimer); shuffleTimer = null;
       grid.querySelectorAll('.desk-cell').forEach(function(cell) {
         cell.classList.remove('shuffling');
-        cell.querySelector('.desk-name').textContent = '?';
+        var nameEl = cell.querySelector('.desk-name');
+        if (nameEl) nameEl.textContent = '?';
       });
       setTimeout(function() { startReveal(finalSeats); }, 150);
     }, 2500);
@@ -550,23 +568,36 @@ input[type="text"]:focus {
     state = Object.assign({}, state, { seats: finalSeats, phase: 'revealing' });
     var total = state.rows * state.cols;
     var order = getRandomOrder(total);
-    var interval = Math.max(30, Math.min(80, 1800 / total));
+    var ANTICIPATE = 2000; // 두근거리는 시간 (ms)
+    var STEP = 2500;       // 한 명당 간격 (ms)
     function revealStep(step) {
       if (step >= total) { finishReveal(); return; }
       var idx = order[step];
       var r = Math.floor(idx / state.cols), c = idx % state.cols;
-      var name = finalSeats[r] ? finalSeats[r][c] : null;
+      var student = finalSeats[r] ? finalSeats[r][c] : null;
       var cell = document.querySelector('[data-row="' + r + '"][data-col="' + c + '"]');
       if (cell) {
         cell.classList.add('about-reveal');
         setTimeout(function() {
           cell.classList.remove('about-reveal');
           cell.classList.add('revealed');
-          cell.querySelector('.desk-name').textContent = name ? escapeHtml(name) : '';
-          if (!name) cell.classList.add('empty');
-        }, 250);
+          cell.innerHTML = '';
+          if (student) {
+            if (student.num) {
+              var numEl = document.createElement('div');
+              numEl.className = 'desk-num';
+              numEl.textContent = student.num + '번';
+              cell.appendChild(numEl);
+            }
+            var nameEl = document.createElement('div');
+            nameEl.className = 'desk-name';
+            nameEl.textContent = student.name || student.num + '번';
+            cell.appendChild(nameEl);
+          }
+          if (!student) cell.classList.add('empty');
+        }, ANTICIPATE);
       }
-      setTimeout(function() { revealStep(step + 1); }, interval);
+      setTimeout(function() { revealStep(step + 1); }, STEP);
     }
     revealStep(0);
   }
@@ -666,8 +697,8 @@ input[type="text"]:focus {
     var html = '';
     for (var r = 0; r < state.rows; r++) {
       for (var c = 0; c < state.cols; c++) {
-        var name = state.seats[r] ? state.seats[r][c] : null;
-        html += makeCellHTML(r, c, name, 'revealed done-phase');
+        var student = state.seats[r] ? state.seats[r][c] : null;
+        html += makeCellHTML(r, c, student, 'revealed done-phase');
       }
     }
     grid.innerHTML = html;
