@@ -19,7 +19,10 @@ input[type="text"] {
   -webkit-appearance: none; appearance: none; box-sizing: border-box;
 }
 input[type="text"]:focus {
-  outline: none; border-color: #4299e1; box-shadow: 0 0 0 3px rgba(66,153,225,0.15);
+  outline: none; border-color: #276749; box-shadow: 0 0 0 3px rgba(39,103,73,0.15);
+}
+input[type="number"]:focus {
+  border-color: #276749 !important; box-shadow: 0 0 0 3px rgba(39,103,73,0.15) !important;
 }
 
 /* ===== Buttons ===== */
@@ -31,13 +34,11 @@ input[type="text"]:focus {
   -webkit-tap-highlight-color: transparent; text-decoration: none;
 }
 .btn:active { transform: scale(0.97); }
-.btn-primary { background: #4299e1; color: #fff; }
-.btn-primary:hover { background: #3182ce; }
+.btn-primary { background: #276749; color: #fff; }
+.btn-primary:hover { background: #1e4d37; }
 .btn-secondary { background: #edf2f7; color: #4a5568; }
 .btn-secondary:hover { background: #e2e8f0; }
 .btn-large { width: 100%; padding: 13px; font-size: 1rem; margin-top: 14px; }
-
-/* (board selector removed) */
 
 /* ===== CSV Row ===== */
 .csv-row { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -49,10 +50,10 @@ input[type="text"]:focus {
 .student-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
 .student-tag {
   display: inline-flex; align-items: center; gap: 3px;
-  background: #ebf8ff; color: #2b6cb0; font-size: 0.73rem; font-weight: 600;
-  padding: 3px 8px; border-radius: 6px;
+  background: #f0fff4; color: #276749; font-size: 0.73rem; font-weight: 600;
+  padding: 3px 8px; border-radius: 6px; border: 1px solid #c6f6d5;
 }
-.student-tag .tag-num { color: #90cdf4; font-size: 0.62rem; }
+.student-tag .tag-num { color: #9ae6b4; font-size: 0.62rem; }
 
 /* ===== Preset Notice ===== */
 .preset-notice {
@@ -60,6 +61,30 @@ input[type="text"]:focus {
   padding: 10px 14px; background: #fffaf0;
   border: 1.5px solid #fbd38d; border-radius: 8px;
   font-size: 0.8rem; color: #c05621;
+}
+
+/* ===== Preview Grid ===== */
+.preview-grid-wrap { margin-top: 12px; }
+.preview-grid-info {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px;
+}
+.preview-grid-info label {
+  font-size: 0.82rem; color: #4a5568; font-weight: 600;
+}
+.preview-active-count { font-size: 0.78rem; color: #276749; font-weight: 700; }
+.preview-grid { display: grid; gap: 4px; }
+.preview-cell {
+  height: 28px; border-radius: 5px; border: 1.5px solid #c9a96e;
+  background: #fef9e7; cursor: pointer; position: relative;
+  transition: background 0.12s, border-color 0.12s, opacity 0.12s;
+}
+.preview-cell:hover:not(.off) { border-color: #276749; background: #f0fff4; }
+.preview-cell.off {
+  background: #e8e6e0; border: 1.5px dashed #bdbab1; opacity: 0.55;
+}
+.preview-cell.off::after {
+  content: '×'; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%); font-size: 0.78rem; color: #9b9894;
 }
 
 /* ===== Seating Area ===== */
@@ -88,7 +113,7 @@ input[type="text"]:focus {
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   position: relative; user-select: none;
-  transition: border-color 0.15s, background 0.15s, transform 0.15s;
+  transition: border-color 0.15s, background 0.15s;
   padding: 6px 4px; cursor: default;
   -webkit-tap-highlight-color: transparent;
   box-shadow: 0 1px 3px rgba(180,130,60,0.12);
@@ -118,6 +143,7 @@ input[type="text"]:focus {
   border-color: #276749; background: #c6f6d5;
   box-shadow: inset 0 0 0 2px #276749;
 }
+.desk-cell.swap-flash { animation: swapFlash 0.5s ease-out !important; }
 
 .desk-num {
   font-size: 0.64rem; font-weight: 600; color: #9b7540;
@@ -155,6 +181,11 @@ input[type="text"]:focus {
   70% { transform: scale(1.0); opacity: 1; }
   100% { transform: scale(1); opacity: 1; }
 }
+@keyframes swapFlash {
+  0% { background: #c6f6d5; border-color: #276749; transform: scale(1.06); }
+  60% { background: #e6f9ee; border-color: #38a169; transform: scale(1.02); }
+  100% { background: #fef9e7; border-color: #c9a96e; transform: scale(1); }
+}
 
 /* ===== Responsive ===== */
 @media (max-width: 600px) {
@@ -163,6 +194,7 @@ input[type="text"]:focus {
   .desk-cell { min-height: 44px; padding: 4px 2px; }
   .desk-num { font-size: 0.56rem; }
   .desk-name { font-size: 0.75rem; }
+  .preview-cell { height: 24px; }
 }
 
 /* ===== Print ===== */
@@ -244,10 +276,13 @@ input[type="text"]:focus {
           <label>줄 수</label>
           <input type="number" id="inputRows" value="6" min="1" max="10" inputmode="numeric">
         </div>
-        <div class="field">
-          <label>학생 수 <span class="hint">남는 자리 OFF</span></label>
-          <input type="number" id="inputStudentCount" placeholder="전체" min="1" inputmode="numeric">
+      </div>
+      <div class="preview-grid-wrap">
+        <div class="preview-grid-info">
+          <label>사용하지 않을 자리를 눌러서 OFF 설정</label>
+          <span class="preview-active-count" id="previewActiveCount"></span>
         </div>
+        <div class="preview-grid" id="previewGrid"></div>
       </div>
     </div>
 
@@ -312,7 +347,7 @@ input[type="text"]:focus {
   var state = {
     grade: '3', classNum: '1',
     rows: 6, cols: 5, boardSide: 'top',
-    studentCount: null,
+    offSeats: {},
     teacherMessage: '',
     students: [],
     seats: [],
@@ -354,25 +389,28 @@ input[type="text"]:focus {
     return shuffleArray(arr);
   }
 
-  function assignRandom(students, r, c, studentCount) {
-    var total = r * c;
-    var effective = (studentCount !== null && studentCount > 0)
-      ? Math.min(studentCount, total) : total;
+  function assignRandom(students, r, c, offSeats) {
+    // 사용 가능한 자리만 수집
+    var activePositions = [];
+    for (var ri = 0; ri < r; ri++) {
+      for (var ci = 0; ci < c; ci++) {
+        if (!offSeats[ri + ',' + ci]) activePositions.push([ri, ci]);
+      }
+    }
     var pool;
     if (students.length === 0) {
       pool = [];
-      for (var k = 1; k <= effective; k++) pool.push({ num: String(k), name: '' });
+      for (var k = 1; k <= activePositions.length; k++) {
+        pool.push({ num: String(k), name: '' });
+      }
     } else {
-      pool = students.slice(0, effective);
+      pool = students.slice(0, activePositions.length);
     }
     pool = shuffleArray(pool);
     var seats = buildEmptySeats(r, c);
-    var idx = 0;
-    for (var ri = 0; ri < r; ri++) {
-      for (var ci = 0; ci < c; ci++) {
-        seats[ri][ci] = idx < pool.length ? pool[idx] : null;
-        idx++;
-      }
+    for (var i = 0; i < activePositions.length; i++) {
+      var pos = activePositions[i];
+      seats[pos[0]][pos[1]] = i < pool.length ? pool[i] : null;
     }
     return seats;
   }
@@ -380,7 +418,6 @@ input[type="text"]:focus {
   function assignFromPreset(preset, r, c) {
     var seats = buildEmptySeats(r, c);
     var assignedNames = [];
-    // preset.students 가 문자열 배열일 수도 있으므로 객체로 정규화
     var studentObjs = (preset.students || []).map(function(s, i) {
       return typeof s === 'string' ? { num: String(i + 1), name: s } : s;
     });
@@ -434,38 +471,26 @@ input[type="text"]:focus {
     if (state.hasPreset && state.currentPreset) {
       return assignFromPreset(state.currentPreset, state.rows, state.cols);
     }
-    return assignRandom(state.students, state.rows, state.cols, state.studentCount);
-  }
-
-  // ===== Rendering =====
-
-  function makeCellHTML(r, c, student, extraClass) {
-    var isEmpty = !student;
-    var cls = 'desk-cell' + (extraClass ? ' ' + extraClass : '') + (isEmpty ? ' empty' : '');
-    var inner = '<div class="desk-name"></div>';
-    if (student) {
-      inner = (student.num ? '<div class="desk-num">' + escapeHtml(student.num) + '번</div>' : '') +
-              '<div class="desk-name">' + escapeHtml(student.name || student.num + '번') + '</div>';
-    }
-    return '<div class="' + cls + '" data-row="' + r + '" data-col="' + c + '">' + inner + '</div>';
+    return assignRandom(state.students, state.rows, state.cols, state.offSeats);
   }
 
   function escapeHtml(s) {
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
-  function renderGrid() {
-    var grid = document.getElementById('seatingGrid');
-    grid.style.gridTemplateColumns = 'repeat(' + state.cols + ', 1fr)';
-    var html = '';
-    for (var r = 0; r < state.rows; r++) {
-      for (var c = 0; c < state.cols; c++) {
-        var student = state.seats[r] ? state.seats[r][c] : null;
-        html += makeCellHTML(r, c, student, '');
-      }
-    }
-    grid.innerHTML = html;
-    updatePrintGridStyle();
+  // ===== Rendering =====
+
+  function makeCellInner(student) {
+    if (!student) return '';
+    return (student.num ? '<div class="desk-num">' + escapeHtml(student.num) + '번</div>' : '') +
+           '<div class="desk-name">' + escapeHtml(student.name || student.num + '번') + '</div>';
+  }
+
+  function makeCellHTML(r, c, student, extraClass) {
+    var isEmpty = !student;
+    var cls = 'desk-cell' + (extraClass ? ' ' + extraClass : '') + (isEmpty ? ' empty' : '');
+    return '<div class="' + cls + '" data-row="' + r + '" data-col="' + c + '">' +
+           makeCellInner(student) + '</div>';
   }
 
   function renderStudentTags() {
@@ -474,6 +499,23 @@ input[type="text"]:focus {
     container.innerHTML = state.students.map(function(s) {
       return '<div class="student-tag"><span class="tag-num">' + escapeHtml(s.num) + '. </span>' + escapeHtml(s.name || s.num + '번') + '</div>';
     }).join('');
+  }
+
+  function renderPreviewGrid() {
+    var grid = document.getElementById('previewGrid');
+    grid.style.gridTemplateColumns = 'repeat(' + state.cols + ', 1fr)';
+    var html = '';
+    for (var r = 0; r < state.rows; r++) {
+      for (var c = 0; c < state.cols; c++) {
+        var key = r + ',' + c;
+        html += '<div class="preview-cell' + (state.offSeats[key] ? ' off' : '') +
+                '" data-row="' + r + '" data-col="' + c + '"></div>';
+      }
+    }
+    grid.innerHTML = html;
+    var total = state.rows * state.cols;
+    var active = total - Object.keys(state.offSeats).length;
+    document.getElementById('previewActiveCount').textContent = active + ' / ' + total + '자리 사용';
   }
 
   function updateBoardLayout() {
@@ -529,6 +571,7 @@ input[type="text"]:focus {
         document.getElementById('presetNotice').style.display = 'flex';
         document.getElementById('presetNoticeText').textContent =
           preset.grade + '학년 ' + preset.class + '반 저장 배치가 적용됩니다.';
+        renderPreviewGrid();
         return;
       } catch(e) {}
     }
@@ -574,12 +617,14 @@ input[type="text"]:focus {
 
   function startShuffle(finalSeats) {
     var grid = document.getElementById('seatingGrid');
-    var effective = state.studentCount !== null
-      ? Math.min(state.studentCount, state.rows * state.cols)
-      : state.rows * state.cols;
-    var pool = state.students.length > 0
-      ? state.students.slice(0, effective).map(function(s) { return s.name || s.num + '번'; })
-      : (function() { var a = []; for (var i = 1; i <= effective; i++) a.push(i + '번'); return a; })();
+    // finalSeats에서 실제 배치된 학생 이름 수집 (OFF 셀 제외)
+    var pool = [];
+    for (var ri = 0; ri < state.rows; ri++) {
+      for (var ci = 0; ci < state.cols; ci++) {
+        var s = finalSeats[ri] ? finalSeats[ri][ci] : null;
+        if (s) pool.push(s.name || s.num + '번');
+      }
+    }
     var activeCells = grid.querySelectorAll('.desk-cell:not(.off)');
     activeCells.forEach(function(cell) { cell.classList.add('shuffling'); });
     shuffleTimer = setInterval(function() {
@@ -622,17 +667,7 @@ input[type="text"]:focus {
         setTimeout(function() {
           cell.classList.remove('about-reveal');
           cell.classList.add('revealed');
-          cell.innerHTML = '';
-          if (student.num) {
-            var numEl = document.createElement('div');
-            numEl.className = 'desk-num';
-            numEl.textContent = student.num + '번';
-            cell.appendChild(numEl);
-          }
-          var nameEl = document.createElement('div');
-          nameEl.className = 'desk-name';
-          nameEl.textContent = student.name || student.num + '번';
-          cell.appendChild(nameEl);
+          cell.innerHTML = makeCellInner(student);
         }, ANTICIPATE);
       }
       setTimeout(function() { revealStep(step + 1); }, STEP);
@@ -651,7 +686,7 @@ input[type="text"]:focus {
   // ===== Drag & Drop =====
 
   function enableDragDrop() {
-    document.querySelectorAll('.desk-cell.revealed').forEach(function(cell) {
+    document.querySelectorAll('.desk-cell.done-phase').forEach(function(cell) {
       cell.setAttribute('draggable', 'true');
       cell.removeEventListener('dragstart', onDragStart);
       cell.removeEventListener('dragover', onDragOver);
@@ -685,8 +720,9 @@ input[type="text"]:focus {
     var tr = Number(e.currentTarget.dataset.row), tc = Number(e.currentTarget.dataset.col);
     e.currentTarget.classList.remove('drag-over');
     if (!src || (src.row === tr && src.col === tc)) return;
-    state = Object.assign({}, state, { seats: swapSeats(state.seats, src.row, src.col, tr, tc), dragSrc: null });
-    renderDoneGrid();
+    var srcRow = src.row, srcCol = src.col;
+    state = Object.assign({}, state, { seats: swapSeats(state.seats, srcRow, srcCol, tr, tc), dragSrc: null });
+    swapCellsDOM(srcRow, srcCol, tr, tc);
   }
   function onDragEnd(e) {
     e.currentTarget.classList.remove('dragging');
@@ -723,10 +759,31 @@ input[type="text"]:focus {
     document.querySelectorAll('.drag-over').forEach(function(d) { d.classList.remove('drag-over'); });
     if (target && target !== touchSrcCell && touchSrcPos) {
       var tr = Number(target.dataset.row), tc = Number(target.dataset.col);
-      state = Object.assign({}, state, { seats: swapSeats(state.seats, touchSrcPos.row, touchSrcPos.col, tr, tc) });
-      renderDoneGrid();
+      var srcRow = touchSrcPos.row, srcCol = touchSrcPos.col;
+      state = Object.assign({}, state, { seats: swapSeats(state.seats, srcRow, srcCol, tr, tc) });
+      swapCellsDOM(srcRow, srcCol, tr, tc);
     }
     touchActive = false; touchSrcCell = null; touchSrcPos = null;
+  }
+
+  // 스왑된 두 셀만 업데이트 + 플래시 애니메이션
+  function swapCellsDOM(r1, c1, r2, c2) {
+    var cell1 = document.querySelector('[data-row="' + r1 + '"][data-col="' + c1 + '"]');
+    var cell2 = document.querySelector('[data-row="' + r2 + '"][data-col="' + c2 + '"]');
+    if (!cell1 || !cell2) { renderDoneGrid(); return; }
+    cell1.classList.remove('dragging', 'drag-over', 'swap-flash');
+    cell2.classList.remove('dragging', 'drag-over', 'swap-flash');
+    cell1.innerHTML = makeCellInner(state.seats[r1] ? state.seats[r1][c1] : null);
+    cell2.innerHTML = makeCellInner(state.seats[r2] ? state.seats[r2][c2] : null);
+    // reflow 강제 후 애니메이션 재시작
+    void cell1.offsetWidth; void cell2.offsetWidth;
+    cell1.classList.add('swap-flash');
+    cell2.classList.add('swap-flash');
+    setTimeout(function() {
+      cell1.classList.remove('swap-flash');
+      cell2.classList.remove('swap-flash');
+    }, 550);
+    enableDragDrop();
   }
 
   function renderDoneGrid() {
@@ -751,7 +808,7 @@ input[type="text"]:focus {
   // ===== CSV =====
 
   function downloadTemplate() {
-    var total = state.rows * state.cols;
+    var total = state.rows * state.cols - Object.keys(state.offSeats).length;
     var lines = ['\uFEFF번호,이름'];
     for (var i = 1; i <= total; i++) lines.push(i + ',');
     var blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
@@ -767,14 +824,14 @@ input[type="text"]:focus {
     var reader = new FileReader();
     reader.onload = function(e) {
       var students = parseCSV(e.target.result);
-      var total = state.rows * state.cols;
+      var total = state.rows * state.cols - Object.keys(state.offSeats).length;
       var el = document.getElementById('csvStatus');
       if (students.length === 0) {
         el.textContent = '학생을 찾을 수 없습니다. 형식을 확인하세요.';
         el.className = 'csv-status error'; return;
       }
       var msg = students.length + '명 불러왔습니다';
-      if (students.length > total) msg += ' (좌석 수 ' + total + '개 초과, 앞 ' + total + '명만 적용)';
+      if (students.length > total) msg += ' (사용 좌석 수 ' + total + '개 초과, 앞 ' + total + '명만 적용)';
       el.textContent = msg; el.className = 'csv-status ok';
       state = Object.assign({}, state, { students: students.slice(0, total) });
       renderStudentTags();
@@ -796,21 +853,28 @@ input[type="text"]:focus {
       state = Object.assign({}, state, { classNum: this.value }); checkPreset();
     });
     document.getElementById('inputRows').addEventListener('change', function() {
-      state = Object.assign({}, state, { rows: Math.max(1, Number(this.value) || 6) });
+      var r = Math.max(1, Number(this.value) || 6);
+      state = Object.assign({}, state, { rows: r, offSeats: {} });
+      renderPreviewGrid();
     });
     document.getElementById('inputCols').addEventListener('change', function() {
-      state = Object.assign({}, state, { cols: Math.max(1, Number(this.value) || 5) });
+      var c = Math.max(1, Number(this.value) || 5);
+      state = Object.assign({}, state, { cols: c, offSeats: {} });
+      renderPreviewGrid();
     });
-    document.getElementById('inputStudentCount').addEventListener('change', function() {
-      var v = this.value.trim();
-      var max = state.rows * state.cols;
-      if (!v) {
-        state = Object.assign({}, state, { studentCount: null });
+    // 미리보기 그리드 클릭으로 OFF 토글
+    document.getElementById('previewGrid').addEventListener('click', function(e) {
+      var cell = e.target.closest('.preview-cell');
+      if (!cell) return;
+      var key = cell.dataset.row + ',' + cell.dataset.col;
+      var newOff = Object.assign({}, state.offSeats);
+      if (newOff[key]) {
+        delete newOff[key];
       } else {
-        var n = Math.min(Math.max(1, Number(v) || 1), max);
-        this.value = n;
-        state = Object.assign({}, state, { studentCount: n });
+        newOff[key] = true;
       }
+      state = Object.assign({}, state, { offSeats: newOff });
+      renderPreviewGrid();
     });
     document.getElementById('inputMessage').addEventListener('input', function() {
       state = Object.assign({}, state, { teacherMessage: this.value });
@@ -836,6 +900,7 @@ input[type="text"]:focus {
       touchSrcCell = null; touchSrcPos = null;
     });
     checkPreset();
+    renderPreviewGrid();
   }
 
   init();
