@@ -63,6 +63,26 @@ input[type="number"]:focus {
   font-size: 0.8rem; color: #c05621;
 }
 
+/* ===== Main Card: two sections ===== */
+#mainCard { padding: 0; overflow: hidden; }
+#settingsSection { padding: 22px; }
+#seatingSection  { padding: 14px; overflow: hidden; }
+
+/* ===== Section header (seating) ===== */
+.section-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+}
+.section-header .card-title { margin: 0; padding: 0; border: none; flex: 1; }
+.btn-back {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: none; border: 1.5px solid #e2e8f0; color: #718096;
+  font-size: 0.8rem; font-weight: 600; padding: 5px 11px;
+  border-radius: 7px; cursor: pointer; white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-back:hover { background: #f7fafc; color: #2d3748; }
+
 /* ===== Preview Grid ===== */
 .preview-grid-wrap { margin-top: 12px; }
 .preview-grid-info {
@@ -87,12 +107,6 @@ input[type="number"]:focus {
   transform: translate(-50%, -50%); font-size: 0.78rem; color: #9b9894;
 }
 
-/* ===== Seating Area ===== */
-#seatingCard { padding: 14px; overflow: hidden; }
-.seat-outer {
-  display: flex; flex-direction: column;
-}
-
 /* ===== Board Strip ===== */
 .board-strip {
   background: linear-gradient(180deg, #276749 0%, #1e4d37 100%);
@@ -104,6 +118,7 @@ input[type="number"]:focus {
 }
 
 /* ===== Seating Grid ===== */
+.seat-outer { display: flex; flex-direction: column; }
 .seating-grid { display: grid; gap: 6px; flex: 1; min-width: 0; }
 
 /* ===== Desk Cells ===== */
@@ -118,8 +133,8 @@ input[type="number"]:focus {
   -webkit-tap-highlight-color: transparent;
   box-shadow: 0 1px 3px rgba(180,130,60,0.12);
 }
-.desk-cell.empty { border-style: dashed; border-color: #e0c898; background: #fffdf5; }
-.desk-cell.off {
+.desk-cell.empty  { border-style: dashed; border-color: #e0c898; background: #fffdf5; }
+.desk-cell.off    {
   background: #efefec; border: 1.5px dashed #c8c6be; opacity: 0.45;
   cursor: default; box-shadow: none;
 }
@@ -138,11 +153,8 @@ input[type="number"]:focus {
 }
 .desk-cell.done-phase { cursor: grab; }
 .desk-cell.done-phase:hover { border-color: #276749; background: #f0fff4; }
-.desk-cell.dragging { opacity: 0.45; border: 2px dashed #276749; background: #e6f9ee; cursor: grabbing; }
-.desk-cell.drag-over {
-  border-color: #276749; background: #c6f6d5;
-  box-shadow: inset 0 0 0 2px #276749;
-}
+.desk-cell.dragging  { opacity: 0.45; border: 2px dashed #276749; background: #e6f9ee; cursor: grabbing; }
+.desk-cell.drag-over { border-color: #276749; background: #c6f6d5; box-shadow: inset 0 0 0 2px #276749; }
 .desk-cell.swap-flash { animation: swapFlash 0.5s ease-out !important; }
 
 .desk-num {
@@ -164,48 +176,50 @@ input[type="number"]:focus {
 }
 
 /* ===== Print-only ===== */
-.print-header { display: none; }
+.print-header  { display: none; }
 .print-message { display: none; }
 
 /* ===== Keyframes ===== */
 @keyframes deskFlash {
-  0% { background: #fef3c7; border-color: #f6ad55; }
+  0%   { background: #fef3c7; border-color: #f6ad55; }
   100% { background: #fde68a; border-color: #ed8936; }
 }
 @keyframes deskPulse {
   0%, 100% { background: #fef9e7; border-color: #c9a96e; }
-  50% { background: #c6f6d5; border-color: #276749; }
+  50%       { background: #c6f6d5; border-color: #276749; }
 }
 @keyframes deskReveal {
-  0% { transform: scale(0.82); opacity: 0; }
-  70% { transform: scale(1.0); opacity: 1; }
-  100% { transform: scale(1); opacity: 1; }
+  0%   { transform: scale(0.82); opacity: 0; }
+  70%  { transform: scale(1.0);  opacity: 1; }
+  100% { transform: scale(1);    opacity: 1; }
 }
 @keyframes swapFlash {
-  0% { background: #c6f6d5; border-color: #276749; transform: scale(1.06); }
-  60% { background: #e6f9ee; border-color: #38a169; transform: scale(1.02); }
-  100% { background: #fef9e7; border-color: #c9a96e; transform: scale(1); }
+  0%   { background: #c6f6d5; border-color: #276749; transform: scale(1.06); }
+  60%  { background: #e6f9ee; border-color: #38a169; transform: scale(1.02); }
+  100% { background: #fef9e7; border-color: #c9a96e; transform: scale(1);    }
 }
 
 /* ===== Responsive ===== */
 @media (max-width: 600px) {
-  #seatingCard { padding: 10px; }
-  .seating-grid { gap: 5px; }
-  .desk-cell { min-height: 44px; padding: 4px 2px; }
-  .desk-num { font-size: 0.56rem; }
-  .desk-name { font-size: 0.75rem; }
-  .preview-cell { height: 24px; }
+  #settingsSection { padding: 14px; }
+  #seatingSection  { padding: 10px; }
+  .seating-grid    { gap: 5px; }
+  .desk-cell       { min-height: 44px; padding: 4px 2px; }
+  .desk-num        { font-size: 0.56rem; }
+  .desk-name       { font-size: 0.75rem; }
+  .preview-cell    { height: 24px; }
 }
 
 /* ===== Print ===== */
 @media print {
-  .no-print { display: none !important; }
-  nav.nav-bar { display: none !important; }
-  .seating-actions { display: none !important; }
-  .drag-hint { display: none !important; }
-  .ad-container { display: none !important; }
-  .footer { display: none !important; }
-  #settingsCard { display: none !important; }
+  .no-print          { display: none !important; }
+  nav.nav-bar        { display: none !important; }
+  .seating-actions   { display: none !important; }
+  .drag-hint         { display: none !important; }
+  .ad-container      { display: none !important; }
+  .footer            { display: none !important; }
+  #settingsSection   { display: none !important; }
+  .section-header    { display: none !important; }
 
   .print-header {
     display: flex !important; justify-content: space-between;
@@ -213,7 +227,7 @@ input[type="number"]:focus {
     border-bottom: 2px solid #000; padding-bottom: 6px;
   }
   .print-class-title { font-size: 1.3rem; font-weight: 800; color: #000; }
-  .print-date { font-size: 0.82rem; color: #555; }
+  .print-date        { font-size: 0.82rem; color: #555; }
   .print-message {
     display: block !important; text-align: center; margin-top: 10px;
     font-size: 0.9rem; color: #333; border-top: 1px solid #ccc; padding-top: 8px;
@@ -222,9 +236,9 @@ input[type="number"]:focus {
   @page { size: A4 landscape; margin: 12mm 15mm; }
 
   html, body { background: white !important; padding: 0 !important; }
-  body { padding-top: 0 !important; }
-  .container { max-width: 100%; }
-  .card { box-shadow: none; padding: 0; margin: 0; }
+  body        { padding-top: 0 !important; }
+  .container  { max-width: 100%; }
+  .card       { box-shadow: none; padding: 0; margin: 0; }
 
   .board-strip {
     background: #276749 !important; color: #d4f5e2 !important;
@@ -233,12 +247,11 @@ input[type="number"]:focus {
   .desk-cell {
     border: 1px solid #c9a96e !important; background: #fffdf5 !important;
     animation: none !important; transform: none !important;
-    border-radius: 4px !important; min-height: 0 !important;
-    box-shadow: none !important;
+    border-radius: 4px !important; min-height: 0 !important; box-shadow: none !important;
   }
-  .desk-num { font-size: 0.68rem !important; color: #9b7540 !important; }
-  .desk-name { font-size: 0.88rem !important; color: #3d2b10 !important; }
   .desk-cell.off { background: #f0f0ee !important; border: 1px dashed #ccc !important; opacity: 0.4 !important; }
+  .desk-num  { font-size: 0.68rem !important; color: #9b7540 !important; }
+  .desk-name { font-size: 0.88rem !important; color: #3d2b10 !important; }
   .seating-grid { gap: 3px !important; }
 }
 </style>
@@ -247,92 +260,103 @@ input[type="number"]:focus {
 <script src="js/nav.js"></script>
 
 <div class="container">
-  <!-- Settings Card -->
-  <div class="card" id="settingsCard">
-    <div class="card-title">설정</div>
 
-    <div class="input-group">
-      <label>학년 / 반</label>
-      <div class="input-row">
-        <div class="field">
-          <label>학년</label>
-          <input type="number" id="inputGrade" value="3" min="1" max="6" inputmode="numeric">
-        </div>
-        <div class="field">
-          <label>반</label>
-          <input type="number" id="inputClass" value="1" min="1" max="20" inputmode="numeric">
-        </div>
-      </div>
-    </div>
+  <!-- ===== 단일 메인 카드 ===== -->
+  <div class="card" id="mainCard">
 
-    <div class="input-group">
-      <label>좌석 배열 <span class="hint">열 수 × 줄 수</span></label>
-      <div class="input-row">
-        <div class="field">
-          <label>열 수</label>
-          <input type="number" id="inputCols" value="5" min="1" max="12" inputmode="numeric">
-        </div>
-        <div class="field">
-          <label>줄 수</label>
-          <input type="number" id="inputRows" value="6" min="1" max="10" inputmode="numeric">
+    <!-- [설정 섹션] -->
+    <div id="settingsSection">
+      <div class="card-title">설정</div>
+
+      <div class="input-group">
+        <label>학년 / 반</label>
+        <div class="input-row">
+          <div class="field">
+            <label>학년</label>
+            <input type="number" id="inputGrade" value="3" min="1" max="6" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label>반</label>
+            <input type="number" id="inputClass" value="1" min="1" max="20" inputmode="numeric">
+          </div>
         </div>
       </div>
-      <div class="preview-grid-wrap">
-        <div class="preview-grid-info">
-          <label>사용하지 않을 자리를 눌러서 OFF 설정</label>
-          <span class="preview-active-count" id="previewActiveCount"></span>
+
+      <div class="input-group">
+        <label>좌석 배열 <span class="hint">열 수 × 줄 수</span></label>
+        <div class="input-row">
+          <div class="field">
+            <label>열 수</label>
+            <input type="number" id="inputCols" value="5" min="1" max="12" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label>줄 수</label>
+            <input type="number" id="inputRows" value="6" min="1" max="10" inputmode="numeric">
+          </div>
         </div>
-        <div class="preview-grid" id="previewGrid"></div>
+        <div class="preview-grid-wrap">
+          <div class="preview-grid-info">
+            <label>사용하지 않을 자리를 눌러서 OFF 설정</label>
+            <span class="preview-active-count" id="previewActiveCount"></span>
+          </div>
+          <div class="preview-grid" id="previewGrid"></div>
+        </div>
       </div>
-    </div>
 
-    <div class="input-group">
-      <label>학생 명단 <span class="hint">비워두면 번호로 자동 배치</span></label>
-      <div class="csv-row">
-        <button class="btn btn-secondary" id="btnDownload">&#128190; 템플릿 다운로드</button>
-        <label class="btn btn-secondary" for="csvInput">&#128196; CSV 업로드</label>
-        <input type="file" id="csvInput" accept=".csv" style="display:none">
+      <div class="input-group">
+        <label>학생 명단 <span class="hint">비워두면 번호로 자동 배치</span></label>
+        <div class="csv-row">
+          <button class="btn btn-secondary" id="btnDownload">&#128190; 템플릿 다운로드</button>
+          <label class="btn btn-secondary" for="csvInput">&#128196; CSV 업로드</label>
+          <input type="file" id="csvInput" accept=".csv" style="display:none">
+        </div>
+        <div class="csv-status" id="csvStatus"></div>
+        <div class="student-tags" id="studentTags"></div>
       </div>
-      <div class="csv-status" id="csvStatus"></div>
-      <div class="student-tags" id="studentTags"></div>
-    </div>
 
-    <div class="input-group">
-      <label>선생님 한마디 <span class="hint">인쇄물에 표시</span></label>
-      <input type="text" id="inputMessage" placeholder="예: 새 학기 첫 자리, 열심히 공부합시다!" maxlength="80">
-    </div>
+      <div class="input-group">
+        <label>선생님 한마디 <span class="hint">인쇄물에 표시</span></label>
+        <input type="text" id="inputMessage" placeholder="예: 새 학기 첫 자리, 열심히 공부합시다!" maxlength="80">
+      </div>
 
-    <div class="preset-notice" id="presetNotice" style="display:none">
-      <span>&#128274;</span>
-      <span id="presetNoticeText">저장된 배치가 적용됩니다.</span>
-    </div>
+      <div class="preset-notice" id="presetNotice" style="display:none">
+        <span>&#128274;</span>
+        <span id="presetNoticeText">저장된 배치가 적용됩니다.</span>
+      </div>
 
-    <button class="btn btn-primary btn-large" id="btnStart">&#127922; 자리 배치 시작!</button>
-  </div>
+      <button class="btn btn-primary btn-large" id="btnStart">&#127922; 자리 배치 시작!</button>
+    </div><!-- /#settingsSection -->
 
-  <!-- Seating Card -->
-  <div class="card" id="seatingCard" style="display:none">
-    <div class="print-header">
-      <div class="print-class-title" id="printClassTitle">자리 배치</div>
-      <div class="print-date" id="printDate"></div>
-    </div>
+    <!-- [자리 배치 섹션] -->
+    <div id="seatingSection" style="display:none">
+      <div class="section-header no-print">
+        <div class="card-title" id="seatingTitle">자리 배치</div>
+        <button class="btn-back" id="btnBack">&#8592; 설정으로</button>
+      </div>
 
-    <div class="seat-outer" id="seatOuter">
-      <div class="board-strip" id="boardStrip">&#9633; 칠판</div>
-      <div class="seating-grid" id="seatingGrid"></div>
-    </div>
+      <div class="print-header">
+        <div class="print-class-title" id="printClassTitle">자리 배치</div>
+        <div class="print-date" id="printDate"></div>
+      </div>
 
-    <div class="print-message" id="printMessage"></div>
+      <div class="seat-outer">
+        <div class="board-strip">&#9633; 칠판</div>
+        <div class="seating-grid" id="seatingGrid"></div>
+      </div>
 
-    <div class="drag-hint no-print" id="dragHint" style="display:none">
-      &#128070; 책상을 드래그해서 자리를 바꿀 수 있어요
-    </div>
+      <div class="print-message" id="printMessage"></div>
 
-    <div class="seating-actions no-print" id="seatingActions" style="display:none">
-      <button class="btn btn-secondary" id="btnReshuffle">&#8635; 다시 배치</button>
-      <button class="btn btn-primary" id="btnPrint">&#128438; 인쇄하기</button>
-    </div>
-  </div>
+      <div class="drag-hint no-print" id="dragHint" style="display:none">
+        &#128070; 책상을 드래그해서 자리를 바꿀 수 있어요
+      </div>
+
+      <div class="seating-actions no-print" id="seatingActions" style="display:none">
+        <button class="btn btn-secondary" id="btnReshuffle">&#8635; 다시 배치</button>
+        <button class="btn btn-primary" id="btnPrint">&#128438; 인쇄하기</button>
+      </div>
+    </div><!-- /#seatingSection -->
+
+  </div><!-- /#mainCard -->
 
   <div class="ad-container no-print">
     <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2843268090165223" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
@@ -346,7 +370,7 @@ input[type="number"]:focus {
   // ===== State =====
   var state = {
     grade: '3', classNum: '1',
-    rows: 6, cols: 5, boardSide: 'top',
+    rows: 6, cols: 5,
     offSeats: {},
     teacherMessage: '',
     students: [],
@@ -358,12 +382,23 @@ input[type="number"]:focus {
 
   // Touch DnD
   var touchSrcPos = null, touchSrcCell = null, touchActive = false, touchHoldTimer = null;
-
-  // Shuffle timer
   var shuffleTimer = null;
 
-  // ===== Pure Functions =====
+  // ===== 섹션 전환 =====
+  function showSettings() {
+    document.getElementById('settingsSection').style.display = '';
+    document.getElementById('seatingSection').style.display  = 'none';
+    document.getElementById('mainCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function showSeating() {
+    document.getElementById('settingsSection').style.display = 'none';
+    document.getElementById('seatingSection').style.display  = '';
+    setTimeout(function() {
+      document.getElementById('mainCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 50);
+  }
 
+  // ===== Pure Functions =====
   function shuffleArray(arr) {
     var a = arr.slice();
     for (var i = a.length - 1; i > 0; i--) {
@@ -383,14 +418,7 @@ input[type="number"]:focus {
     return seats;
   }
 
-  function getRandomOrder(n) {
-    var arr = [];
-    for (var i = 0; i < n; i++) arr.push(i);
-    return shuffleArray(arr);
-  }
-
   function assignRandom(students, r, c, offSeats) {
-    // 사용 가능한 자리만 수집
     var activePositions = [];
     for (var ri = 0; ri < r; ri++) {
       for (var ci = 0; ci < c; ci++) {
@@ -400,9 +428,7 @@ input[type="number"]:focus {
     var pool;
     if (students.length === 0) {
       pool = [];
-      for (var k = 1; k <= activePositions.length; k++) {
-        pool.push({ num: String(k), name: '' });
-      }
+      for (var k = 1; k <= activePositions.length; k++) pool.push({ num: String(k), name: '' });
     } else {
       pool = students.slice(0, activePositions.length);
     }
@@ -438,9 +464,7 @@ input[type="number"]:focus {
     var ui = 0;
     for (var ri = 0; ri < r; ri++) {
       for (var ci = 0; ci < c; ci++) {
-        if (seats[ri][ci] === null && ui < unassigned.length) {
-          seats[ri][ci] = unassigned[ui++];
-        }
+        if (seats[ri][ci] === null && ui < unassigned.length) seats[ri][ci] = unassigned[ui++];
       }
     }
     return seats;
@@ -459,7 +483,7 @@ input[type="number"]:focus {
     var start = (lines[0] && (lines[0].includes('번호') || lines[0].includes('이름'))) ? 1 : 0;
     for (var i = start; i < lines.length; i++) {
       var parts = lines[i].split(',');
-      var num = (parts[0] || '').trim().replace(/\r/g, '');
+      var num  = (parts[0] || '').trim().replace(/\r/g, '');
       var name = (parts.length >= 2 ? parts[1] : '').trim().replace(/\r/g, '');
       if (!name) continue;
       students.push({ num: num, name: name });
@@ -468,9 +492,7 @@ input[type="number"]:focus {
   }
 
   function buildFinalSeats() {
-    if (state.hasPreset && state.currentPreset) {
-      return assignFromPreset(state.currentPreset, state.rows, state.cols);
-    }
+    if (state.hasPreset && state.currentPreset) return assignFromPreset(state.currentPreset, state.rows, state.cols);
     return assignRandom(state.students, state.rows, state.cols, state.offSeats);
   }
 
@@ -479,7 +501,6 @@ input[type="number"]:focus {
   }
 
   // ===== Rendering =====
-
   function makeCellInner(student) {
     if (!student) return '';
     return (student.num ? '<div class="desk-num">' + escapeHtml(student.num) + '번</div>' : '') +
@@ -489,8 +510,24 @@ input[type="number"]:focus {
   function makeCellHTML(r, c, student, extraClass) {
     var isEmpty = !student;
     var cls = 'desk-cell' + (extraClass ? ' ' + extraClass : '') + (isEmpty ? ' empty' : '');
-    return '<div class="' + cls + '" data-row="' + r + '" data-col="' + c + '">' +
-           makeCellInner(student) + '</div>';
+    return '<div class="' + cls + '" data-row="' + r + '" data-col="' + c + '">' + makeCellInner(student) + '</div>';
+  }
+
+  // 세팅 그리드와 충돌 방지: data-key 속성 사용 + #seatingGrid 스코프 쿼리
+  function renderPreviewGrid() {
+    var grid = document.getElementById('previewGrid');
+    grid.style.gridTemplateColumns = 'repeat(' + state.cols + ', 1fr)';
+    var html = '';
+    for (var r = 0; r < state.rows; r++) {
+      for (var c = 0; c < state.cols; c++) {
+        var key = r + ',' + c;
+        html += '<div class="preview-cell' + (state.offSeats[key] ? ' off' : '') + '" data-key="' + key + '"></div>';
+      }
+    }
+    grid.innerHTML = html;
+    var total  = state.rows * state.cols;
+    var active = total - Object.keys(state.offSeats).length;
+    document.getElementById('previewActiveCount').textContent = active + ' / ' + total + '자리 사용';
   }
 
   function renderStudentTags() {
@@ -501,53 +538,26 @@ input[type="number"]:focus {
     }).join('');
   }
 
-  function renderPreviewGrid() {
-    var grid = document.getElementById('previewGrid');
-    grid.style.gridTemplateColumns = 'repeat(' + state.cols + ', 1fr)';
-    var html = '';
-    for (var r = 0; r < state.rows; r++) {
-      for (var c = 0; c < state.cols; c++) {
-        var key = r + ',' + c;
-        html += '<div class="preview-cell' + (state.offSeats[key] ? ' off' : '') +
-                '" data-row="' + r + '" data-col="' + c + '"></div>';
-      }
-    }
-    grid.innerHTML = html;
-    var total = state.rows * state.cols;
-    var active = total - Object.keys(state.offSeats).length;
-    document.getElementById('previewActiveCount').textContent = active + ' / ' + total + '자리 사용';
-  }
-
-  function updateBoardLayout() {
-    document.getElementById('seatOuter').style.flexDirection = 'column';
-  }
-
   function updatePrintHeader() {
     var today = new Date();
-    document.getElementById('printClassTitle').textContent =
-      state.grade + '학년 ' + state.classNum + '반 자리배치도';
+    document.getElementById('printClassTitle').textContent = state.grade + '학년 ' + state.classNum + '반 자리배치도';
     document.getElementById('printDate').textContent =
       today.getFullYear() + '년 ' + (today.getMonth() + 1) + '월 ' + today.getDate() + '일';
     document.getElementById('printMessage').textContent = state.teacherMessage;
+    document.getElementById('seatingTitle').textContent = state.grade + '학년 ' + state.classNum + '반 자리배치';
   }
 
   function updatePrintGridStyle() {
     var style = document.getElementById('pgStyle');
-    if (!style) {
-      style = document.createElement('style');
-      style.id = 'pgStyle';
-      document.head.appendChild(style);
-    }
+    if (!style) { style = document.createElement('style'); style.id = 'pgStyle'; document.head.appendChild(style); }
     var cw = Math.floor(255 / state.cols);
     var ch = Math.max(16, Math.floor(150 / state.rows));
-    style.textContent = '@media print { #seatingGrid { grid-template-columns: repeat(' +
-      state.cols + ', ' + cw + 'mm) !important; } .desk-cell { height: ' +
-      ch + 'mm !important; min-height: 0 !important; } }';
+    style.textContent = '@media print { #seatingGrid { grid-template-columns: repeat(' + state.cols + ', ' + cw + 'mm) !important; } .desk-cell { height: ' + ch + 'mm !important; min-height: 0 !important; } }';
   }
 
   function checkPreset() {
     var grade = document.getElementById('inputGrade').value;
-    var cls = document.getElementById('inputClass').value;
+    var cls   = document.getElementById('inputClass').value;
     if (!grade || !cls) return;
     var key = 'teachertool_seating_v1_' + grade + '_' + cls;
     var raw = null;
@@ -579,9 +589,7 @@ input[type="number"]:focus {
     document.getElementById('presetNotice').style.display = 'none';
   }
 
-
   // ===== Animation =====
-
   function renderInitialGrid(finalSeats) {
     var grid = document.getElementById('seatingGrid');
     grid.style.gridTemplateColumns = 'repeat(' + state.cols + ', 1fr)';
@@ -603,21 +611,16 @@ input[type="number"]:focus {
   function startAnimation() {
     var finalSeats = buildFinalSeats();
     state = Object.assign({}, state, { seats: finalSeats, phase: 'shuffling' });
-    document.getElementById('seatingCard').style.display = '';
     document.getElementById('seatingActions').style.display = 'none';
     document.getElementById('dragHint').style.display = 'none';
-    updateBoardLayout();
     updatePrintHeader();
     renderInitialGrid(finalSeats);
-    setTimeout(function() {
-      document.getElementById('seatingCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }, 50);
+    showSeating();
     startShuffle(finalSeats);
   }
 
   function startShuffle(finalSeats) {
     var grid = document.getElementById('seatingGrid');
-    // finalSeats에서 실제 배치된 학생 이름 수집 (OFF 셀 제외)
     var pool = [];
     for (var ri = 0; ri < state.rows; ri++) {
       for (var ci = 0; ci < state.cols; ci++) {
@@ -647,21 +650,20 @@ input[type="number"]:focus {
   function startReveal(finalSeats) {
     state = Object.assign({}, state, { phase: 'revealing' });
     var total = state.rows * state.cols;
-    // OFF 셀(null)은 제외하고 학생이 있는 셀만 순서에 포함
     var activeIndices = [];
     for (var i = 0; i < total; i++) {
       var ri = Math.floor(i / state.cols), ci = i % state.cols;
       if (finalSeats[ri] && finalSeats[ri][ci] !== null) activeIndices.push(i);
     }
     var order = shuffleArray(activeIndices);
-    var ANTICIPATE = 2000;
-    var STEP = 2500;
+    var ANTICIPATE = 2000, STEP = 2500;
     function revealStep(step) {
       if (step >= order.length) { finishReveal(); return; }
       var idx = order[step];
       var r = Math.floor(idx / state.cols), c = idx % state.cols;
       var student = finalSeats[r] ? finalSeats[r][c] : null;
-      var cell = document.querySelector('[data-row="' + r + '"][data-col="' + c + '"]');
+      // #seatingGrid 스코프로 조회해서 미리보기 셀과 충돌 방지
+      var cell = document.querySelector('#seatingGrid [data-row="' + r + '"][data-col="' + c + '"]');
       if (cell && student) {
         cell.classList.add('about-reveal');
         setTimeout(function() {
@@ -677,27 +679,26 @@ input[type="number"]:focus {
 
   function finishReveal() {
     state = Object.assign({}, state, { phase: 'done' });
-    document.querySelectorAll('.desk-cell.revealed').forEach(function(c) { c.classList.add('done-phase'); });
+    document.querySelectorAll('#seatingGrid .desk-cell.revealed').forEach(function(c) { c.classList.add('done-phase'); });
     document.getElementById('seatingActions').style.display = 'flex';
     document.getElementById('dragHint').style.display = '';
     enableDragDrop();
   }
 
   // ===== Drag & Drop =====
-
   function enableDragDrop() {
-    document.querySelectorAll('.desk-cell.done-phase').forEach(function(cell) {
+    document.querySelectorAll('#seatingGrid .desk-cell.done-phase').forEach(function(cell) {
       cell.setAttribute('draggable', 'true');
       cell.removeEventListener('dragstart', onDragStart);
-      cell.removeEventListener('dragover', onDragOver);
+      cell.removeEventListener('dragover',  onDragOver);
       cell.removeEventListener('dragleave', onDragLeave);
-      cell.removeEventListener('drop', onDrop);
-      cell.removeEventListener('dragend', onDragEnd);
+      cell.removeEventListener('drop',      onDrop);
+      cell.removeEventListener('dragend',   onDragEnd);
       cell.addEventListener('dragstart', onDragStart);
-      cell.addEventListener('dragover', onDragOver);
+      cell.addEventListener('dragover',  onDragOver);
       cell.addEventListener('dragleave', onDragLeave);
-      cell.addEventListener('drop', onDrop);
-      cell.addEventListener('dragend', onDragEnd);
+      cell.addEventListener('drop',      onDrop);
+      cell.addEventListener('dragend',   onDragEnd);
       cell.removeEventListener('touchstart', onTouchStart);
       cell.addEventListener('touchstart', onTouchStart, { passive: false });
     });
@@ -709,10 +710,7 @@ input[type="number"]:focus {
     cell.classList.add('dragging');
     e.dataTransfer.effectAllowed = 'move';
   }
-  function onDragOver(e) {
-    e.preventDefault(); e.dataTransfer.dropEffect = 'move';
-    e.currentTarget.classList.add('drag-over');
-  }
+  function onDragOver(e)  { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; e.currentTarget.classList.add('drag-over'); }
   function onDragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
   function onDrop(e) {
     e.preventDefault();
@@ -726,13 +724,13 @@ input[type="number"]:focus {
   }
   function onDragEnd(e) {
     e.currentTarget.classList.remove('dragging');
-    document.querySelectorAll('.drag-over').forEach(function(el) { el.classList.remove('drag-over'); });
+    document.querySelectorAll('#seatingGrid .drag-over').forEach(function(el) { el.classList.remove('drag-over'); });
     state = Object.assign({}, state, { dragSrc: null });
   }
 
   function onTouchStart(e) {
     var cell = e.currentTarget;
-    touchSrcPos = { row: Number(cell.dataset.row), col: Number(cell.dataset.col) };
+    touchSrcPos  = { row: Number(cell.dataset.row), col: Number(cell.dataset.col) };
     touchSrcCell = cell;
     touchHoldTimer = setTimeout(function() {
       touchActive = true;
@@ -745,8 +743,8 @@ input[type="number"]:focus {
     e.preventDefault();
     var t = e.touches[0];
     var el = document.elementFromPoint(t.clientX, t.clientY);
-    var cell = el && el.closest ? el.closest('.desk-cell') : null;
-    document.querySelectorAll('.drag-over').forEach(function(d) { d.classList.remove('drag-over'); });
+    var cell = el && el.closest ? el.closest('#seatingGrid .desk-cell') : null;
+    document.querySelectorAll('#seatingGrid .drag-over').forEach(function(d) { d.classList.remove('drag-over'); });
     if (cell && cell !== touchSrcCell) cell.classList.add('drag-over');
   }
   function onTouchEnd(e) {
@@ -754,9 +752,9 @@ input[type="number"]:focus {
     if (!touchActive) { touchActive = false; touchSrcCell = null; touchSrcPos = null; return; }
     var t = e.changedTouches[0];
     var el = document.elementFromPoint(t.clientX, t.clientY);
-    var target = el && el.closest ? el.closest('.desk-cell') : null;
+    var target = el && el.closest ? el.closest('#seatingGrid .desk-cell') : null;
     if (touchSrcCell) touchSrcCell.classList.remove('dragging');
-    document.querySelectorAll('.drag-over').forEach(function(d) { d.classList.remove('drag-over'); });
+    document.querySelectorAll('#seatingGrid .drag-over').forEach(function(d) { d.classList.remove('drag-over'); });
     if (target && target !== touchSrcCell && touchSrcPos) {
       var tr = Number(target.dataset.row), tc = Number(target.dataset.col);
       var srcRow = touchSrcPos.row, srcCol = touchSrcPos.col;
@@ -766,16 +764,14 @@ input[type="number"]:focus {
     touchActive = false; touchSrcCell = null; touchSrcPos = null;
   }
 
-  // 스왑된 두 셀만 업데이트 + 플래시 애니메이션
   function swapCellsDOM(r1, c1, r2, c2) {
-    var cell1 = document.querySelector('[data-row="' + r1 + '"][data-col="' + c1 + '"]');
-    var cell2 = document.querySelector('[data-row="' + r2 + '"][data-col="' + c2 + '"]');
+    var cell1 = document.querySelector('#seatingGrid [data-row="' + r1 + '"][data-col="' + c1 + '"]');
+    var cell2 = document.querySelector('#seatingGrid [data-row="' + r2 + '"][data-col="' + c2 + '"]');
     if (!cell1 || !cell2) { renderDoneGrid(); return; }
     cell1.classList.remove('dragging', 'drag-over', 'swap-flash');
     cell2.classList.remove('dragging', 'drag-over', 'swap-flash');
     cell1.innerHTML = makeCellInner(state.seats[r1] ? state.seats[r1][c1] : null);
     cell2.innerHTML = makeCellInner(state.seats[r2] ? state.seats[r2][c2] : null);
-    // reflow 강제 후 애니메이션 재시작
     void cell1.offsetWidth; void cell2.offsetWidth;
     cell1.classList.add('swap-flash');
     cell2.classList.add('swap-flash');
@@ -793,11 +789,9 @@ input[type="number"]:focus {
     for (var r = 0; r < state.rows; r++) {
       for (var c = 0; c < state.cols; c++) {
         var student = state.seats[r] ? state.seats[r][c] : null;
-        if (student) {
-          html += makeCellHTML(r, c, student, 'revealed done-phase');
-        } else {
-          html += '<div class="desk-cell off" data-row="' + r + '" data-col="' + c + '"></div>';
-        }
+        html += student
+          ? makeCellHTML(r, c, student, 'revealed done-phase')
+          : '<div class="desk-cell off" data-row="' + r + '" data-col="' + c + '"></div>';
       }
     }
     grid.innerHTML = html;
@@ -806,7 +800,6 @@ input[type="number"]:focus {
   }
 
   // ===== CSV =====
-
   function downloadTemplate() {
     var total = state.rows * state.cols - Object.keys(state.offSeats).length;
     var lines = ['\uFEFF번호,이름'];
@@ -814,8 +807,7 @@ input[type="number"]:focus {
     var blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');
-    a.href = url;
-    a.download = state.grade + '학년' + state.classNum + '반_학생명단.csv';
+    a.href = url; a.download = state.grade + '학년' + state.classNum + '반_학생명단.csv';
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
     URL.revokeObjectURL(url);
   }
@@ -844,7 +836,6 @@ input[type="number"]:focus {
   }
 
   // ===== Init =====
-
   function init() {
     document.getElementById('inputGrade').addEventListener('change', function() {
       state = Object.assign({}, state, { grade: this.value }); checkPreset();
@@ -862,17 +853,13 @@ input[type="number"]:focus {
       state = Object.assign({}, state, { cols: c, offSeats: {} });
       renderPreviewGrid();
     });
-    // 미리보기 그리드 클릭으로 OFF 토글
+    // 미리보기 그리드: data-key로 충돌 방지
     document.getElementById('previewGrid').addEventListener('click', function(e) {
       var cell = e.target.closest('.preview-cell');
       if (!cell) return;
-      var key = cell.dataset.row + ',' + cell.dataset.col;
+      var key = cell.dataset.key;
       var newOff = Object.assign({}, state.offSeats);
-      if (newOff[key]) {
-        delete newOff[key];
-      } else {
-        newOff[key] = true;
-      }
+      if (newOff[key]) { delete newOff[key]; } else { newOff[key] = true; }
       state = Object.assign({}, state, { offSeats: newOff });
       renderPreviewGrid();
     });
@@ -884,9 +871,21 @@ input[type="number"]:focus {
       if (e.target.files[0]) handleCSVUpload(e.target.files[0]);
     });
     document.getElementById('btnStart').addEventListener('click', startAnimation);
+    // "다시 배치": 설정 섹션으로 돌아가기
     document.getElementById('btnReshuffle').addEventListener('click', function() {
-      document.getElementById('seatingCard').style.display = 'none';
+      if (shuffleTimer) { clearInterval(shuffleTimer); shuffleTimer = null; }
       state = Object.assign({}, state, { phase: 'idle', seats: [], dragSrc: null });
+      document.getElementById('seatingActions').style.display = 'none';
+      document.getElementById('dragHint').style.display = 'none';
+      showSettings();
+    });
+    // "설정으로" 버튼
+    document.getElementById('btnBack').addEventListener('click', function() {
+      if (shuffleTimer) { clearInterval(shuffleTimer); shuffleTimer = null; }
+      state = Object.assign({}, state, { phase: 'idle', seats: [], dragSrc: null });
+      document.getElementById('seatingActions').style.display = 'none';
+      document.getElementById('dragHint').style.display = 'none';
+      showSettings();
     });
     document.getElementById('btnPrint').addEventListener('click', function() {
       updatePrintHeader(); window.print();
@@ -896,7 +895,7 @@ input[type="number"]:focus {
     document.addEventListener('touchcancel', function() {
       clearTimeout(touchHoldTimer); touchActive = false;
       if (touchSrcCell) touchSrcCell.classList.remove('dragging');
-      document.querySelectorAll('.drag-over').forEach(function(d) { d.classList.remove('drag-over'); });
+      document.querySelectorAll('#seatingGrid .drag-over').forEach(function(d) { d.classList.remove('drag-over'); });
       touchSrcCell = null; touchSrcPos = null;
     });
     checkPreset();
