@@ -119,6 +119,7 @@ input[type="number"]:focus {
 
 /* ===== Seating Grid ===== */
 .seat-outer { display: flex; flex-direction: column; }
+.seat-outer.flipped .board-strip { order: 2; margin-bottom: 0; margin-top: 10px; }
 .seating-grid { display: grid; gap: 6px; flex: 1; min-width: 0; }
 
 /* ===== Desk Cells ===== */
@@ -352,6 +353,7 @@ input[type="number"]:focus {
 
       <div class="seating-actions no-print" id="seatingActions" style="display:none">
         <button class="btn btn-secondary" id="btnReshuffle">&#8635; 다시 배치</button>
+        <button class="btn btn-secondary" id="btnFlipView">&#8597; 선생님 시야</button>
         <button class="btn btn-primary" id="btnPrint">&#128438; 인쇄하기</button>
       </div>
     </div><!-- /#seatingSection -->
@@ -377,7 +379,8 @@ input[type="number"]:focus {
     seats: [],
     phase: 'idle',
     hasPreset: false, currentPreset: null,
-    dragSrc: null
+    dragSrc: null,
+    boardFlipped: false
   };
 
   // Touch DnD
@@ -500,6 +503,16 @@ input[type="number"]:focus {
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
+  function getRowOrder() {
+    var rows = [];
+    if (state.boardFlipped) {
+      for (var r = state.rows - 1; r >= 0; r--) rows.push(r);
+    } else {
+      for (var r = 0; r < state.rows; r++) rows.push(r);
+    }
+    return rows;
+  }
+
   // ===== Rendering =====
   function makeCellInner(student) {
     if (!student) return '';
@@ -593,8 +606,10 @@ input[type="number"]:focus {
   function renderInitialGrid(finalSeats) {
     var grid = document.getElementById('seatingGrid');
     grid.style.gridTemplateColumns = 'repeat(' + state.cols + ', 1fr)';
+    var rowOrder = getRowOrder();
     var html = '';
-    for (var r = 0; r < state.rows; r++) {
+    for (var ri = 0; ri < rowOrder.length; ri++) {
+      var r = rowOrder[ri];
       for (var c = 0; c < state.cols; c++) {
         var student = finalSeats[r] ? finalSeats[r][c] : null;
         if (student === null) {
@@ -785,8 +800,10 @@ input[type="number"]:focus {
   function renderDoneGrid() {
     var grid = document.getElementById('seatingGrid');
     grid.style.gridTemplateColumns = 'repeat(' + state.cols + ', 1fr)';
+    var rowOrder = getRowOrder();
     var html = '';
-    for (var r = 0; r < state.rows; r++) {
+    for (var ri = 0; ri < rowOrder.length; ri++) {
+      var r = rowOrder[ri];
       for (var c = 0; c < state.cols; c++) {
         var student = state.seats[r] ? state.seats[r][c] : null;
         html += student
@@ -886,6 +903,14 @@ input[type="number"]:focus {
       document.getElementById('seatingActions').style.display = 'none';
       document.getElementById('dragHint').style.display = 'none';
       showSettings();
+    });
+    document.getElementById('btnFlipView').addEventListener('click', function() {
+      state = Object.assign({}, state, { boardFlipped: !state.boardFlipped });
+      document.querySelector('.seat-outer').classList.toggle('flipped', state.boardFlipped);
+      this.textContent = state.boardFlipped ? '↕ 학생 시야' : '↕ 선생님 시야';
+      this.style.background = state.boardFlipped ? '#c6f6d5' : '';
+      this.style.color = state.boardFlipped ? '#276749' : '';
+      if (state.phase === 'done') renderDoneGrid();
     });
     document.getElementById('btnPrint').addEventListener('click', function() {
       updatePrintHeader(); window.print();
