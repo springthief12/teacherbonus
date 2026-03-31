@@ -513,6 +513,16 @@ input[type="number"]:focus {
     return rows;
   }
 
+  function getColOrder() {
+    var cols = [];
+    if (state.boardFlipped) {
+      for (var c = state.cols - 1; c >= 0; c--) cols.push(c);
+    } else {
+      for (var c = 0; c < state.cols; c++) cols.push(c);
+    }
+    return cols;
+  }
+
   // ===== Rendering =====
   function makeCellInner(student) {
     if (!student) return '';
@@ -607,10 +617,12 @@ input[type="number"]:focus {
     var grid = document.getElementById('seatingGrid');
     grid.style.gridTemplateColumns = 'repeat(' + state.cols + ', 1fr)';
     var rowOrder = getRowOrder();
+    var colOrder = getColOrder();
     var html = '';
     for (var ri = 0; ri < rowOrder.length; ri++) {
       var r = rowOrder[ri];
-      for (var c = 0; c < state.cols; c++) {
+      for (var ci = 0; ci < colOrder.length; ci++) {
+        var c = colOrder[ci];
         var student = finalSeats[r] ? finalSeats[r][c] : null;
         if (student === null) {
           html += '<div class="desk-cell off" data-row="' + r + '" data-col="' + c + '"></div>';
@@ -801,10 +813,12 @@ input[type="number"]:focus {
     var grid = document.getElementById('seatingGrid');
     grid.style.gridTemplateColumns = 'repeat(' + state.cols + ', 1fr)';
     var rowOrder = getRowOrder();
+    var colOrder = getColOrder();
     var html = '';
     for (var ri = 0; ri < rowOrder.length; ri++) {
       var r = rowOrder[ri];
-      for (var c = 0; c < state.cols; c++) {
+      for (var ci = 0; ci < colOrder.length; ci++) {
+        var c = colOrder[ci];
         var student = state.seats[r] ? state.seats[r][c] : null;
         html += student
           ? makeCellHTML(r, c, student, 'revealed done-phase')
