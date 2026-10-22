@@ -51,12 +51,44 @@
     }
   }
 
+  // 폭죽 '팡': 짧은 잡음을 대역 필터로 걸러 만든다
+  let noiseBuf = null;
+  function noise({ start = 0, dur = 0.14, gain = 0.3, freq = 1600, q = 0.9 }) {
+    if (!noiseBuf) {
+      noiseBuf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.4), ctx.sampleRate);
+      const d = noiseBuf.getChannelData(0);
+      for (let i = 0; i < d.length; i += 1) d[i] = Math.random() * 2 - 1;
+    }
+    const t0 = ctx.currentTime + start;
+    const src = ctx.createBufferSource();
+    src.buffer = noiseBuf;
+    const band = ctx.createBiquadFilter();
+    band.type = 'bandpass';
+    band.frequency.value = freq;
+    band.Q.value = q;
+    const amp = ctx.createGain();
+    amp.gain.setValueAtTime(0.0001, t0);
+    amp.gain.exponentialRampToValueAtTime(gain, t0 + 0.004);
+    amp.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    src.connect(band);
+    band.connect(amp);
+    amp.connect(master);
+    src.start(t0);
+    src.stop(t0 + dur + 0.03);
+  }
+
   const C5 = 523.25; const E5 = 659.25; const G5 = 783.99; const C6 = 1046.5; const G4 = 392;
 
   // [소리, 노래를 낮출 시간(ms)]
   const SOUNDS = {
     click: [() => tone({ freq: 1200, to: 900, type: 'sine', dur: 0.05, gain: 0.12 }), 0],
     correct: [() => [C5, E5, G5, C6].forEach((f, i) => tone({ freq: f, start: i * 0.075, dur: 0.34, gain: 0.32, bright: 0.45 })), 900],
+    pop: [() => {
+      noise({ dur: 0.16, gain: 0.34, freq: 1300 });
+      noise({ start: 0.28, dur: 0.14, gain: 0.26, freq: 2100 });
+      tone({ freq: 2093, start: 0.06, dur: 0.22, gain: 0.04, type: 'sine' });
+      tone({ freq: 2637, start: 0.34, dur: 0.2, gain: 0.035, type: 'sine' });
+    }, 0],
     vote: [() => tone({ freq: 760, to: 520, type: 'square', dur: 0.12, gain: 0.12 }), 250],
     skip: [() => tone({ freq: 660, to: 300, dur: 0.28, gain: 0.3, bright: 0.3 }), 450],
     timeout: [() => { tone({ freq: C5, dur: 0.22, gain: 0.28, bright: 0.3 }); tone({ freq: G4, start: 0.18, dur: 0.36, gain: 0.28, bright: 0.3 }); }, 700],

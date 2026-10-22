@@ -7,6 +7,7 @@
 //           (YT_API_KEY가 있으면 YouTube Data API, 없으면 yt-search)
 const fs = require('fs');
 const path = require('path');
+const { Worker } = require('worker_threads');
 const { squash, stripExtras } = require('./answer');
 const overrides = require('./overrides');
 
@@ -103,13 +104,63 @@ function queryParts(song) {
   return { title, artist: en || first, artistKo: first };
 }
 
+// ---------- 검색은 작업 스레드에서 (게임 진행이 멈추지 않게) ----------
+let worker = null;
+let workerBroken = false;
+let seq = 0;
+const waiting = new Map(); // id -> { resolve, reject, timer }
+const SEARCH_TIMEOUT_MS = 25000;
+
+function failAll(err) {
+  for (const job of waiting.values()) { clearTimeout(job.timer); job.reject(err); }
+  waiting.clear();
+}
+
+function getWorker() {
+  if (worker) return worker;
+  worker = new Worker(path.join(__dirname, 'yt-worker.js'));
+  worker.unref(); // 검색 스레드 때문에 서버가 안 꺼지는 일이 없게
+  worker.on('message', ({ id, videos, error }) => {
+    const job = waiting.get(id);
+    if (!job) return;
+    waiting.delete(id);
+    clearTimeout(job.timer);
+    if (error) job.reject(new Error(error)); else job.resolve({ videos });
+  });
+  worker.on('error', (err) => {
+    console.warn(`[youtube] 검색 스레드 오류: ${err.message}`);
+    worker = null;
+    failAll(err);
+  });
+  worker.on('exit', () => { worker = null; failAll(new Error('검색 스레드가 종료됨')); });
+  return worker;
+}
+
+function ytsearch(query) {
+  if (!workerBroken) {
+    try {
+      const w = getWorker();
+      return new Promise((resolve, reject) => {
+        seq += 1;
+        const id = seq;
+        const timer = setTimeout(() => { waiting.delete(id); reject(new Error('검색 시간 초과')); }, SEARCH_TIMEOUT_MS);
+        waiting.set(id, { resolve, reject, timer });
+        w.postMessage({ id, query });
+      });
+    } catch (err) {
+      workerBroken = true; // 작업 스레드를 못 쓰는 환경이면 예전처럼 같은 스레드에서
+      console.warn(`[youtube] 검색 스레드를 못 띄워 기본 방식으로 검색: ${err.message}`);
+    }
+  }
+  return require('yt-search')({ query, hl: 'ko', gl: 'KR' });
+}
+
 async function searchWithYtSearch(song) {
-  const yts = require('yt-search');
   const { title, artist, artistKo } = queryParts(song);
   const queries = [`${artist} ${title} topic`, `${artistKo} ${title} audio`];
   const seen = new Map();
   for (const q of queries) {
-    const result = await yts({ query: q, hl: 'ko', gl: 'KR' });
+    const result = await ytsearch(q);
     for (const v of (result.videos || []).slice(0, 15)) {
       if (!seen.has(v.videoId)) {
         seen.set(v.videoId, { id: v.videoId, title: v.title, seconds: v.seconds, channel: v.author && v.author.name });

@@ -65,13 +65,19 @@
     const color = COLORS[avatar.color] || COLORS[0];
     return `
     <svg class="avatar" viewBox="0 0 100 100" role="img" aria-label="캐릭터">
-      <ellipse cx="50" cy="94" rx="27" ry="3.5" fill="${INK}" opacity=".08"/>
+      <ellipse class="shadow" cx="50" cy="94" rx="27" ry="3.5" fill="${INK}" opacity=".08"/>
+      <g class="body">
+      <g class="arms">
+        <g class="arm arm-l"><path d="M22 66 Q10 60 8 46" fill="none" stroke="${color.body}" stroke-width="7" stroke-linecap="round"/><circle cx="8" cy="44" r="5" fill="${color.body}"/></g>
+        <g class="arm arm-r"><path d="M78 66 Q90 60 92 46" fill="none" stroke="${color.body}" stroke-width="7" stroke-linecap="round"/><circle cx="92" cy="44" r="5" fill="${color.body}"/></g>
+      </g>
       <rect x="16" y="24" width="68" height="67" rx="30" fill="${color.body}"/>
       <ellipse cx="36" cy="36" rx="11" ry="6" fill="#fff" opacity=".35" transform="rotate(-20 36 36)"/>
       <ellipse cx="29" cy="66" rx="5.5" ry="3.2" fill="#FF7A6E" opacity=".28"/>
       <ellipse cx="71" cy="66" rx="5.5" ry="3.2" fill="#FF7A6E" opacity=".28"/>
       ${face(avatar.face || 0)}
       ${item(avatar.item || 0)}
+      </g>
     </svg>`;
   }
 

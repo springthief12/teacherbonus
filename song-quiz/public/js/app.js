@@ -75,7 +75,10 @@
   };
 
   // ---------- 연결 ----------
-  const socket = io();
+  // 처음부터 웹소켓으로 바로 연결한다 (예전 방식은 HTTP 요청을 몇 번 주고받은 뒤에야 웹소켓으로 바뀜).
+  // 학교망처럼 웹소켓이 막힌 곳에서는 자동으로 예전 방식(HTTP 폴링)으로 바꿔 연결한다.
+  const socket = io({ transports: ['websocket', 'polling'], tryAllTransports: true });
+  socket.on('connect_error', () => { socket.io.opts.transports = ['polling', 'websocket']; });
   let myId = null; // 방 안에서 내 공개 id
   let state = null; // room:state
   let clockOffset = 0; // 서버시각 - 내시각
@@ -175,11 +178,13 @@
   socket.on('round:reveal', (d) => {
     lastRevealKey = null; // renderReveal에서 연출 다시 실행
     pendingReveal = d;
+    celebrateNext = d.reason === 'correct' ? d.winnerId : null; // 바로 뒤에 오는 방 정보를 그린 다음 폭죽
     if (hearsMusic()) Sfx.play({ correct: 'correct', skip: 'skip', timeout: 'timeout' }[d.reason]);
     // 학생 휴대폰: 내가 맞히면 짧게 진동 (안드로이드)
     if (d.reason === 'correct' && d.winnerId === myId && navigator.vibrate) navigator.vibrate(60);
   });
   let pendingReveal = null;
+  let celebrateNext = null;
 
   socket.on('chat', addChat);
 
@@ -392,6 +397,10 @@
 
     renderSeats();
     renderBoard();
+    if (celebrateNext && s.status === 'reveal' && r && r.winnerId === celebrateNext) {
+      celebrateNext = null;
+      celebrate(r.winnerId);
+    }
     syncPlayer();
     playEventSounds();
     $('#volume-wrap').hidden = !hearsMusic();
@@ -517,12 +526,19 @@
       `<i class="${i < r.index ? 'done' : i === r.index ? 'now' : ''}"></i>`).join('');
   }
 
+  function revealStatusText() {
+    const r = state.round;
+    if (!r || !r.revealEndsAt) return '';
+    const leftMs = Math.max(0, r.revealEndsAt - (Date.now() + clockOffset));
+    return `${r.index + 1 >= r.total ? '결과 발표' : '다음 곡'}까지 ${Math.ceil(leftMs / 1000)}초`;
+  }
+
   function renderStatusLine() {
     const r = state?.round;
     if (!r) return;
     let text = '';
     if (state.status === 'loading') text = '다음 곡을 준비하고 있어요';
-    else if (state.status === 'reveal') text = '';
+    else if (state.status === 'reveal') text = revealStatusText(); // 비워 두면 한 프레임 동안 줄이 접혀 화면이 튄다
     else if (!r.videoId && !r.audioUrl) text = '음원 없이 힌트로만 진행하는 곡이에요';
     else if (!hearsMusic()) text = '방장 화면에서 나오는 노래를 듣고 제목을 입력하세요';
     else text = '들리는 노래의 제목을 채팅으로 입력하세요';
@@ -681,6 +697,67 @@
   });
   $('#volume').addEventListener('input', (e) => QuizPlayer.setVolume(Number(e.target.value)));
 
+  // ---------- 정답 축하: 정답자 자리에서 폭죽 + 캐릭터 춤 ----------
+  // 춤은 CSS(.seat.winner)가 맡고, 여기서는 폭죽 조각을 화면 맨 위 층에 뿌린다
+  // (자리 카드는 방 정보가 올 때마다 다시 그려지므로 그 안에 넣으면 폭죽이 중간에 끊긴다)
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const FX_COLORS = ['#FFD84A', '#F2C318', '#2E9C6A', '#D9634B', '#9CCBF5', '#F7AFCB', '#C7B6F5'];
+  let fxLayer = null;
+
+  function shownRect(el) {
+    if (!el) return null;
+    const r = el.getBoundingClientRect();
+    if (!r.width || !r.height || r.bottom < 0 || r.top > window.innerHeight) return null;
+    return r;
+  }
+
+  function celebrate(pid) {
+    if (reduceMotion.matches) return;
+    // 자리 카드가 안 보이면(휴대폰에서 키보드가 올라와 있을 때) 위쪽 '정답자' 표시에서 터뜨린다
+    const at = shownRect(document.querySelector(`.seat[data-pid="${CSS.escape(pid)}"] .seat-avatar`))
+      || shownRect(document.querySelector('#q-result .q-result-avatar'));
+    if (!at) return;
+    if (!fxLayer) {
+      fxLayer = document.createElement('div');
+      fxLayer.className = 'fx-layer';
+      fxLayer.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(fxLayer);
+    }
+    const p = state.players.find((x) => x.id === pid);
+    const own = p && Avatar.COLORS[p.avatar.color] ? Avatar.COLORS[p.avatar.color].body : null;
+    const colors = own ? [own, ...FX_COLORS] : FX_COLORS;
+    const size = Math.max(30, at.width);
+    const x = at.left + at.width / 2;
+    const y = at.top + at.height / 2;
+    burst(x, y, size, colors, 0); // 팡
+    burst(x + size * 0.45 * (Math.random() < 0.5 ? -1 : 1), y - size * 0.35, size * 0.75, colors.slice(1), 280); // 팡
+    if (hearsMusic()) Sfx.play('pop');
+  }
+
+  function burst(x, y, size, colors, delay) {
+    const g = document.createElement('div');
+    g.className = 'fx-burst';
+    g.style.left = `${Math.round(x)}px`;
+    g.style.top = `${Math.round(y)}px`;
+    const n = isTouch ? 16 : 26;
+    const unit = Math.max(5, size * 0.1); // 조각 크기는 캐릭터 크기에 맞춘다 (전자칠판에서는 크게)
+    let html = `<i class="fx-ring" style="--s:${Math.round(size * 2.4)}px;--c:${colors[0]};--delay:${delay}ms"></i>`;
+    for (let i = 0; i < n; i += 1) {
+      const angle = (i / n) * Math.PI * 2 + Math.random() * 0.5;
+      const dist = size * (0.9 + Math.random() * 1.1);
+      const ribbon = i % 3 === 0; // 셋 중 하나는 길쭉한 종이 조각
+      const w = ribbon ? unit * 0.75 : unit * (1 + Math.random() * 0.7);
+      const h = ribbon ? unit * (2.2 + Math.random() * 0.8) : w;
+      html += `<i class="fx-bit" style="--dx:${(Math.cos(angle) * dist).toFixed(1)}px;--dy:${(Math.sin(angle) * dist * 0.8 - size * 0.25).toFixed(1)}px;`
+        + `--fall:${Math.round(size * (0.45 + Math.random() * 0.5))}px;--rot:${Math.round(Math.random() * 540 - 270)}deg;`
+        + `--c:${colors[i % colors.length]};--w:${w.toFixed(1)}px;--h:${h.toFixed(1)}px;--br:${ribbon ? '2px' : '50%'};`
+        + `--dur:${Math.round(950 + Math.random() * 450)}ms;--delay:${delay}ms"></i>`;
+    }
+    g.innerHTML = html;
+    fxLayer.appendChild(g);
+    setTimeout(() => g.remove(), delay + 1700);
+  }
+
   // ---------- 시계 (매 프레임) ----------
   const TIMER_LEN = 2 * Math.PI * 19; // 원형 타이머 둘레
   function tick() {
@@ -703,11 +780,10 @@
       // 정답 공개 중: 원형 타이머는 다음 곡까지 남은 시간
       const leftMs = Math.max(0, r.revealEndsAt - now);
       const hold = r.winnerId ? state.settings.revealTime * 1000 : 4000;
-      const last = r.index + 1 >= r.total;
       $('#countdown').textContent = String(Math.ceil(leftMs / 1000));
       $('#timer').dataset.mode = 'next';
       $('#timer-arc').style.strokeDashoffset = String(TIMER_LEN * (1 - Math.min(1, leftMs / hold)));
-      $('#screen-status').textContent = `${last ? '결과 발표' : '다음 곡'}까지 ${Math.ceil(leftMs / 1000)}초`;
+      $('#screen-status').textContent = revealStatusText();
     }
   }
   requestAnimationFrame(tick);
@@ -724,19 +800,30 @@
 
   function addChat(m) {
     const log = $('#chat-log');
+    // 내가 보낸 글이 서버를 거쳐 돌아오면, 미리 띄워 둔 '보내는 중' 줄을 확정한다 (두 번 나오지 않게)
+    const waiting = m.cid && m.playerId === myId ? sentChats.get(m.cid) : null;
+    if (waiting) {
+      sentChats.delete(m.cid);
+      clearTimeout(waiting.timer);
+      waiting.row.className = `msg mine${m.blinded ? ' blinded' : ''}`;
+      waiting.row.querySelector('.msg-text').textContent = m.text; // 비속어는 가려진 글로 바뀜
+      showBubble(m.playerId, m.text);
+      return waiting.row;
+    }
     const stick = log.scrollHeight - log.scrollTop - log.clientHeight < 40;
     const row = document.createElement('p');
     if (m.kind === 'system') {
       row.className = `msg sys tone-${m.tone || 'info'}`;
       row.innerHTML = `<span class="msg-text">${esc(m.text)}</span><time>${timeLabel(m.at)}</time>`;
     } else {
-      row.className = `msg${m.playerId === myId ? ' mine' : ''}${m.blinded ? ' blinded' : ''}`;
+      row.className = `msg${m.playerId === myId ? ' mine' : ''}${m.blinded ? ' blinded' : ''}${m.pending ? ' pending' : ''}`;
       row.innerHTML = `<b style="color:${colorOf(m.playerId)}">${esc(m.nickname)}</b><span class="msg-text">${esc(m.text)}</span><time>${timeLabel(m.at)}</time>`;
-      showBubble(m.playerId, m.text);
+      if (!m.pending) showBubble(m.playerId, m.text);
     }
     log.appendChild(row);
     while (log.children.length > 200) log.firstChild.remove();
-    if (stick) log.scrollTop = log.scrollHeight;
+    if (stick || m.pending) log.scrollTop = log.scrollHeight;
+    return row;
   }
 
   // 말풍선: 채팅이 캐릭터 위에 5초 동안 보이고 사라짐. 그 사이 새 채팅이 오면 바로 바뀌고 5초를 다시 셈
@@ -775,13 +862,58 @@
     paintBubble(pid, true);
   }
 
+  // 보낸 글: 서버 확인을 기다리는 동안 흐리게 먼저 보여 준다
+  const sentChats = new Map(); // cid -> { row, timer }
+  let cidSeq = 0;
+
+  function settleChat(cid, res, text) {
+    const entry = sentChats.get(cid);
+    if (!entry) return; // 이미 채팅으로 돌아와 확정됨
+    sentChats.delete(cid);
+    clearTimeout(entry.timer);
+    const row = entry.row;
+    if (res && res.ok && res.correct) {
+      row.className = 'msg mine correct'; // 정답은 채팅으로 퍼지지 않고 내 화면에만 초록색으로 남는다
+    } else if (res && res.ok && res.kind === 'skip') {
+      row.remove();
+    } else if (res && res.reason === 'fast') {
+      row.className = 'msg mine failed';
+      toast('너무 빨리 보내고 있어요. 잠깐 쉬었다가 다시 보내 주세요.');
+      const input = $('#chat-input');
+      if (!input.value) input.value = text; // 한 번만 다시 누르면 되게 입력창에 되돌려 둔다
+    } else if (res && res.ok) {
+      row.classList.remove('pending');
+    } else {
+      row.remove();
+    }
+  }
+
   function sendChat() {
     const input = $('#chat-input');
     const text = input.value.trim();
     if (!text) return;
-    socket.emit('chat', text);
+    cidSeq += 1;
+    const cid = `${Date.now().toString(36)}${cidSeq.toString(36)}`;
+    const me = state?.players.find((p) => p.id === myId);
+    const row = addChat({ kind: 'player', playerId: myId, nickname: me ? me.nickname : profile.nickname, text, at: Date.now(), pending: true });
+    // 응답이 늦으면(연결 불안정) '확인 중' 표시
+    const timer = setTimeout(() => row.classList.add('slow'), 2500);
+    sentChats.set(cid, { row, timer });
+    socket.emit('chat', { text, cid }, (res) => settleChat(cid, res, text));
     input.value = '';
+    guardLeftover(text);
   }
+
+  // 한글 키보드(특히 안드로이드)는 보내고 입력창을 비운 직후 마지막 글자를 다시 넣는 경우가 있다.
+  // 보낸 직후 잠깐 동안, 방금 보낸 글의 끝부분이 저절로 다시 들어오면 지운다.
+  let leftover = null;
+  function guardLeftover(text) { leftover = { text, until: Date.now() + 700 }; }
+  $('#chat-input').addEventListener('input', (e) => {
+    if (!leftover) return;
+    if (Date.now() > leftover.until) { leftover = null; return; }
+    const v = e.target.value;
+    if (v && v.length < leftover.text.length && leftover.text.endsWith(v)) e.target.value = '';
+  });
   $('#chat-form').addEventListener('submit', (e) => {
     e.preventDefault();
     sendChat();

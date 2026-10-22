@@ -168,7 +168,10 @@ io.on('connection', (socket) => {
     pushLobby();
   });
 
-  socket.on('chat', (text) => room?.chat(socket.id, text));
+  socket.on('chat', (payload, ack) => {
+    const res = room ? room.chat(socket.id, payload) : { ok: false, reason: 'room' };
+    if (typeof ack === 'function') ack(res);
+  });
   socket.on('game:skip', () => room?.voteSkip(socket.id));
   socket.on('video:error', (data) => room?.videoFailed(socket.id, data?.videoId));
 

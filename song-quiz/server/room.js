@@ -462,20 +462,23 @@ class Room {
   }
 
   // ---------- 채팅 = 정답 입력 ----------
-  chat(socketId, rawText) {
+  // 보낸 사람에게는 결과를 바로 돌려준다 (휴대폰에서 '보내는 중' 표시를 확정·실패로 바꾸는 데 씀)
+  chat(socketId, payload) {
     const player = this.playerOf(socketId);
-    if (!player) return;
-    const text = String(rawText || '').trim().slice(0, 120);
-    if (!text) return;
+    if (!player) return { ok: false, reason: 'room' };
+    const raw = payload && typeof payload === 'object' ? payload.text : payload;
+    const cid = payload && typeof payload === 'object' && /^[a-z0-9]{1,24}$/i.test(String(payload.cid || '')) ? payload.cid : undefined;
+    const text = String(raw || '').trim().slice(0, 120);
+    if (!text) return { ok: false, reason: 'empty' };
 
     const now = Date.now();
     player.chatTimes = player.chatTimes.filter((t) => now - t < 3000);
-    if (player.chatTimes.length >= 6) return; // 도배 방지
+    if (player.chatTimes.length >= 6) return { ok: false, reason: 'fast' }; // 도배 방지 (보낸 사람에게 알림)
     player.chatTimes.push(now);
 
     if (/^!(스킵|skip|s|ㄴ)$/i.test(text)) {
       this.voteSkip(socketId);
-      return;
+      return { ok: true, kind: 'skip' };
     }
 
     if (this.status === 'playing' && !this.round.winnerId && isCorrect(this.round.song, text)) {
@@ -487,7 +490,7 @@ class Room {
       player.lastPoints = points;
       this.system(`${player.nickname} 님 정답! +${points}점`, 'success');
       this.reveal('correct', player);
-      return;
+      return { ok: true, correct: true, points };
     }
 
     // 정답이 아닌 글은 모두에게 보인다 (스타 노래맞히기처럼 오답도 채팅에 남음)
@@ -500,8 +503,10 @@ class Room {
       nickname: player.nickname,
       text: clean.text,
       blinded: clean.hit,
+      cid, // 보낸 사람 화면의 '보내는 중' 줄과 짝을 맞추는 번호
       at: now,
     });
+    return { ok: true, correct: false };
   }
 
   // ---------- 스킵 ----------
