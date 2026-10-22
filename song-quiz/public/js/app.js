@@ -53,8 +53,28 @@
     saveProfile();
   });
 
+  // 기기 열쇠: 이 기기를 알아보는 비밀 값 (끊겼다 다시 와도 같은 자리·점수, 방을 만든 사람은 방장 복귀)
+  const randomHex = () => [...crypto.getRandomValues(new Uint8Array(16))].map((b) => b.toString(16).padStart(2, '0')).join('');
+  const deviceKey = (() => {
+    try {
+      let k = localStorage.getItem('songquiz.key');
+      if (!k) { k = randomHex(); localStorage.setItem('songquiz.key', k); }
+      return k;
+    } catch {
+      return randomHex();
+    }
+  })();
+
+  // 이 탭이 들어가 있던 방 (새로고침·재연결 때 자동으로 다시 들어감)
+  const savedRoom = {
+    get() { try { return sessionStorage.getItem('songquiz.room'); } catch { return null; } },
+    set(id) { try { sessionStorage.setItem('songquiz.room', id); } catch { /* 무시 */ } },
+    clear() { try { sessionStorage.removeItem('songquiz.room'); } catch { /* 무시 */ } },
+  };
+
   // ---------- 연결 ----------
   const socket = io();
+  let myId = null; // 방 안에서 내 공개 id
   let state = null; // room:state
   let clockOffset = 0; // 서버시각 - 내시각
   let years = [];
@@ -64,7 +84,7 @@
 
   function enterLobby() {
     return new Promise((resolve) => {
-      socket.emit('lobby:enter', profile, (res) => {
+      socket.emit('lobby:enter', { ...profile, key: deviceKey }, (res) => {
         if (res?.ok) {
           years = res.years;
           renderRooms(res.rooms);
@@ -74,20 +94,50 @@
     });
   }
 
-  socket.on('connect', () => {
+  const emitJoin = (roomId) => new Promise((resolve) => socket.emit('room:join', { roomId }, resolve));
+
+  socket.on('connect', async () => {
     $('#conn-state').textContent = '연결됨';
     $('#conn-state').dataset.on = 'true';
-    if (state) {
-      toast('연결이 다시 이어졌어요. 방에 다시 들어가 주세요.');
+    $('#net-banner').hidden = true;
+    const wasInRoom = Boolean(state);
+    await enterLobby();
+
+    // 끊기기 전에 있던 방(또는 새로고침 전의 방)으로 자동 복귀
+    const target = state?.id || savedRoom.get();
+    if (target && (!inviteRoom || inviteRoom === target)) {
+      const res = await emitJoin(target);
+      if (res?.ok) {
+        myId = res.you;
+        savedRoom.set(target);
+        if (inviteRoom === target) clearInvite();
+        showView('room');
+        renderRoom();
+        if (wasInRoom) toast('다시 연결됐어요.');
+        return;
+      }
+      savedRoom.clear();
+      if (wasInRoom) toast('방이 닫혀서 로비로 돌아왔어요.');
+    }
+    if (wasInRoom) {
       state = null;
+      QuizPlayer.stop();
       showView('lobby');
     }
-    enterLobby();
   });
   socket.on('disconnect', () => {
     $('#conn-state').textContent = '연결 끊김 · 다시 연결 중';
     $('#conn-state').dataset.on = 'false';
+    if (state) $('#net-banner').hidden = false;
+  });
+
+  socket.on('room:replaced', () => {
+    state = null;
+    myId = null;
+    savedRoom.clear();
     QuizPlayer.stop();
+    showView('lobby');
+    toast('다른 창에서 이 방에 들어와서, 이 창은 로비로 나왔어요.');
   });
 
   socket.on('lobby:rooms', renderRooms);
@@ -146,13 +196,13 @@
   }
 
   async function joinRoom(roomId) {
+    QuizPlayer.unlock(); // 휴대폰: 버튼을 누른 순간 소리 재생을 허락받아 둔다
     await enterLobby();
     $('#chat-log').innerHTML = '';
-    socket.emit('room:join', { roomId }, (res) => {
-      if (res?.error) return toast(res.error);
-      if (roomId === inviteRoom) clearInvite();
-      openRoom();
-    });
+    const res = await emitJoin(roomId);
+    if (res?.error) return toast(res.error);
+    if (roomId === inviteRoom) clearInvite();
+    openRoom(res);
   }
 
   $('#invite-join').addEventListener('click', () => { if (inviteRoom) joinRoom(inviteRoom); });
@@ -183,22 +233,27 @@
 
   $('#create-form').addEventListener('submit', async (e) => {
     e.preventDefault();
+    QuizPlayer.unlock();
     await enterLobby();
     $('#chat-log').innerHTML = '';
     socket.emit('room:create', { title: $('#room-title').value }, (res) => {
       if (res?.error) return toast(res.error);
       $('#room-title').value = '';
       clearInvite();
-      openRoom();
+      openRoom(res);
     });
   });
 
-  function openRoom() {
+  function openRoom(res) {
+    myId = res.you;
+    savedRoom.set(res.roomId);
     showView('room');
     qrOpen = null;
     qrShownFor = null;
     prevStatus = null;
-    $('#chat-input').focus();
+    renderRoom(); // 방 정보가 '내 번호'보다 먼저 도착하므로 다시 그린다
+    // 휴대폰에서는 들어오자마자 키보드가 올라오지 않게 한다
+    if (!isTouch) $('#chat-input').focus();
   }
 
   // ---------- 접속 QR (대기실에서 펼치기/접기) ----------
@@ -284,6 +339,8 @@
   $('#btn-leave').addEventListener('click', () => {
     socket.emit('room:leave', null, (res) => {
       state = null;
+      myId = null;
+      savedRoom.clear();
       QuizPlayer.stop();
       showView('lobby');
       renderRooms(res?.rooms);
@@ -296,7 +353,8 @@
   }
 
   // ---------- 방 화면 ----------
-  const isHost = () => state && state.hostId === socket.id;
+  const isHost = () => Boolean(state && myId && state.hostId === myId);
+  const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 
   function renderRoom() {
     if (!state) return;
@@ -311,6 +369,7 @@
     $('#dial-skip').textContent = r && (s.status === 'playing' || s.status === 'reveal') ? `${votes}/${r.skipNeeded}` : '–';
 
     const pane = { waiting: 'waiting', loading: 'play', playing: 'play', reveal: 'reveal', ended: 'ended' }[s.status];
+    $('#view-room').dataset.mode = pane === 'play' || pane === 'reveal' ? 'game' : 'room';
     for (const name of ['waiting', 'play', 'reveal', 'ended']) $(`#pane-${name}`).hidden = name !== pane;
     $('#screen').dataset.status = s.status;
 
@@ -327,13 +386,30 @@
     prevStatus = s.status;
     renderQr();
 
-    const me = s.players.find((p) => p.id === socket.id);
-    $('#btn-skip').setAttribute('aria-pressed', String(Boolean(me?.skipVote)));
-    $('#btn-skip').disabled = !(s.status === 'playing' || s.status === 'reveal');
+    const me = s.players.find((p) => p.id === myId);
+    const canSkip = s.status === 'playing' || s.status === 'reveal';
+    for (const btn of [$('#btn-skip'), $('#btn-skip-mini')]) {
+      btn.setAttribute('aria-pressed', String(Boolean(me?.skipVote)));
+      btn.disabled = !canSkip;
+    }
+    $('#mini-meta').textContent = r && canSkip ? `${r.index + 1}/${r.total}곡 · 넘기기 ${votes}/${r.skipNeeded}` : '';
   }
 
   function renderWaiting() {
     const host = isHost();
+    // 학생 화면: 설정 버튼 대신 읽기 전용 요약만 보여 준다
+    $('#year-grid').hidden = !host;
+    $('#options').hidden = !host;
+    $('#settings-summary').hidden = host;
+    $('#pick-title').textContent = host ? '연도 고르기' : '방장이 게임을 준비하고 있어요';
+    if (!host) {
+      const st = state.settings;
+      const items = [
+        ['연도', st.years.length ? st.years.map((y) => `${y}년`).join(', ') : '아직 안 정함'],
+        ...['songCount', 'roundTime', 'startMode', 'skipRule', 'scoring', 'revealTime'].map((k) => [LABELS[k].title, LABELS[k].fmt(st[k])]),
+      ];
+      $('#settings-summary').innerHTML = items.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(String(v))}</dd></div>`).join('');
+    }
     const chosen = new Set(state.settings.years);
     const decades = new Map();
     for (const y of years) {
@@ -369,8 +445,8 @@
     const count = years.filter((y) => chosen.has(y.year)).reduce((n, y) => n + y.count, 0);
     $('#pick-hint').textContent = host
       ? '데이터가 있는 연도만 고를 수 있어요. 여러 해를 섞어도 돼요.'
-      : '방장이 연도와 규칙을 고르고 있어요.';
-    $('#start-note').textContent = chosen.size
+      : '설정은 방장만 바꿀 수 있어요. 시작되면 바로 노래가 나와요.';
+    $('#start-note').textContent = !host ? '' : chosen.size
       ? `${[...chosen].join(', ')}년 · 후보 ${count}곡 중 ${Math.min(count, state.settings.songCount)}곡`
       : '연도를 하나 이상 고르세요.';
     $('#btn-start').hidden = !host;
@@ -472,7 +548,8 @@
       }
       const cls = [
         'seat',
-        p.id === socket.id ? 'me' : '',
+        p.id === myId ? 'me' : '',
+        p.away ? 'away' : '',
         state.round && state.round.winnerId === p.id && state.status === 'reveal' ? 'winner' : '',
         p.skipVote ? 'voted' : '',
         playing ? 'spin' : '',
@@ -481,6 +558,7 @@
         <div class="${cls}" data-pid="${p.id}">
           <div class="bubble" hidden></div>
           ${p.skipVote ? '<span class="tag-skip">넘김</span>' : ''}
+          ${p.away ? '<span class="tag-away">연결 끊김</span>' : ''}
           <div class="seat-avatar">${Avatar.svg(p.avatar, { label: `${i + 1}P` })}</div>
           <div class="seat-name">${p.id === state.hostId ? '<span class="host" title="방장">방장</span>' : ''}${esc(p.nickname)}</div>
           <div class="seat-score">${String(p.score).padStart(5, '0')}</div>
@@ -563,7 +641,7 @@
       row.className = `msg sys tone-${m.tone || 'info'}`;
       row.innerHTML = `<span class="msg-text">${esc(m.text)}</span><time>${timeLabel(m.at)}</time>`;
     } else {
-      row.className = `msg${m.playerId === socket.id ? ' mine' : ''}`;
+      row.className = `msg${m.playerId === myId ? ' mine' : ''}`;
       row.innerHTML = `<b style="color:${colorOf(m.playerId)}">${esc(m.nickname)}</b><span class="msg-text">${esc(m.text)}</span><time>${timeLabel(m.at)}</time>`;
       showBubble(m.playerId, m.text);
     }
@@ -618,6 +696,28 @@
   });
 
   $('#btn-skip').addEventListener('click', () => socket.emit('game:skip'));
+  $('#btn-skip-mini').addEventListener('click', () => socket.emit('game:skip'));
+  // 보내기·넘기기 버튼을 눌러도 입력창 포커스(휴대폰 키보드)가 유지되게
+  document.querySelectorAll('#chat-form button').forEach((btn) => {
+    btn.addEventListener('pointerdown', (e) => {
+      if (document.activeElement === $('#chat-input')) e.preventDefault();
+    });
+  });
+  // 방 안에서 처음 화면을 누를 때 소리 재생 허락
+  document.addEventListener('pointerdown', () => QuizPlayer.unlock(), { once: true, capture: true });
+
+  // 휴대폰 키보드가 올라오면 실제 보이는 높이에 맞춰 게임 화면을 다시 배치
+  function fitViewport() {
+    const vv = window.visualViewport;
+    const h = vv ? vv.height : window.innerHeight;
+    document.documentElement.style.setProperty('--app-h', `${Math.round(h)}px`);
+    if ($('#view-room').dataset.mode === 'game' && window.matchMedia('(max-width: 760px)').matches) {
+      window.scrollTo(0, 0);
+    }
+  }
+  window.visualViewport?.addEventListener('resize', fitViewport);
+  window.addEventListener('resize', fitViewport);
+  fitViewport();
 
   document.addEventListener('keydown', (e) => {
     if ($('#view-room').hidden) return;

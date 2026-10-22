@@ -4,7 +4,12 @@ const media = require('./media');
 const { isCorrect, chosungHint } = require('./answer');
 const { resolveVideo, markBad } = require('./youtube');
 
+const crypto = require('crypto');
+
 const MAX_PLAYERS = 8;
+// 연결이 끊겨도 자리와 점수를 잠시 지켜 둔다 (폰 화면 잠금·앱 전환 대비)
+const PLAYER_GRACE_MS = 2 * 60 * 1000;
+const HOST_GRACE_MS = 10 * 60 * 1000;
 const LOAD_TIMEOUT_MS = 6000;
 const SKIP_REVEAL_MS = 4000; // 정답 전에 스킵했을 때 정답을 보여주는 시간
 
@@ -33,8 +38,11 @@ class Room {
     this.id = id;
     this.title = title;
     this.onEmpty = onEmpty;
-    this.players = new Map(); // socketId -> player
+    this.players = new Map(); // 공개 id -> player
+    this.byKey = new Map(); // 기기 열쇠(비공개) -> 공개 id
+    this.bySocket = new Map(); // socket.id -> 공개 id
     this.hostId = null;
+    this.hostKey = null; // 방을 만든 사람의 열쇠: 다시 들어오면 언제든 방장으로 복귀
     this.status = 'waiting'; // waiting | loading | playing | reveal | ended
     this.settings = { ...DEFAULT_SETTINGS, years: defaultYear ? [defaultYear] : [] };
     this.playlist = [];
@@ -93,6 +101,7 @@ class Room {
         score: p.score,
         correct: p.correct,
         skipVote: p.skipVote,
+        away: !p.connected,
       })),
       round: r
         ? {
@@ -125,44 +134,134 @@ class Room {
   }
 
   // ---------- 입장/퇴장 ----------
-  isFull() {
-    return this.players.size >= MAX_PLAYERS;
+  pidOf(socketId) {
+    return this.bySocket.get(socketId) || null;
   }
 
-  addPlayer(socket, profile) {
-    const player = {
-      id: socket.id,
-      nickname: profile.nickname,
-      avatar: profile.avatar,
-      score: 0,
-      correct: 0,
-      skipVote: false,
-      chatTimes: [],
-    };
-    this.players.set(socket.id, player);
-    if (!this.hostId) this.hostId = socket.id;
+  playerOf(socketId) {
+    const pid = this.pidOf(socketId);
+    return pid ? this.players.get(pid) : null;
+  }
+
+  isHostSocket(socketId) {
+    const pid = this.pidOf(socketId);
+    return Boolean(pid) && pid === this.hostId;
+  }
+
+  connectedPlayers() {
+    return [...this.players.values()].filter((p) => p.connected);
+  }
+
+  canJoin(key) {
+    return this.byKey.has(key) || this.players.size < MAX_PLAYERS;
+  }
+
+  /**
+   * 입장. 같은 기기 열쇠로 다시 오면 원래 자리·점수를 되살린다.
+   * 반환: player 또는 { error }
+   */
+  join(socket, profile, key) {
+    let player = this.players.get(this.byKey.get(key));
+    const isNew = !player;
+
+    if (isNew) {
+      if (this.players.size >= MAX_PLAYERS) return { error: '방이 꽉 찼어요.' };
+      player = {
+        id: crypto.randomBytes(6).toString('hex'),
+        key,
+        socketId: null,
+        connected: false,
+        awayTimer: null,
+        score: 0,
+        correct: 0,
+        skipVote: false,
+        chatTimes: [],
+      };
+      this.players.set(player.id, player);
+      this.byKey.set(key, player.id);
+    } else if (player.socketId && player.socketId !== socket.id) {
+      // 같은 기기에서 새 창으로 들어오면 예전 창은 방에서 내보낸다
+      const old = this.io.sockets.sockets.get(player.socketId);
+      this.bySocket.delete(player.socketId);
+      if (old) {
+        old.leave(this.id);
+        old.emit('room:replaced');
+      }
+    }
+
+    const wasAway = !isNew && !player.connected;
+    clearTimeout(player.awayTimer);
+    player.awayTimer = null;
+    player.nickname = profile.nickname;
+    player.avatar = profile.avatar;
+    player.socketId = socket.id;
+    player.connected = true;
+    this.bySocket.set(socket.id, player.id);
     socket.join(this.id);
-    this.system(`${player.nickname} 님이 들어왔어요.`);
+
+    if (!this.hostId) {
+      this.hostId = player.id;
+      if (!this.hostKey) this.hostKey = key;
+    }
+    let hostBack = false;
+    if (key === this.hostKey && this.hostId !== player.id) {
+      this.hostId = player.id; // 방을 만든 사람이 돌아오면 방장 복귀
+      hostBack = true;
+    }
+
+    if (isNew) this.system(`${player.nickname} 님이 들어왔어요.`);
+    else if (wasAway) this.system(`${player.nickname} 님이 다시 연결됐어요.`);
+    if (hostBack) this.system(`${player.nickname} 님이 다시 방장이 되었어요.`);
     this.broadcastState();
     return player;
   }
 
-  removePlayer(socketId) {
-    const player = this.players.get(socketId);
+  /** 연결만 끊긴 경우: 자리를 잠시 지켜 둔다 */
+  disconnect(socketId) {
+    const player = this.playerOf(socketId);
     if (!player) return;
-    this.players.delete(socketId);
+    this.bySocket.delete(socketId);
+    if (player.socketId !== socketId) return;
+    player.socketId = null;
+    player.connected = false;
+    player.skipVote = false;
+
+    const grace = player.id === this.hostId ? HOST_GRACE_MS : PLAYER_GRACE_MS;
+    player.awayTimer = setTimeout(() => this.removePlayer(player.id, 'timeout'), grace);
+    this.system(`${player.nickname} 님 연결이 끊겼어요. 자리는 ${Math.round(grace / 60000)}분 동안 남겨 둘게요.`);
+    if (this.status === 'playing' || this.status === 'reveal') this.checkSkip();
+    this.broadcastState();
+  }
+
+  /** 스스로 나가기 */
+  leave(socketId) {
+    const pid = this.pidOf(socketId);
+    if (!pid) return;
+    this.bySocket.delete(socketId);
+    this.removePlayer(pid, 'left');
+  }
+
+  removePlayer(pid, reason = 'left') {
+    const player = this.players.get(pid);
+    if (!player) return;
+    clearTimeout(player.awayTimer);
+    this.players.delete(pid);
+    this.byKey.delete(player.key);
+    if (player.socketId) this.bySocket.delete(player.socketId);
+
     if (this.players.size === 0) {
       this.generation += 1;
       this.clearTimers();
       this.onEmpty(this);
       return;
     }
-    if (this.hostId === socketId) {
-      this.hostId = this.players.keys().next().value;
-      const host = this.players.get(this.hostId);
-      this.system(`${player.nickname} 님이 나가서 ${host.nickname} 님이 방장이 되었어요.`);
+    const verb = reason === 'timeout' ? '돌아오지 않아 자리를 비웠어요' : '나갔어요';
+    if (this.hostId === pid) {
+      const next = this.connectedPlayers()[0] || this.players.values().next().value;
+      this.hostId = next.id;
+      this.system(`${player.nickname} 님이 ${verb}. ${next.nickname} 님이 잠시 방장을 맡아요.`);
     } else {
-      this.system(`${player.nickname} 님이 나갔어요.`);
+      this.system(`${player.nickname} 님이 ${verb}.`);
     }
     if (this.status === 'playing' || this.status === 'reveal') this.checkSkip();
     this.broadcastState();
@@ -170,7 +269,7 @@ class Room {
 
   // ---------- 설정 ----------
   updateSettings(socketId, patch) {
-    if (socketId !== this.hostId || this.status !== 'waiting') return;
+    if (!this.isHostSocket(socketId) || this.status !== 'waiting') return;
     const next = { ...this.settings };
     if (Array.isArray(patch.years)) {
       next.years = [...new Set(patch.years.map(Number))].filter(hasYear).sort((a, b) => b - a);
@@ -184,7 +283,7 @@ class Room {
 
   // ---------- 게임 진행 ----------
   start(socketId) {
-    if (socketId !== this.hostId) return { error: '방장만 시작할 수 있어요.' };
+    if (!this.isHostSocket(socketId)) return { error: '방장만 시작할 수 있어요.' };
     if (this.status !== 'waiting' && this.status !== 'ended') return { error: '이미 진행 중이에요.' };
     if (!this.settings.years.length) return { error: '연도를 하나 이상 고르세요.' };
     this.playlist = buildPlaylist(this.settings.years, this.settings.songCount);
@@ -307,7 +406,7 @@ class Room {
   }
 
   backToWaiting(socketId) {
-    if (socketId !== this.hostId || this.status !== 'ended') return;
+    if (!this.isHostSocket(socketId) || this.status !== 'ended') return;
     this.status = 'waiting';
     this.round = null;
     this.broadcastState();
@@ -315,7 +414,7 @@ class Room {
 
   // ---------- 채팅 = 정답 입력 ----------
   chat(socketId, rawText) {
-    const player = this.players.get(socketId);
+    const player = this.playerOf(socketId);
     if (!player) return;
     const text = String(rawText || '').trim().slice(0, 120);
     if (!text) return;
@@ -354,7 +453,7 @@ class Room {
 
   // ---------- 스킵 ----------
   skipNeeded() {
-    const n = this.players.size;
+    const n = Math.max(1, this.connectedPlayers().length);
     if (this.settings.skipRule === 'anyone') return 1;
     if (this.settings.skipRule === 'host') return 1;
     return Math.floor(n / 2) + 1;
@@ -362,9 +461,9 @@ class Room {
 
   voteSkip(socketId) {
     if (this.status !== 'playing' && this.status !== 'reveal') return;
-    const player = this.players.get(socketId);
+    const player = this.playerOf(socketId);
     if (!player) return;
-    if (this.settings.skipRule === 'host' && socketId !== this.hostId) {
+    if (this.settings.skipRule === 'host' && player.id !== this.hostId) {
       this.io.to(socketId).emit('toast', { text: '이 방은 방장만 넘길 수 있어요.' });
       return;
     }
@@ -374,7 +473,7 @@ class Room {
   }
 
   checkSkip() {
-    const votes = [...this.players.values()].filter((p) => p.skipVote).length;
+    const votes = this.connectedPlayers().filter((p) => p.skipVote).length;
     if (votes < this.skipNeeded() || votes === 0) return;
     if (this.status === 'playing') this.reveal('skip');
     else if (this.status === 'reveal') this.nextRound();

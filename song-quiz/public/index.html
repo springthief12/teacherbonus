@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
   <meta name="theme-color" content="#F1E6D2">
   <title>그때 그 노래 – 연도별 차트 노래 맞히기</title>
   <link rel="stylesheet" href="vendor/black-han-sans/400.css">
@@ -33,7 +33,7 @@
         <div class="profile-fields">
           <label class="field">
             <span>닉네임</span>
-            <input id="nickname" maxlength="10" autocomplete="off" placeholder="10자까지">
+            <input id="nickname" maxlength="10" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="done" placeholder="10자까지">
           </label>
           <fieldset class="picker">
             <legend>색</legend>
@@ -105,9 +105,10 @@
         <!-- 대기: 선곡 패널 -->
         <div class="screen-pane pane-waiting" id="pane-waiting">
           <div class="pick-head">
-            <h3>연도 고르기</h3>
+            <h3 id="pick-title">연도 고르기</h3>
             <p id="pick-hint" class="pick-hint"></p>
           </div>
+          <dl id="settings-summary" class="settings-summary" hidden></dl>
           <div id="year-grid" class="year-grid"></div>
           <div class="options" id="options"></div>
           <div class="start-row">
@@ -120,6 +121,7 @@
         <div class="screen-pane pane-play" id="pane-play" hidden>
           <div class="screen-top">
             <span class="song-no" id="song-no">No. 01</span>
+            <span class="mini-meta" id="mini-meta"></span>
             <span class="countdown" id="countdown">30</span>
           </div>
           <div class="lyrics" id="lyrics">
@@ -158,8 +160,10 @@
     <section class="talk">
       <div class="chat-log" id="chat-log" role="log" aria-live="polite"></div>
       <form class="chat-form" id="chat-form">
-        <input id="chat-input" autocomplete="off" maxlength="120" placeholder="정답이나 채팅을 입력하고 Enter">
+        <input id="chat-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+          enterkeyhint="send" maxlength="120" placeholder="정답이나 채팅 입력">
         <button class="btn primary" type="submit">보내기</button>
+        <button class="btn skip skip-mini" id="btn-skip-mini" type="button" aria-label="이 곡 넘기기">넘기기</button>
       </form>
       <div class="controls">
         <button class="btn skip" id="btn-skip" type="button">넘기기 <kbd>K</kbd></button>
@@ -171,6 +175,7 @@
     </section>
   </main>
 
+  <div class="net-banner" id="net-banner" role="status" hidden>연결이 끊겨 다시 연결하는 중이에요. 점수와 자리는 그대로예요.</div>
   <div class="toast" id="toast" role="status" hidden></div>
 
   <script src="/socket.io/socket.io.js"></script>

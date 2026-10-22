@@ -13,7 +13,8 @@ const PORT = Number(process.env.PORT) || 3000;
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: '*' } });
+// 휴대폰이 잠기거나 와이파이가 끊기면 20초 안에 알아채도록 확인 주기를 짧게
+const io = new Server(server, { cors: { origin: '*' }, pingInterval: 10000, pingTimeout: 8000 });
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
 // 글꼴을 직접 제공 (학교망·오프라인에서도 같은 모양)
@@ -54,12 +55,18 @@ function newestYearWithData() {
   return found ? found.year : null;
 }
 
+// 모두 연결이 끊긴 방은 목록에서 숨긴다 (자리는 남아 있어 재접속·QR 입장은 가능)
 function lobbyList() {
-  return [...rooms.values()].map((r) => r.summary());
+  return [...rooms.values()].filter((r) => r.connectedPlayers().length > 0).map((r) => r.summary());
 }
 
 function pushLobby() {
   io.to('lobby').emit('lobby:rooms', lobbyList());
+}
+
+function cleanKey(key) {
+  const k = String(key || '');
+  return /^[a-zA-Z0-9_-]{16,64}$/.test(k) ? k : null;
 }
 
 function cleanProfile(profile = {}) {
@@ -75,20 +82,33 @@ function cleanProfile(profile = {}) {
 
 io.on('connection', (socket) => {
   let profile = null;
+  // 기기마다 하나인 열쇠: 연결이 끊겼다 다시 와도 같은 사람으로 알아본다 (다른 사람에게는 보내지 않음)
+  let key = null;
   let room = null;
 
+  // 스스로 나가기: 자리를 바로 비운다
   const leaveRoom = () => {
     if (!room) return;
     const left = room;
     room = null;
     socket.leave(left.id);
-    left.removePlayer(socket.id);
+    left.leave(socket.id);
     socket.join('lobby');
     pushLobby();
   };
 
+  const enter = (target, ack) => {
+    const result = target.join(socket, profile, key);
+    if (result.error) return ack?.({ error: result.error });
+    socket.leave('lobby');
+    room = target;
+    pushLobby();
+    return ack?.({ ok: true, roomId: target.id, you: result.id });
+  };
+
   socket.on('lobby:enter', (data, ack) => {
     profile = cleanProfile(data);
+    key = cleanKey(data?.key) || key || `s-${socket.id.replace(/[^a-zA-Z0-9_-]/g, '')}xxxxxxxx`;
     socket.join('lobby');
     ack?.({ ok: true, profile, rooms: lobbyList(), years: yearCatalog() });
   });
@@ -109,24 +129,17 @@ io.on('connection', (socket) => {
       },
     });
     rooms.set(id, created);
-    socket.leave('lobby');
-    room = created;
-    room.addPlayer(socket, profile);
-    pushLobby();
-    ack?.({ ok: true, roomId: id });
+    enter(created, ack);
   });
 
   socket.on('room:join', (data, ack) => {
     if (!profile) return ack?.({ error: '닉네임을 먼저 정하세요.' });
     const target = rooms.get(String(data?.roomId));
-    if (!target) return ack?.({ error: '방이 사라졌어요. 목록을 새로고침하세요.' });
-    if (target.isFull()) return ack?.({ error: '방이 꽉 찼어요.' });
+    if (!target) return ack?.({ error: '방이 사라졌어요. 목록에서 다시 골라 주세요.', gone: true });
+    if (room === target) return ack?.({ ok: true, roomId: target.id, you: target.pidOf(socket.id) });
+    if (!target.canJoin(key)) return ack?.({ error: '방이 꽉 찼어요.' });
     leaveRoom();
-    socket.leave('lobby');
-    room = target;
-    room.addPlayer(socket, profile);
-    pushLobby();
-    ack?.({ ok: true, roomId: target.id });
+    return enter(target, ack);
   });
 
   socket.on('room:leave', (_d, ack) => {
@@ -155,7 +168,13 @@ io.on('connection', (socket) => {
   socket.on('game:skip', () => room?.voteSkip(socket.id));
   socket.on('video:error', (data) => room?.videoFailed(socket.id, data?.videoId));
 
-  socket.on('disconnect', () => leaveRoom());
+  // 연결이 끊긴 경우: 자리를 잠시 남겨 둔다
+  socket.on('disconnect', () => {
+    if (!room) return;
+    room.disconnect(socket.id);
+    room = null;
+    pushLobby();
+  });
 });
 
 // 관리용: 차트 파일을 고친 뒤 다시 읽기 (서버 콘솔에서 SIGHUP 또는 재시작)

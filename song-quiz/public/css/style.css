@@ -643,6 +643,58 @@ kbd {
 .volume { display: grid; gap: 2px; font-size: 13px; font-weight: 700; }
 .volume input { width: 100%; accent-color: var(--yellow-deep); }
 
+/* 학생 화면의 설정 요약 (읽기 전용) */
+.settings-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+.settings-summary div {
+  background: var(--white);
+  border: 2px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+}
+.settings-summary dt { font-size: 12px; font-weight: 700; color: var(--cocoa-soft); }
+.settings-summary dd { margin: 0; font-family: var(--display); font-size: 18px; line-height: 1.3; }
+
+/* 연결이 끊긴 사람 자리 */
+.seat.away { opacity: .55; filter: grayscale(.5); }
+.tag-away {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--cocoa-soft);
+  color: var(--white);
+  border-radius: 4px;
+  padding: 0 4px;
+}
+
+.mini-meta { display: none; }
+.btn.skip-mini { display: none; }
+
+.net-banner {
+  position: fixed;
+  top: max(10px, env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: calc(100% - 24px);
+  background: var(--rose);
+  color: var(--white);
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 999px;
+  padding: .45em 1.1em;
+  z-index: 30;
+  box-shadow: 0 4px 0 rgba(90, 70, 50, .2);
+}
+
+button, .btn, .year, .chip, .swatch { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+
 /* 알림 */
 .toast {
   position: fixed;
@@ -671,14 +723,128 @@ kbd {
   .seats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .seat.empty { min-height: 90px; }
   .seat-score { font-size: 18px; letter-spacing: .02em; }
-  .talk { grid-template-columns: minmax(0, 1fr); grid-template-areas: "log" "form" "controls"; }
-  .controls { grid-template-columns: 1fr 1fr; align-items: center; }
+  .talk { grid-template-columns: minmax(0, 1fr); grid-template-areas: "log" "form"; }
+  .controls { display: none; }
+  .btn.skip-mini { display: inline-block; flex: none; width: auto; padding-inline: .8em; }
+  .chat-form .btn { flex: none; padding-inline: .8em; }
+  .chat-form input { flex: 1 1 auto; min-width: 0; }
+  .seat.empty { display: none; }
+  .stage .dial { display: none; }
+  .stage { grid-template-columns: minmax(0, 1fr); }
+  input, select { font-size: 16px; } /* 아이폰: 16px보다 작으면 입력할 때 화면이 확대됨 */
+  .toast { bottom: calc(84px + env(safe-area-inset-bottom)); max-width: calc(100% - 24px); text-align: center; }
   .room-meta { display: none; }
   .room-bar { flex-wrap: wrap; }
   .room-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .qr-panel { grid-template-columns: 1fr; justify-items: center; text-align: center; }
   .qr-actions { justify-content: center; }
   .qr-lan { justify-content: center; }
+}
+
+/* ---------- 휴대폰: 게임 중에는 한 화면에 문제·자리·채팅이 모두 보이게 ---------- */
+@media (max-width: 760px) {
+  .room[data-mode="game"] {
+    height: var(--app-h, 100dvh);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: max(8px, env(safe-area-inset-top)) 10px calc(8px + env(safe-area-inset-bottom));
+    overflow: hidden;
+  }
+  .room[data-mode="game"] .room-bar { flex: none; flex-wrap: nowrap; gap: 8px; }
+  .room[data-mode="game"] .room-no { font-size: 15px; }
+  .room[data-mode="game"] .room-title { font-size: 16px; }
+  .room[data-mode="game"] .room-bar .btn { padding: .2em .7em; font-size: 13px; box-shadow: 0 2px 0 var(--line-strong); }
+  .room[data-mode="game"] #btn-qr,
+  .room[data-mode="game"] .qr-panel { display: none !important; }
+
+  .room[data-mode="game"] .stage { flex: none; display: block; padding: 4px 6px 8px; }
+  .room[data-mode="game"] .dial { display: none; }
+  .room[data-mode="game"] .screen {
+    min-height: 0;
+    border-radius: 18px;
+    box-shadow: 0 0 0 5px var(--white), 0 0 0 7px var(--line), 0 9px 0 7px rgba(140, 119, 97, .14);
+  }
+  .room[data-mode="game"] .pane-play,
+  .room[data-mode="game"] .pane-reveal { min-height: 142px; padding: 10px 14px; }
+  .room[data-mode="game"] .screen-top { gap: 8px; }
+  .room[data-mode="game"] .song-no { font-size: 15px; }
+  .room[data-mode="game"] .mini-meta { display: block; flex: 1; font-size: 12px; font-weight: 700; color: var(--cocoa-soft); text-align: center; }
+  .room[data-mode="game"] .countdown { font-size: 28px; }
+  .room[data-mode="game"] .lyrics p { font-size: 16px; -webkit-text-stroke-width: 4px; margin: 2px 0; }
+  .room[data-mode="game"] .lyrics p.now { font-size: clamp(22px, 7vw, 30px); -webkit-text-stroke-width: 5px; }
+  .room[data-mode="game"] .screen-status { font-size: 12px; }
+
+  .room[data-mode="game"] .reveal-winner { gap: 8px; }
+  .room[data-mode="game"] .winner-avatar { width: 40px; }
+  .room[data-mode="game"] .winner-text { font-size: 15px; }
+  .room[data-mode="game"] .winner-text strong { font-size: 18px; }
+  .room[data-mode="game"] .points { font-size: 24px; -webkit-text-stroke-width: 4px; }
+  .room[data-mode="game"] .reveal-title { font-size: clamp(22px, 7vw, 32px); -webkit-text-stroke-width: 5px; margin-top: 2px; }
+  .room[data-mode="game"] .reveal-artist { font-size: 14px; }
+  .room[data-mode="game"] .reveal-next { font-size: 12px; margin-top: 2px; }
+
+  /* 작은 자리 카드: 4칸, 캐릭터 옆에 이름·점수 */
+  .room[data-mode="game"] .seats { flex: none; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .room[data-mode="game"] .seat.empty { display: none; }
+  .room[data-mode="game"] .seat {
+    grid-template-columns: 28px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    justify-items: start;
+    align-items: center;
+    column-gap: 5px;
+    padding: 4px 6px;
+    border-radius: 10px;
+    box-shadow: 0 2px 0 var(--line);
+  }
+  .room[data-mode="game"] .seat.me { box-shadow: 0 2px 0 var(--yellow-deep); }
+  .room[data-mode="game"] .seat-avatar { width: 28px; grid-row: 1 / span 2; }
+  .room[data-mode="game"] .seat-name { font-size: 11px; text-align: left; line-height: 1.2; }
+  .room[data-mode="game"] .seat-name .host { position: absolute; top: -7px; left: 2px; font-size: 9px; padding: 0 3px; margin: 0; }
+  .room[data-mode="game"] .seat-score {
+    width: auto;
+    margin: 0;
+    background: none;
+    border: 0;
+    font-size: 14px;
+    line-height: 1.1;
+    letter-spacing: 0;
+    text-align: left;
+  }
+  .room[data-mode="game"] .seat.me .seat-score { background: none; color: #A97D0B; }
+  .room[data-mode="game"] .tag-skip,
+  .room[data-mode="game"] .tag-away { top: -7px; right: 2px; left: auto; font-size: 9px; }
+  .room[data-mode="game"] .bubble { max-width: 130px; font-size: 13px; padding: 2px 8px; }
+
+  .room[data-mode="game"] .talk {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 16px;
+    box-shadow: 0 3px 0 var(--line);
+  }
+  .room[data-mode="game"] .chat-log { flex: 1 1 auto; height: auto; min-height: 44px; padding: 4px 8px; }
+  .room[data-mode="game"] .msg { font-size: 13px; gap: 6px; }
+  .room[data-mode="game"] .msg time { display: none; }
+  .room[data-mode="game"] .chat-form { flex: none; gap: 6px; }
+
+  /* 로비 */
+  .lobby { padding-top: 16px; gap: 18px; }
+  .marquee-screen { padding: 18px 14px 16px; }
+  .marquee-no { font-size: 14px; margin-bottom: 2px; }
+  .marquee h1 { font-size: 42px; }
+  .marquee-sub { font-size: 14px; margin-top: 6px; }
+  .panel { padding: 14px 16px; }
+}
+
+@media (max-width: 380px) {
+  .room[data-mode="game"] .seat-score { font-size: 12px; }
+  .room[data-mode="game"] .seats { gap: 4px; }
+  .room[data-mode="game"] .seat { padding: 4px; column-gap: 4px; grid-template-columns: 24px minmax(0, 1fr); }
+  .room[data-mode="game"] .seat-avatar { width: 24px; }
 }
 
 @media (max-width: 520px) {
@@ -688,6 +854,11 @@ kbd {
   .decade { grid-template-columns: 1fr; gap: 2px; }
   .room-item { grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "no title btn" "no years count"; }
   .room-item-status { display: none; }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  kbd { display: none; }
+  .volume { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

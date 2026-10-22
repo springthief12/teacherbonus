@@ -14,6 +14,9 @@
   let mode = null; // 'file' | 'yt'
   let startTimer = null;
   let volume = 70;
+  let unlocked = false;
+  // 아주 짧은 무음: 휴대폰(특히 아이폰)은 사용자가 누른 순간 한 번 재생해 둬야 나중에 자동 재생이 됨
+  const SILENT = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=';
   let handlers = { onError() {}, onBlocked() {}, onPlaying() {} };
 
   // ---------- 공통 ----------
@@ -130,6 +133,17 @@
     },
     play,
     stop,
+    unlock() {
+      if (unlocked || job) return;
+      unlocked = true;
+      try {
+        audio.src = SILENT;
+        const p = audio.play();
+        if (p) p.then(() => { if (!job) audio.pause(); }).catch(() => { unlocked = false; });
+      } catch {
+        unlocked = false;
+      }
+    },
     resume() {
       if (mode === 'file') audio.play().then(() => handlers.onPlaying()).catch(() => {});
       if (mode === 'yt' && ytReady) yt.playVideo();
