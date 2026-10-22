@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>그때 그 노래 – 연도별 차트 노래 맞히기</title>
+  <link rel="stylesheet" href="vendor/black-han-sans/400.css">
+  <link rel="stylesheet" href="vendor/ibm-plex-sans-kr/400.css">
+  <link rel="stylesheet" href="vendor/ibm-plex-sans-kr/700.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- 로비 -->
+  <main id="view-lobby" class="view lobby">
+    <section class="marquee" aria-label="게임 소개">
+      <div class="marquee-screen">
+        <p class="marquee-no">No. 2010</p>
+        <h1 class="lyric" data-text="그때 그 노래">그때 그 노래</h1>
+        <p class="marquee-sub">연도별 차트에서 섞어 나오는 노래, 제일 먼저 제목을 치면 점수!</p>
+      </div>
+    </section>
+
+    <section class="panel profile" aria-labelledby="profile-title">
+      <h2 id="profile-title">내 캐릭터</h2>
+      <div class="profile-body">
+        <div class="avatar-preview" id="avatar-preview"></div>
+        <div class="profile-fields">
+          <label class="field">
+            <span>닉네임</span>
+            <input id="nickname" maxlength="10" autocomplete="off" placeholder="10자까지">
+          </label>
+          <fieldset class="picker">
+            <legend>색</legend>
+            <div id="pick-color" class="swatches"></div>
+          </fieldset>
+          <fieldset class="picker">
+            <legend>표정</legend>
+            <div id="pick-face" class="chips"></div>
+          </fieldset>
+          <fieldset class="picker">
+            <legend>소품</legend>
+            <div id="pick-item" class="chips"></div>
+          </fieldset>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel rooms" aria-labelledby="rooms-title">
+      <div class="rooms-head">
+        <h2 id="rooms-title">열린 방</h2>
+        <span id="conn-state" class="conn">연결 중…</span>
+      </div>
+      <ul id="room-list" class="room-list"></ul>
+      <form id="create-form" class="create-form">
+        <input id="room-title" maxlength="24" placeholder="방 이름 (비우면 자동)">
+        <button type="submit" class="btn primary">방 만들기</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- 방 (대기 · 게임 · 결과 모두 이 화면) -->
+  <main id="view-room" class="view room" hidden>
+    <header class="room-bar">
+      <span class="room-no" id="room-no">[101]</span>
+      <span class="room-title" id="room-title-text">방 이름</span>
+      <span class="room-meta" id="room-meta"></span>
+      <button class="btn ghost" id="btn-leave" type="button">나가기</button>
+    </header>
+
+    <section class="stage">
+      <div class="dial dial-left" aria-hidden="true">
+        <span class="dial-label">곡</span>
+        <strong id="dial-round">–</strong>
+      </div>
+
+      <div class="screen" id="screen">
+        <div class="screen-video" id="screen-video"><div id="yt-player"></div></div>
+        <div class="screen-cover" id="screen-cover"></div>
+
+        <!-- 대기: 선곡 패널 -->
+        <div class="screen-pane pane-waiting" id="pane-waiting">
+          <div class="pick-head">
+            <h3>연도 고르기</h3>
+            <p id="pick-hint" class="pick-hint"></p>
+          </div>
+          <div id="year-grid" class="year-grid"></div>
+          <div class="options" id="options"></div>
+          <div class="start-row">
+            <p id="start-note" class="start-note"></p>
+            <button class="btn start" id="btn-start" type="button">게임 시작</button>
+          </div>
+        </div>
+
+        <!-- 진행 -->
+        <div class="screen-pane pane-play" id="pane-play" hidden>
+          <div class="screen-top">
+            <span class="song-no" id="song-no">No. 01</span>
+            <span class="countdown" id="countdown">30</span>
+          </div>
+          <div class="lyrics" id="lyrics">
+            <div class="lyrics-base" id="lyrics-base"></div>
+            <div class="lyrics-fill" id="lyrics-fill" aria-hidden="true"></div>
+          </div>
+          <p class="screen-status" id="screen-status"></p>
+        </div>
+
+        <!-- 정답 공개 -->
+        <div class="screen-pane pane-reveal" id="pane-reveal" hidden>
+          <div class="reveal-winner" id="reveal-winner"></div>
+          <p class="reveal-title lyric" id="reveal-title"></p>
+          <p class="reveal-artist" id="reveal-artist"></p>
+          <p class="reveal-next" id="reveal-next"></p>
+        </div>
+
+        <!-- 결과 -->
+        <div class="screen-pane pane-ended" id="pane-ended" hidden>
+          <h3 class="lyric">최종 점수</h3>
+          <ol class="ranking" id="ranking"></ol>
+          <button class="btn start" id="btn-again" type="button">다시 하기</button>
+        </div>
+
+        <button class="sound-gate" id="sound-gate" type="button" hidden>눌러서 소리 켜기</button>
+      </div>
+
+      <div class="dial dial-right" aria-hidden="true">
+        <span class="dial-label">스킵</span>
+        <strong id="dial-skip">–</strong>
+      </div>
+    </section>
+
+    <section class="seats" id="seats" aria-label="플레이어"></section>
+
+    <section class="talk">
+      <div class="chat-log" id="chat-log" role="log" aria-live="polite"></div>
+      <form class="chat-form" id="chat-form">
+        <input id="chat-input" autocomplete="off" maxlength="120" placeholder="정답이나 채팅을 입력하고 Enter">
+        <button class="btn primary" type="submit">보내기</button>
+      </form>
+      <div class="controls">
+        <button class="btn skip" id="btn-skip" type="button">넘기기 <kbd>K</kbd></button>
+        <label class="volume">
+          <span>소리</span>
+          <input type="range" id="volume" min="0" max="100" value="70">
+        </label>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/avatar.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
