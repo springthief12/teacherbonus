@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
   <meta name="theme-color" content="#F1E6D2">
   <title>그때 그 노래 – 연도별 차트 노래 맞히기</title>
-  <link rel="stylesheet" href="vendor/black-han-sans/400.css">
-  <link rel="stylesheet" href="vendor/ibm-plex-sans-kr/400.css">
-  <link rel="stylesheet" href="vendor/ibm-plex-sans-kr/700.css">
+  <link rel="stylesheet" href="vendor/pretendard/pretendardvariable-dynamic-subset.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -70,6 +68,7 @@
       <span class="room-no" id="room-no">[101]</span>
       <span class="room-title" id="room-title-text">방 이름</span>
       <span class="room-meta" id="room-meta"></span>
+      <button class="btn ghost" id="btn-sfx" type="button" aria-pressed="true">효과음 켬</button>
       <button class="btn ghost" id="btn-qr" type="button" aria-expanded="false" aria-controls="qr-panel">접속 QR</button>
       <button class="btn ghost" id="btn-leave" type="button">나가기</button>
     </header>
@@ -92,6 +91,13 @@
       </div>
     </section>
 
+    <div class="room-body">
+    <aside class="ranking-board" aria-labelledby="board-title">
+      <h2 id="board-title">순위</h2>
+      <ol class="board-list" id="board-list"></ol>
+    </aside>
+
+    <div class="room-main">
     <section class="stage">
       <div class="dial dial-left" aria-hidden="true">
         <span class="dial-label">곡</span>
@@ -135,7 +141,7 @@
         <div class="screen-pane pane-reveal" id="pane-reveal" hidden>
           <div class="reveal-winner" id="reveal-winner"></div>
           <p class="reveal-title lyric" id="reveal-title"></p>
-          <p class="reveal-artist" id="reveal-artist"></p>
+          <p class="reveal-meta" id="reveal-meta"></p>
           <p class="reveal-next" id="reveal-next"></p>
         </div>
 
@@ -167,12 +173,14 @@
       </form>
       <div class="controls">
         <button class="btn skip" id="btn-skip" type="button">넘기기 <kbd>K</kbd></button>
-        <label class="volume">
-          <span>소리</span>
+        <label class="volume" id="volume-wrap">
+          <span>노래 소리</span>
           <input type="range" id="volume" min="0" max="100" value="70">
         </label>
       </div>
     </section>
+    </div>
+    </div>
   </main>
 
   <div class="net-banner" id="net-banner" role="status" hidden>연결이 끊겨 다시 연결하는 중이에요. 점수와 자리는 그대로예요.</div>
@@ -180,6 +188,7 @@
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="js/avatar.js"></script>
+  <script src="js/sfx.js"></script>
   <script src="js/player.js"></script>
   <script src="js/app.js"></script>
 </body>

@@ -68,7 +68,11 @@
   });
 
   // ---------- 유튜브 ----------
+  let apiRequested = false;
+  // 유튜브 재생기는 실제로 노래를 틀 기기에서만 불러온다 (학생 휴대폰은 불러오지 않음)
   function loadApi() {
+    if (apiRequested) return;
+    apiRequested = true;
     const tag = document.createElement('script');
     tag.src = 'https://www.youtube.com/iframe_api';
     tag.onerror = () => { apiFailed = true; };
@@ -98,7 +102,7 @@
   };
 
   function playYt() {
-    if (!ytReady) { pendingYt = true; return; }
+    if (!ytReady) { pendingYt = true; loadApi(); return; }
     const current = job;
     yt.cueVideoById({ videoId: current.videoId, startSeconds: current.startSeconds });
     scheduleStart(() => {
@@ -129,7 +133,6 @@
   window.QuizPlayer = {
     init(h = {}) {
       handlers = { ...handlers, ...h };
-      loadApi();
     },
     play,
     stop,

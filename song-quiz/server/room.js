@@ -21,6 +21,7 @@ const DEFAULT_SETTINGS = {
   startMode: 'intro', // intro: 전주부터, highlight: 중간(후렴 근처)부터
   skipRule: 'majority', // majority: 과반수, anyone: 한 명이라도, host: 방장만
   scoring: 'flat', // flat: 정답 10점, speed: 빨리 맞힐수록 더 많이
+  soundOn: 'host', // host: 노래는 방장 기기(전자칠판)에서만, all: 모든 기기에서
 };
 
 const OPTIONS = {
@@ -30,6 +31,7 @@ const OPTIONS = {
   startMode: ['intro', 'highlight'],
   skipRule: ['majority', 'anyone', 'host'],
   scoring: ['flat', 'speed'],
+  soundOn: ['host', 'all'],
 };
 
 class Room {

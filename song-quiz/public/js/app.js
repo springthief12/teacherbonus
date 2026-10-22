@@ -10,7 +10,9 @@
     skipRule: { title: '넘기기', fmt: (v) => ({ majority: '과반수 투표', anyone: '한 명이라도', host: '방장만' }[v]) },
     scoring: { title: '점수', fmt: (v) => ({ flat: '정답 10점', speed: '빠를수록 더' }[v]) },
     revealTime: { title: '정답 후 듣기', fmt: (v) => `${v}초` },
+    soundOn: { title: '노래 소리', fmt: (v) => ({ host: '방장 기기만', all: '모든 기기' }[v]) },
   };
+  const OPTION_ORDER = ['songCount', 'roundTime', 'startMode', 'soundOn', 'skipRule', 'scoring', 'revealTime'];
   const STATUS_TEXT = { waiting: '대기 중', loading: '다음 곡 준비 중', playing: '게임 중', reveal: '게임 중', ended: '게임 끝' };
 
   // ---------- 프로필 ----------
@@ -166,6 +168,9 @@
   socket.on('round:reveal', (d) => {
     lastRevealKey = null; // renderReveal에서 연출 다시 실행
     pendingReveal = d;
+    if (hearsMusic()) Sfx.play({ correct: 'correct', skip: 'skip', timeout: 'timeout' }[d.reason]);
+    // 학생 휴대폰: 내가 맞히면 짧게 진동 (안드로이드)
+    if (d.reason === 'correct' && d.winnerId === myId && navigator.vibrate) navigator.vibrate(60);
   });
   let pendingReveal = null;
 
@@ -251,6 +256,8 @@
     qrOpen = null;
     qrShownFor = null;
     prevStatus = null;
+    soundMark = null;
+    prevScores = {};
     renderRoom(); // 방 정보가 '내 번호'보다 먼저 도착하므로 다시 그린다
     // 휴대폰에서는 들어오자마자 키보드가 올라오지 않게 한다
     if (!isTouch) $('#chat-input').focus();
@@ -379,7 +386,10 @@
     if (pane === 'ended') renderEnded();
 
     renderSeats();
+    renderBoard();
     syncPlayer();
+    playEventSounds();
+    $('#volume-wrap').hidden = !hearsMusic();
 
     // 게임이 시작되면 QR을 자동으로 접는다 (다시 펼칠 수 있음)
     if (prevStatus === 'waiting' && s.status !== 'waiting' && qrOpen !== false) qrOpen = false;
@@ -406,7 +416,7 @@
       const st = state.settings;
       const items = [
         ['연도', st.years.length ? st.years.map((y) => `${y}년`).join(', ') : '아직 안 정함'],
-        ...['songCount', 'roundTime', 'startMode', 'skipRule', 'scoring', 'revealTime'].map((k) => [LABELS[k].title, LABELS[k].fmt(st[k])]),
+        ...OPTION_ORDER.map((k) => [LABELS[k].title, LABELS[k].fmt(st[k])]),
       ];
       $('#settings-summary').innerHTML = items.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(String(v))}</dd></div>`).join('');
     }
@@ -430,8 +440,7 @@
         </div>
       </div>`).join('');
 
-    const order = ['songCount', 'roundTime', 'startMode', 'skipRule', 'scoring', 'revealTime'];
-    $('#options').innerHTML = order.map((key) => `
+    $('#options').innerHTML = OPTION_ORDER.map((key) => `
       <div class="option">
         <span class="option-name">${LABELS[key].title}</span>
         <div class="seg" role="group" aria-label="${LABELS[key].title}">
@@ -494,6 +503,7 @@
     let text = '';
     if (state.status === 'loading') text = '음원을 찾는 중이에요';
     else if (!r.videoId && !r.audioUrl) text = '음원 없이 힌트로만 진행하는 곡이에요';
+    else if (!hearsMusic()) text = '방장 화면에서 나오는 노래를 듣고 제목을 입력하세요';
     else text = '들리는 노래의 제목을 채팅으로 입력하세요';
     $('#screen-status').textContent = text;
   }
@@ -503,9 +513,10 @@
     const a = r.answer;
     if (!a) return;
     const key = `${r.index}`;
-    $('#reveal-title').textContent = a.title;
-    $('#reveal-title').dataset.text = a.title;
-    $('#reveal-artist').textContent = `${a.artist} · ${a.year}년${a.rank ? ` ${a.rank}위` : ''}`;
+    const full = `${a.artist} - ${a.title}`;
+    $('#reveal-title').textContent = full;
+    $('#reveal-title').dataset.text = full;
+    $('#reveal-meta').textContent = `${a.year}년 ${a.rank ? `${a.rank}위` : '차트'}`;
 
     const winner = state.players.find((p) => p.id === r.winnerId);
     const pts = pendingReveal && pendingReveal.points ? pendingReveal.points : null;
@@ -568,12 +579,68 @@
     for (const pid of Object.keys(bubbles)) paintBubble(pid, false);
   }
 
+  // ---------- 왼쪽 순위판 ----------
+  let prevScores = {};
+  function renderBoard() {
+    const players = state.players.slice().sort((x, y) => y.score - x.score || y.correct - x.correct);
+    let place = 0;
+    let lastScore = null;
+    const rows = players.map((p, i) => {
+      if (p.score !== lastScore) { place = i + 1; lastScore = p.score; }
+      const gained = prevScores[p.id] !== undefined && p.score > prevScores[p.id];
+      return `
+        <li class="board-row${p.id === myId ? ' me' : ''}${p.away ? ' away' : ''}${gained ? ' up' : ''}" data-place="${place}">
+          <span class="board-place">${place}</span>
+          <span class="board-avatar">${Avatar.svg(p.avatar)}</span>
+          <span class="board-name">${esc(p.nickname)}</span>
+          <span class="board-score">${p.score}</span>
+        </li>`;
+    });
+    $('#board-list').innerHTML = rows.join('');
+    prevScores = Object.fromEntries(state.players.map((p) => [p.id, p.score]));
+  }
+
+  // ---------- 효과음 ----------
+  // 정답·넘기기·다음 곡 소리는 노래가 나오는 기기에서만, 버튼 소리는 누른 기기에서
+  let soundMark = null;
+  function playEventSounds() {
+    const s = state;
+    const votes = s.players.filter((p) => p.skipVote).length;
+    const mark = { status: s.status, index: s.round ? s.round.index : -1, votes };
+    const prev = soundMark;
+    soundMark = mark;
+    if (!prev || !hearsMusic()) return;
+    if (s.status === 'playing' && (prev.status !== 'playing' || prev.index !== mark.index)) {
+      Sfx.play(mark.index === 0 ? 'start' : 'next');
+    } else if (s.status === 'ended' && prev.status !== 'ended') {
+      Sfx.play('end');
+    } else if (votes > prev.votes && prev.index === mark.index && prev.status === s.status) {
+      Sfx.play('vote');
+    }
+  }
+
+  function renderSfxToggle() {
+    const on = Sfx.enabled;
+    $('#btn-sfx').setAttribute('aria-pressed', String(on));
+    $('#btn-sfx').textContent = on ? '효과음 켬' : '효과음 끔';
+  }
+  $('#btn-sfx').addEventListener('click', () => { Sfx.setEnabled(!Sfx.enabled); renderSfxToggle(); });
+  renderSfxToggle();
+
+  // 모든 버튼: 누를 때 작은 '톡'
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('button:not(:disabled)')) Sfx.play('click');
+  }, true);
+
   // ---------- 재생 동기화 ----------
+  // 이 기기에서 노래를 틀지: 기본은 방장 기기(전자칠판)만, 설정에서 '모든 기기'로 바꿀 수 있음
+  const hearsMusic = () => Boolean(state) && (state.settings.soundOn === 'all' || isHost());
+
   // 소리만 재생한다 (영상은 화면에 나오지 않음)
   function syncPlayer() {
     if (!state) return;
     const r = state.round;
-    const live = (state.status === 'playing' || state.status === 'reveal') && r && (r.audioUrl || r.videoId);
+    const live = hearsMusic() && (state.status === 'playing' || state.status === 'reveal') && r && (r.audioUrl || r.videoId);
     if (!live) {
       if (QuizPlayer.current) QuizPlayer.stop();
       return;
@@ -704,7 +771,7 @@
     });
   });
   // 방 안에서 처음 화면을 누를 때 소리 재생 허락
-  document.addEventListener('pointerdown', () => QuizPlayer.unlock(), { once: true, capture: true });
+  document.addEventListener('pointerdown', () => { QuizPlayer.unlock(); Sfx.unlock(); }, { once: true, capture: true });
 
   // 휴대폰 키보드가 올라오면 실제 보이는 높이에 맞춰 게임 화면을 다시 배치
   function fitViewport() {

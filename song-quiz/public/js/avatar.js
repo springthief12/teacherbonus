@@ -77,7 +77,7 @@
       <rect x="62" y="84" width="10" height="9" rx="3" fill="${INK}"/>
       <rect x="10" y="27" width="80" height="59" rx="11" fill="${color.body}" stroke="${INK}" stroke-width="3"/>
       <rect x="18" y="33" width="64" height="11" rx="3" fill="#fff" opacity=".9"/>
-      <text x="50" y="41.6" text-anchor="middle" font-size="8" font-family="Black Han Sans, sans-serif" fill="${INK}">${escape(label)}</text>
+      <text x="50" y="41.6" text-anchor="middle" font-size="8" font-family="Pretendard Variable, Pretendard, sans-serif" font-weight="800" fill="${INK}">${escape(label)}</text>
       <rect x="23" y="48" width="54" height="20" rx="10" fill="${INK}"/>
       <path d="M29 86 L33 71 H67 L71 86 Z" fill="#fff" fill-opacity=".6" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>
       <circle cx="17" cy="73" r="4" fill="#FF8FA0" opacity=".75"/>

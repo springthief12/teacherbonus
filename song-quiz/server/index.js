@@ -17,10 +17,8 @@ const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' }, pingInterval: 10000, pingTimeout: 8000 });
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
-// 글꼴을 직접 제공 (학교망·오프라인에서도 같은 모양)
-for (const font of ['black-han-sans', 'ibm-plex-sans-kr']) {
-  app.use(`/vendor/${font}`, express.static(path.join(__dirname, '..', 'node_modules', '@fontsource', font)));
-}
+// Pretendard 글꼴을 직접 제공 (학교망·오프라인에서도 같은 모양, 쓰는 글자만 내려받음)
+app.use('/vendor/pretendard', express.static(path.join(__dirname, '..', 'node_modules', 'pretendard', 'dist', 'web', 'variable')));
 app.get('/media/:token', (req, res) => {
   const file = media.lookup(req.params.token);
   if (!file) return res.sendStatus(404);
