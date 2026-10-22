@@ -18,6 +18,8 @@ function stripExtras(text) {
   return String(text || '')
     .replace(/\(.*?\)|\[.*?\]/g, ' ')
     .replace(/\b(feat|ft|with)\b\.?.*$/i, ' ')
+    .replace(/[()[\]]/g, ' ') // 겹친 괄호에서 남은 조각
+    .replace(/\s+/g, ' ')
     .trim();
 }
 
@@ -39,7 +41,8 @@ function acceptedAnswers(song) {
   const inner = String(song.title || '').match(/\(([^)]+)\)/g) || [];
   inner.forEach((part) => {
     const body = part.slice(1, -1);
-    if (!/^(feat|ft|with|prod|narr)\b/i.test(body.trim())) add(body);
+    // 피처링·프로듀서·내레이션 표기와 숫자만 있는 괄호(예: Square (2017))는 정답으로 치지 않음
+    if (!/^(feat|ft|with|prod|narr)\b/i.test(body.trim()) && !/^\d+$/.test(body.trim())) add(body);
   });
 
   (song.aliases || []).forEach(add);

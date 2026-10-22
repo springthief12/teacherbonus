@@ -28,6 +28,11 @@ const ARTIST_EN = {
   백지영: 'Baek Ji Young', 김범수: 'Kim Bum Soo', 허각: 'Huh Gak', 케이윌: 'K.will', 에일리: 'Ailee',
   노을: 'Noel', 리쌍: 'LeeSSang', 울랄라세션: 'Ulala Session', 박봄: 'Park Bom', 마이티마우스: 'Mighty Mouth',
   이현: 'Lee Hyun', 송지은: 'Song Ji Eun', 씨스타19: 'SISTAR19', 처진달팽이: 'Sagging Snail', 투개월: 'Two Month',
+  지코: 'ZICO', 창모: 'CHANGMO', 조정석: 'Jo Jung Suk', 장범준: 'Jang Beom June', 가호: 'Gaho', 엠씨더맥스: 'M.C the MAX',
+  오마이걸: 'OH MY GIRL', 마크툽: 'MAKTUB', 블루: 'BLOO', 화사: 'Hwa Sa', 오반: 'OVAN', 폴킴: 'Paul Kim', 싹쓰리: 'SSAK3',
+  전미도: 'Jeon Mi Do', 김필: 'Kim Feel', 산들: 'SANDEUL', 신예영: 'Shin Yeyoung', 조이: 'JOY', 백현: 'BAEKHYUN',
+  볼빨간사춘기: 'BOL4', 백예린: 'Yerin Baek', 제시: 'Jessi', 하현우: 'Ha Hyun Woo', 스탠딩에그: 'Standing Egg',
+  전상근: 'Jeon Sang Keun', 진민호: 'Jin Min Ho', 아이즈원: 'IZ*ONE', 염따: 'YUMDDA', 임재현: 'Lim Jae Hyun',
 };
 
 let cache = {};
