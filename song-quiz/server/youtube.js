@@ -8,9 +8,10 @@
 const fs = require('fs');
 const path = require('path');
 const { squash, stripExtras } = require('./answer');
+const overrides = require('./overrides');
 
 const CACHE_FILE = path.join(__dirname, '..', 'data', 'youtube-cache.json');
-const CACHE_VERSION = 2; // 뮤직비디오를 고르던 예전 캐시는 무시
+const CACHE_VERSION = 3; // 후보 정보(제목·채널)까지 저장하는 형식
 const API_KEY = process.env.YT_API_KEY || '';
 
 // 유튜브 음원 채널은 영문 이름이 많아서, 한글 가수명과 함께 비교한다
@@ -25,6 +26,8 @@ const ARTIST_EN = {
   엠블랙: 'MBLAQ', 인피니트: 'INFINITE', 에이핑크: 'Apink', 걸스데이: "Girl's Day", 버스커버스커: 'Busker Busker',
   악동뮤지션: 'AKMU', 방탄소년단: 'BTS', 트와이스: 'TWICE', 레드벨벳: 'Red Velvet', 엑소: 'EXO', 마마무: 'MAMAMOO',
   백지영: 'Baek Ji Young', 김범수: 'Kim Bum Soo', 허각: 'Huh Gak', 케이윌: 'K.will', 에일리: 'Ailee',
+  노을: 'Noel', 리쌍: 'LeeSSang', 울랄라세션: 'Ulala Session', 박봄: 'Park Bom', 마이티마우스: 'Mighty Mouth',
+  이현: 'Lee Hyun', 송지은: 'Song Ji Eun', 씨스타19: 'SISTAR19', 처진달팽이: 'Sagging Snail', 투개월: 'Two Month',
 };
 
 let cache = {};
@@ -128,65 +131,123 @@ async function searchWithApi(song) {
   }));
 }
 
-/**
- * 후보를 점수순으로 정렬 (같은 점수면 유튜브 검색 순서 유지)
- * 음원 버전이 하나도 없을 때만 뮤직비디오를 마지막 대안으로 남긴다.
- */
-function rank(song, videos) {
-  const scored = videos
+/** 후보에 점수를 매겨 정렬 (같은 점수면 유튜브 검색 순서 유지) */
+function scoreAll(song, videos) {
+  return videos
     .map((v, i) => ({ ...v, i, score: scoreCandidate(song, v) }))
-    .sort((a, b) => b.score - a.score || a.i - b.i);
-  const audio = scored.filter((v) => v.score > 4);
-  const fallback = audio.length ? [] : scored.filter((v) => v.score >= 2).slice(0, 2);
-  return [...audio, ...fallback].map((v) => v.id);
+    .sort((a, b) => b.score - a.score || a.i - b.i)
+    .map(({ i, ...v }) => ({ ...v, ok: v.score > 4 }));
+}
+
+/** 음원 버전으로 인정되는 후보 ID만 (뮤직비디오는 대안으로도 쓰지 않음) */
+function rank(song, videos) {
+  return scoreAll(song, videos).filter((v) => v.ok).map((v) => v.id);
 }
 
 const inflight = new Map();
+const cacheEntry = (song) => {
+  const e = cache[keyOf(song)];
+  return e && e.v === CACHE_VERSION ? e : null;
+};
 
-/** 재생 가능한 후보 영상 ID 하나를 돌려준다. 없으면 null */
-async function resolveVideo(song) {
-  if (song.youtubeId) return song.youtubeId;
-
+/** 검색을 실제로 돌려 후보 전체(점수·정보 포함)를 돌려주고 캐시에 저장 */
+async function searchCandidates(song) {
   const key = keyOf(song);
-  const entry = cache[key] && cache[key].v === CACHE_VERSION ? cache[key] : null;
-  if (entry) {
-    const usable = entry.candidates.filter((id) => !entry.bad.includes(id));
-    if (usable.length) return usable[0];
-    if (entry.exhausted) return null;
-  }
-
   if (inflight.has(key)) return inflight.get(key);
   const job = (async () => {
-    try {
-      const videos = API_KEY ? await searchWithApi(song) : await searchWithYtSearch(song);
-      const ranked = rank(song, videos);
-      const prevBad = entry ? entry.bad : [];
-      cache[key] = { v: CACHE_VERSION, candidates: ranked.slice(0, 5), bad: prevBad, exhausted: ranked.length === 0 };
-      saveCache();
-      const usable = cache[key].candidates.filter((id) => !prevBad.includes(id));
-      return usable[0] || null;
-    } catch (err) {
-      console.warn(`[youtube] "${song.artist} - ${song.title}" 검색 실패: ${err.message}`);
-      return null;
-    } finally {
-      inflight.delete(key);
-    }
+    const videos = API_KEY ? await searchWithApi(song) : await searchWithYtSearch(song);
+    const scored = scoreAll(song, videos);
+    const prev = cacheEntry(song);
+    cache[key] = {
+      v: CACHE_VERSION,
+      candidates: scored.slice(0, 10),
+      bad: prev ? prev.bad : [],
+      checkedAt: Date.now(),
+    };
+    saveCache();
+    return scored;
   })();
   inflight.set(key, job);
-  return job;
+  try {
+    return await job;
+  } finally {
+    inflight.delete(key);
+  }
+}
+
+function usableFromCache(entry) {
+  if (!entry) return undefined; // 아직 검사 안 함
+  const ok = entry.candidates.filter((c) => c.ok && !entry.bad.includes(c.id));
+  return ok.length ? ok[0].id : null; // null: 검사했지만 쓸 만한 음원 없음
+}
+
+/** 재생할 영상 ID. 없으면 null (→ 셔플에서 제외) */
+async function resolveVideo(song) {
+  const o = overrides.get(song);
+  if (o && o.youtubeId) return o.youtubeId; // 관리자가 고른 영상
+  if (song.youtubeId) return song.youtubeId; // 차트 파일에 적힌 영상
+
+  const cached = usableFromCache(cacheEntry(song));
+  if (cached !== undefined) return cached;
+  try {
+    await searchCandidates(song);
+    return usableFromCache(cacheEntry(song)) || null;
+  } catch (err) {
+    console.warn(`[youtube] "${song.artist} - ${song.title}" 검색 실패: ${err.message}`);
+    return null;
+  }
+}
+
+/** 검사 결과 이미 '쓸 만한 음원 없음'으로 확인된 곡인지 (셔플 전에 미리 제외) */
+function knownMissing(song) {
+  const o = overrides.get(song);
+  if (o && o.youtubeId) return false;
+  if (song.youtubeId) return false;
+  return usableFromCache(cacheEntry(song)) === null;
+}
+
+/** 관리자 페이지용 현재 상태 */
+function status(song) {
+  const o = overrides.get(song);
+  const entry = cacheEntry(song);
+  const auto = usableFromCache(entry);
+  let source = 'unchecked';
+  let youtubeId = null;
+  if (o && o.youtubeId) { source = 'override'; youtubeId = o.youtubeId; }
+  else if (song.youtubeId) { source = 'data'; youtubeId = song.youtubeId; }
+  else if (auto) { source = 'search'; youtubeId = auto; }
+  else if (auto === null) source = 'missing';
+  const current = entry && entry.candidates.find((c) => c.id === youtubeId);
+  return {
+    source,
+    youtubeId,
+    videoTitle: current ? current.title : null,
+    videoChannel: current ? current.channel : null,
+    checkedAt: entry ? entry.checkedAt : null,
+    candidates: entry ? entry.candidates : [],
+    bad: entry ? entry.bad : [],
+  };
 }
 
 /** 클라이언트가 재생 불가(삭제·퍼가기 금지)를 알리면 다음 후보로 넘긴다 */
 function markBad(song, videoId) {
   const key = keyOf(song);
-  const entry = cache[key] && cache[key].v === CACHE_VERSION
-    ? cache[key]
-    : { v: CACHE_VERSION, candidates: [], bad: [] };
+  const entry = cacheEntry(song) || { v: CACHE_VERSION, candidates: [], bad: [], checkedAt: Date.now() };
   if (!entry.bad.includes(videoId)) entry.bad.push(videoId);
   cache[key] = entry;
   saveCache();
-  const usable = entry.candidates.filter((id) => !entry.bad.includes(id));
-  return usable[0] || null;
+  const o = overrides.get(song);
+  if (o && o.youtubeId === videoId) return null; // 관리자가 고른 영상이 막혔으면 관리자 확인 필요
+  return usableFromCache(entry) || null;
 }
 
-module.exports = { resolveVideo, markBad, scoreCandidate, rank, artistNames, queryParts };
+/** 관리자가 '재생 불가' 표시를 지울 때 */
+function clearBad(song) {
+  const entry = cacheEntry(song);
+  if (entry) { entry.bad = []; saveCache(); }
+}
+
+module.exports = {
+  resolveVideo, markBad, clearBad, searchCandidates, knownMissing, status,
+  scoreCandidate, rank, artistNames, queryParts,
+};

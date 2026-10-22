@@ -1,7 +1,11 @@
 // 비속어 필터 테스트: 가려야 할 표현과, 가리면 안 되는 일상어·노래 제목
 // 실행: node test/profanity.test.js
 const { censor, cleanName } = require('../server/profanity');
-const chart = require('../data/charts/2010.json');
+const fs = require('fs');
+const path = require('path');
+const chartDir = path.join(__dirname, '..', 'data', 'charts');
+const allSongs = fs.readdirSync(chartDir).filter((f) => f.endsWith('.json'))
+  .flatMap((f) => JSON.parse(fs.readFileSync(path.join(chartDir, f), 'utf8')).songs);
 
 const shouldBlock = [
   '시발', '씨발', '씨빨', '시팔', '쓰벌', 'ㅅㅂ', 'ㅆㅂ', 'ㅅ1ㅂ', 'ㅅ.ㅂ', '시 발', '시1발', '씨~발', 'c발', 'c8', '시8',
@@ -35,7 +39,7 @@ for (const t of shouldPass) {
   if (r.hit) { fail += 1; console.log(`FAIL 잘못 가림: "${t}" → "${r.text}"`); }
 }
 // 노래 제목·가수 이름은 절대 가리면 안 됨
-for (const s of chart.songs) {
+for (const s of allSongs) {
   for (const t of [s.title, s.artist, ...s.aliases]) {
     const r = censor(t);
     if (r.hit) { fail += 1; console.log(`FAIL 노래 정보를 가림: "${t}" → "${r.text}"`); }
@@ -47,6 +51,6 @@ if (sample.text !== '아 *** 진짜') { fail += 1; console.log(`FAIL 가린 모�
 if (cleanName('시발', '손님') !== '손님') { fail += 1; console.log('FAIL 닉네임 대체'); }
 if (cleanName('민지', '손님') !== '민지') { fail += 1; console.log('FAIL 정상 닉네임'); }
 
-const total = shouldBlock.length + shouldPass.length + chart.songs.length * 2 + 3;
-console.log(`비속어 필터: ${fail ? `${fail}개 실패` : '모두 통과'} (가림 ${shouldBlock.length}개, 통과 ${shouldPass.length}개, 노래 정보 ${chart.songs.length}곡)`);
+const total = shouldBlock.length + shouldPass.length + allSongs.length * 2 + 3;
+console.log(`비속어 필터: ${fail ? `${fail}개 실패` : '모두 통과'} (가림 ${shouldBlock.length}개, 통과 ${shouldPass.length}개, 노래 정보 ${allSongs.length}곡)`);
 process.exit(fail ? 1 : 0);

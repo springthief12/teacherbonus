@@ -8,7 +8,7 @@
 - 글꼴: [Pretendard](https://github.com/orioncactus/pretendard) (SIL 오픈 폰트 라이선스, 무료)
 - 게임 규칙은 스타크래프트 노래맞히기 유즈맵처럼: 선착순 정답, 정답 뒤에도 노래를 계속 듣다가 넘기기
 
-> 지금은 **v0.2** 입니다. 멜론 2010년 연간 TOP 50이 들어 있습니다.
+> 멜론 연간 TOP 50: 2010년, 2011년
 
 ## 바로 테스트하기 (인터넷 링크)
 
@@ -45,6 +45,9 @@ npm start          # http://localhost:3000
 | --- | --- |
 | `PORT` | 서버 포트 (기본 3000) |
 | `YT_API_KEY` | 유튜브 Data API 키. 있으면 공식 API로 영상을 찾고, 없으면 키 없이 검색(yt-search)합니다 |
+| `ADMIN_PASSWORD` | 음원 관리 페이지 비밀번호 (서버를 켠 PC에서 localhost로 열 때는 필요 없음) |
+| `GITHUB_TOKEN` · `GITHUB_REPO` | 관리 페이지에서 고친 내용을 깃허브 저장소에도 저장 (Render용) |
+| `ALLOW_NO_AUDIO` | `1`이면 음원이 없는 곡도 힌트만으로 진행 (테스트·오프라인용) |
 
 ## 게임 흐름
 
@@ -160,6 +163,37 @@ node scripts/import-chart.js 2011 chart-2011.txt
 찾은 영상 ID는 `data/youtube-cache.json` 에 저장해 다음부터 다시 찾지 않습니다.
 삭제됐거나 퍼가기가 막힌 영상이면 다음 후보로 자동으로 바꿉니다.
 
+## 음원 관리 페이지 (관리자)
+
+`/admin` 주소에서 곡마다 게임에 나올 유튜브 음원을 확인하고 고칩니다.
+
+- **들어가기:** 서버를 켠 PC에서 `http://localhost:3000/admin` 으로 열면 비밀번호 없이 들어갑니다. 다른 기기나 Render 주소에서는 `ADMIN_PASSWORD` 로 정한 비밀번호가 필요합니다.
+- **곡 상태:** 자동(음원) · 직접 고름 · 음원 파일 · 못 찾음(셔플 제외) · 검사 전 · 제외함. "확인이 필요한 곡"만 따로 볼 수 있습니다.
+- **고치기:** 유튜브 검색 후보를 보고 **미리 듣기** 후 **이걸로 선택**, 또는 유튜브 링크를 직접 붙여 넣습니다. 앞부분에 무음·말소리가 있으면 시작 위치(초)를 정합니다. 마음에 안 드는 곡은 "셔플에서 빼기".
+- **검사 안 한 곡 검사:** 수업 전에 한 번 누르면 그 연도 전체 곡의 음원을 미리 찾아, 못 찾은 곡을 확인할 수 있습니다.
+- 고친 내용은 바로 저장되고 다음 곡부터 반영됩니다.
+
+### 음원을 못 찾은 곡
+
+게임은 **음원 버전(음원 전용 영상·Official Audio)이나 음원 파일이 있는 곡만** 셔플합니다. 뮤직비디오만 있는 곡은 "못 찾음"으로 셔플에서 빠지고, 게임 중에 못 찾은 곡은 예비 곡으로 바꿔서 곡 수를 맞춥니다. 관리자 페이지에서 링크를 넣으면 다시 셔플에 들어갑니다.
+
+### 고친 내용이 저장되는 곳
+
+- **교실 PC:** `data/overrides.json` 에 저장됩니다. 그대로 남습니다.
+- **Render 무료 서버:** 잠들거나 다시 시작하면 서버의 파일이 지워집니다. 아래처럼 깃허브에 저장하도록 설정하면 계속 유지됩니다.
+
+#### Render에서 깃허브에 저장하기 (처음 한 번)
+
+1. 깃허브 → Settings → Developer settings → Personal access tokens → **Fine-grained tokens** → Generate new token
+2. Repository access: **Only select repositories** → `teacherbonus`
+3. Permissions → Repository permissions → **Contents: Read and write**
+4. 만든 토큰을 복사합니다.
+5. Render 대시보드 → `song-quiz` 서비스 → **Environment** 에서 두 값을 추가하고 저장합니다.
+   - `GITHUB_TOKEN` = 복사한 토큰
+   - `ADMIN_PASSWORD` = 관리자 페이지 비밀번호 (원하는 값)
+
+저장 위치는 저장소의 `song-quiz-data/overrides.json` 입니다. `song-quiz` 폴더 밖이라 고칠 때마다 서버가 다시 배포되지 않습니다.
+
 ## 구조
 
 ```
@@ -169,11 +203,14 @@ server/
   answer.js    정답 비교, 초성 힌트
   profanity.js 욕설·비속어 블라인드
   charts.js    연도별 차트 읽기, 셔플
-  youtube.js   곡 → 유튜브 영상 찾기 + 캐시
+  youtube.js   곡 → 유튜브 음원 찾기 + 캐시 (후보 정보 포함)
+  overrides.js 관리자가 고친 곡별 설정 저장 (PC 파일 / 깃허브)
+  admin.js     관리자 페이지 API (권한·곡 상태·링크 수정·검사)
   media.js     음원 파일을 라운드마다 무작위 주소로 내보내기
                 (index.js의 /api/qr, /api/join-info: 접속 QR 생성)
 public/
   index.html   로비 · 방 화면
+  admin.html   음원 관리 페이지
   css/style.css
   js/app.js    화면과 소켓 이벤트
   js/avatar.js 캐릭터 그리기
@@ -181,15 +218,16 @@ public/
   js/player.js 소리 전용 재생기 (음원 파일 / 유튜브, 서버 시각에 맞춰 동시 재생)
 scripts/import-chart.js
 test/profanity.test.js  비속어 필터 테스트 (가려야 할 표현·가리면 안 되는 일상어)
-test/flow.test.js  3명 접속 흐름 테스트 (서버를 켠 뒤 npm test)
+test/admin.test.js  관리자 권한·셔플 제외 테스트 (서버를 직접 띄움)
+test/flow.test.js  3명 접속 흐름 테스트 (ALLOW_NO_AUDIO=1 로 서버를 켠 뒤)
 start-windows.bat  윈도우 더블클릭 실행
 start-mac.command  맥 더블클릭 실행
 ```
 
 ## 다음 할 일
 
-- [x] 멜론 2010년 TOP 50
-- [ ] 2011~2019 → 2000년대 → 2020년대
+- [x] 멜론 2010·2011년 TOP 50
+- [ ] 2012~2019 → 2000년대 → 2020년대
 - [x] 배포 방식: 교실·집 PC에서 실행 + 테스트용 Render 링크
 - [x] 영어 제목 한글 발음 인정
 - [x] 소리만 재생, 음원 파일 지원

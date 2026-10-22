@@ -75,6 +75,7 @@ kbd {
   cursor: pointer;
   transition: background-color .15s, border-color .15s, transform .1s;
 }
+a.btn { text-decoration: none; }
 .btn:hover:not(:disabled) { background: var(--surface-2); }
 .btn:active:not(:disabled) { transform: scale(.98); }
 .btn:disabled { opacity: .45; cursor: not-allowed; }

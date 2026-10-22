@@ -65,14 +65,19 @@ function shuffle(list) {
   return arr;
 }
 
-/** 선택한 연도들의 곡을 모아 섞은 뒤 count곡을 뽑는다 */
-function buildPlaylist(years, count) {
+/** 선택한 연도들의 곡을 모아 섞는다 (eligible: 셔플에 넣을 곡만 남기는 조건) */
+function buildPool(years, eligible = () => true) {
   const pool = [];
   for (const y of years) {
     const chart = charts.get(Number(y));
-    if (chart) pool.push(...chart.songs);
+    if (chart) pool.push(...chart.songs.filter(eligible));
   }
-  return shuffle(pool).slice(0, Math.max(1, count));
+  return shuffle(pool);
+}
+
+function songsOf(year) {
+  const chart = charts.get(Number(year));
+  return chart ? chart.songs : [];
 }
 
 function hasYear(year) {
@@ -97,4 +102,4 @@ function audioFileFor(song) {
 
 loadCharts();
 
-module.exports = { loadCharts, yearCatalog, buildPlaylist, hasYear, audioFileFor, FIRST_YEAR, LAST_YEAR };
+module.exports = { loadCharts, yearCatalog, buildPool, songsOf, hasYear, audioFileFor, FIRST_YEAR, LAST_YEAR };

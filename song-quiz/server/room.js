@@ -1,9 +1,10 @@
 // 방 하나의 상태와 게임 진행
-const { buildPlaylist, hasYear, audioFileFor } = require('./charts');
+const { buildPool, hasYear, audioFileFor } = require('./charts');
+const overrides = require('./overrides');
 const media = require('./media');
 const { isCorrect, chosungHint } = require('./answer');
 const { censor } = require('./profanity');
-const { resolveVideo, markBad } = require('./youtube');
+const { resolveVideo, markBad, knownMissing } = require('./youtube');
 
 const crypto = require('crypto');
 
@@ -13,6 +14,17 @@ const PLAYER_GRACE_MS = 2 * 60 * 1000;
 const HOST_GRACE_MS = 10 * 60 * 1000;
 const LOAD_TIMEOUT_MS = 6000;
 const SKIP_REVEAL_MS = 4000; // 정답 전에 스킵했을 때 정답을 보여주는 시간
+const MAX_MISSES_IN_A_ROW = 12; // 음원을 연달아 못 찾으면 (인터넷 문제 등) 게임을 끝낸다
+// 테스트·오프라인용: 음원이 없어도 힌트만으로 진행 (기본은 음원 없는 곡을 셔플에서 제외)
+const ALLOW_NO_AUDIO = process.env.ALLOW_NO_AUDIO === '1';
+
+/** 셔플에 넣을 곡: 관리자가 제외하지 않았고, 음원이 없다고 확인되지 않은 곡 */
+function eligible(song) {
+  const o = overrides.get(song);
+  if (o && o.disabled) return false;
+  if (audioFileFor(song)) return true;
+  return ALLOW_NO_AUDIO || !knownMissing(song);
+}
 
 const DEFAULT_SETTINGS = {
   years: [],
@@ -49,6 +61,8 @@ class Room {
     this.status = 'waiting'; // waiting | loading | playing | reveal | ended
     this.settings = { ...DEFAULT_SETTINGS, years: defaultYear ? [defaultYear] : [] };
     this.playlist = [];
+    this.reserve = [];
+    this.skipped = 0;
     this.index = -1;
     this.round = null;
     this.timers = [];
@@ -289,8 +303,13 @@ class Room {
     if (!this.isHostSocket(socketId)) return { error: '방장만 시작할 수 있어요.' };
     if (this.status !== 'waiting' && this.status !== 'ended') return { error: '이미 진행 중이에요.' };
     if (!this.settings.years.length) return { error: '연도를 하나 이상 고르세요.' };
-    this.playlist = buildPlaylist(this.settings.years, this.settings.songCount);
-    if (!this.playlist.length) return { error: '고른 연도에 곡이 없어요.' };
+    const pool = buildPool(this.settings.years, eligible);
+    if (!pool.length) return { error: '재생할 수 있는 곡이 없어요. 관리자 페이지에서 음원을 확인하세요.' };
+    this.playlist = pool.slice(0, this.settings.songCount);
+    this.reserve = pool.slice(this.settings.songCount); // 음원을 못 찾은 곡 대신 넣을 예비 곡
+    this.skipped = 0;
+    // 처음 몇 곡은 미리 찾아 둔다
+    this.playlist.slice(0, 3).forEach((song) => { if (!audioFileFor(song)) resolveVideo(song).catch(() => {}); });
 
     for (const p of this.players.values()) {
       p.score = 0;
@@ -313,10 +332,9 @@ class Room {
       return;
     }
 
-    const song = this.playlist[this.index];
     this.status = 'loading';
     this.round = {
-      song,
+      song: this.playlist[this.index],
       hints: [],
       videoId: null,
       audioUrl: null,
@@ -329,23 +347,49 @@ class Room {
     this.broadcastState();
 
     const gen = this.generation;
-    // 1순위: 선생님이 넣어 둔 음원 파일 (광고 없음, 정확한 동기화)
-    // 2순위: 유튜브 (영상은 숨기고 소리만)
-    const audioFile = audioFileFor(song);
-    const audioUrl = audioFile ? media.register(audioFile) : null;
-    const videoId = audioUrl ? null : await Promise.race([
-      resolveVideo(song),
-      new Promise((resolve) => setTimeout(() => resolve(null), LOAD_TIMEOUT_MS)),
-    ]);
-    if (gen !== this.generation) return; // 그 사이 방이 바뀜
+    let audioUrl = null;
+    let videoId = null;
+    let misses = 0;
+    for (;;) {
+      const current = this.playlist[this.index];
+      this.round.song = current;
+      // 1순위: 선생님이 넣어 둔 음원 파일 (광고 없음, 정확한 동기화)
+      // 2순위: 유튜브 음원 버전 (영상은 숨기고 소리만)
+      const audioFile = audioFileFor(current);
+      audioUrl = audioFile ? media.register(audioFile) : null;
+      videoId = audioUrl ? null : await Promise.race([
+        resolveVideo(current),
+        new Promise((resolve) => setTimeout(() => resolve(null), LOAD_TIMEOUT_MS)),
+      ]);
+      if (gen !== this.generation) return; // 그 사이 방이 바뀜
+      if (audioUrl || videoId || ALLOW_NO_AUDIO) break;
+
+      // 음원을 못 찾은 곡은 건너뛰고 예비 곡으로 바꾼다 (곡 수 유지)
+      this.skipped += 1;
+      misses += 1;
+      console.log(`[room ${this.id}] 음원 없음, 건너뜀: ${current.artist} - ${current.title}`);
+      if (misses >= MAX_MISSES_IN_A_ROW) {
+        this.system('음원을 계속 찾지 못해 게임을 끝냈어요. 인터넷 연결과 관리자 페이지를 확인해 주세요.', 'warn');
+        this.endGame();
+        return;
+      }
+      if (this.reserve.length) {
+        this.playlist[this.index] = this.reserve.shift();
+      } else {
+        this.playlist.splice(this.index, 1);
+        if (this.index >= this.playlist.length) { this.endGame(); return; }
+      }
+    }
+    const song = this.round.song;
 
     // 다음 곡을 미리 찾아 둔다
     const upcoming = this.playlist[this.index + 1];
     if (upcoming && !audioFileFor(upcoming)) resolveVideo(upcoming).catch(() => {});
 
+    const custom = overrides.get(song);
     const startSeconds = this.settings.startMode === 'highlight'
       ? (song.highlight ?? 45 + Math.floor(Math.random() * 30))
-      : (song.start ?? 0);
+      : (custom?.start ?? song.start ?? 0); // 관리자가 정한 시작 위치
 
     Object.assign(this.round, {
       videoId,
@@ -356,7 +400,7 @@ class Room {
       hints: [{ key: 'year', label: '연도', value: `${song.year}년` }],
     });
     this.status = 'playing';
-    if (!videoId && !audioUrl) this.system('이 곡은 음원을 찾지 못했어요. 힌트로 맞혀 보세요.', 'warn');
+    if (!videoId && !audioUrl) this.system('음원 없이 힌트로만 진행하는 곡이에요.', 'warn');
     this.broadcastState();
 
     const total = this.settings.roundTime * 1000 + 800;
@@ -405,6 +449,7 @@ class Room {
       .sort((a, b) => b.score - a.score)
       .map((p, i) => ({ place: i + 1, id: p.id, nickname: p.nickname, avatar: p.avatar, score: p.score, correct: p.correct }));
     this.lastResults = { ranking, total: this.playlist.length };
+    if (this.skipped) this.system(`음원을 찾지 못한 곡 ${this.skipped}개는 건너뛰었어요. 관리자 페이지에서 확인할 수 있어요.`);
     this.system('게임 끝! 방장이 다시 시작할 수 있어요.', 'accent');
     this.broadcastState();
   }
@@ -491,6 +536,15 @@ class Room {
   videoFailed(socketId, videoId) {
     if (!this.round || !videoId || this.round.videoId !== videoId) return;
     const replacement = markBad(this.round.song, videoId);
+    if (!replacement && !ALLOW_NO_AUDIO && (this.status === 'playing' || this.status === 'loading')) {
+      // 재생할 수 있는 음원이 더 없으면 이 곡을 빼고 다른 곡으로 다시 시작
+      this.skipped += 1;
+      this.system('재생할 수 없는 곡이라 다른 곡으로 바꿀게요.', 'warn');
+      this.playlist.splice(this.index, 1, ...(this.reserve.length ? [this.reserve.shift()] : []));
+      this.index -= 1;
+      this.nextRound();
+      return;
+    }
     this.round.videoId = replacement;
     if (!replacement) this.system('이 곡은 재생할 수 있는 영상이 없어요. 힌트로 맞혀 보세요.', 'warn');
     this.emit('round:video', { videoId: replacement, startSeconds: this.round.startSeconds, startedAt: this.round.startedAt, serverNow: Date.now() });

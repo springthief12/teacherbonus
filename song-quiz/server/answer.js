@@ -39,7 +39,7 @@ function acceptedAnswers(song) {
   const inner = String(song.title || '').match(/\(([^)]+)\)/g) || [];
   inner.forEach((part) => {
     const body = part.slice(1, -1);
-    if (!/^(feat|ft|with|prod)\b/i.test(body.trim())) add(body);
+    if (!/^(feat|ft|with|prod|narr)\b/i.test(body.trim())) add(body);
   });
 
   (song.aliases || []).forEach(add);

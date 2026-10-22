@@ -9,6 +9,7 @@ const { yearCatalog, loadCharts } = require('./charts');
 const media = require('./media');
 const { Room } = require('./room');
 const { cleanName } = require('./profanity');
+const { router: adminRouter } = require('./admin');
 
 const PORT = Number(process.env.PORT) || 3000;
 
@@ -26,6 +27,9 @@ app.get('/media/:token', (req, res) => {
   return res.sendFile(file, { headers: { 'Cache-Control': 'no-store' } });
 });
 app.get('/api/years', (_req, res) => res.json(yearCatalog()));
+// 관리자 페이지 (곡별 유튜브 음원 확인·수정)
+app.use('/api/admin', adminRouter());
+app.get('/admin', (_req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'admin.html')));
 app.get('/healthz', (_req, res) => res.send('ok'));
 
 // 접속 QR: 선생님 PC에서 localhost로 열었을 때도 학생용 주소(같은 와이파이 IP)를 알려 준다
@@ -200,6 +204,7 @@ server.listen(PORT, () => {
   console.log('  그때 그 노래 서버가 켜졌어요.');
   console.log(`  이 컴퓨터에서:   http://localhost:${PORT}`);
   for (const ip of lanAddresses()) console.log(`  같은 와이파이:   http://${ip}:${PORT}`);
+  console.log(`  음원 관리:       http://localhost:${PORT}/admin  (이 PC에서는 비밀번호 없이)`);
   console.log('  끄려면 이 창을 닫거나 Ctrl+C');
   console.log('');
 });
