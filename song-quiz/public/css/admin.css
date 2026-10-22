@@ -104,6 +104,9 @@
 .preview-info strong { font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .preview-info span { font-size: 12px; color: #CFC6B8; }
 .preview .btn { background: transparent; color: var(--surface); border-color: #5A5045; }
+.preview .btn.primary { background: var(--yellow); color: var(--ink); border-color: var(--yellow); }
+.preview-actions { display: flex; gap: 8px; }
+.preview-actions .btn[hidden] { display: none; }
 
 @media (max-width: 760px) {
   .admin { padding: 24px 14px 180px; }
@@ -117,5 +120,6 @@
   .cand-actions { grid-column: 1 / -1; }
   .preview { grid-template-columns: 120px minmax(0, 1fr); }
   .preview-frame { width: 120px; height: 68px; }
-  .preview .btn { grid-column: 1 / -1; }
+  .preview-actions { grid-column: 1 / -1; }
+  .preview-actions .btn { flex: 1; }
 }

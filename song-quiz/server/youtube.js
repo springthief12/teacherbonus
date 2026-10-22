@@ -274,11 +274,12 @@ function status(song) {
   else if (auto) { source = 'search'; youtubeId = auto; }
   else if (auto === null) source = 'missing';
   const current = entry && entry.candidates.find((c) => c.id === youtubeId);
+  const pinned = source === 'override' ? o : null; // 확인할 때 저장해 둔 영상 정보
   return {
     source,
     youtubeId,
-    videoTitle: current ? current.title : null,
-    videoChannel: current ? current.channel : null,
+    videoTitle: current ? current.title : (pinned && pinned.videoTitle) || null,
+    videoChannel: current ? current.channel : (pinned && pinned.videoChannel) || null,
     checkedAt: entry ? entry.checkedAt : null,
     candidates: entry ? entry.candidates : [],
     bad: entry ? entry.bad : [],

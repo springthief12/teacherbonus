@@ -120,7 +120,8 @@ function get(song) {
   return store.songs[keyOf(song)] || null;
 }
 
-/** patch: { youtubeId?, start?, disabled? } (null이면 지움) */
+/** patch: { youtubeId?, start?, disabled?, videoTitle?, videoChannel? } (null이면 지움)
+ *  youtubeId가 있으면 '확인한 곡': 이 영상으로 고정되고 다시 검색하지 않는다 */
 function set(song, patch) {
   const pending = writeQueue.catch(() => {}).then(async () => {
     await ready;

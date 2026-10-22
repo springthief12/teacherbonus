@@ -66,10 +66,11 @@ function view(song) {
 }
 
 // 연도 전체 검사 (검사 안 한 곡만, 두 곡씩)
+// 확인한 곡(음원 고정)·음원 파일이 있는 곡·셔플에서 뺀 곡은 검사하지 않는다
 const checking = new Map(); // year -> { total, done }
 async function checkYear(year) {
   if (checking.has(year)) return;
-  const targets = songsOf(year).filter((s) => !audioFileFor(s) && yt.status(s).source === 'unchecked');
+  const targets = songsOf(year).filter((s) => !audioFileFor(s) && !(overrides.get(s) || {}).disabled && yt.status(s).source === 'unchecked');
   const job = { total: targets.length, done: 0 };
   checking.set(year, job);
   const queue = targets.slice();
@@ -145,12 +146,32 @@ function router() {
     const song = findSong(req.body?.key);
     if (!song) return res.status(404).json({ error: '곡을 찾지 못했어요.' });
     const patch = {};
-    if ('youtube' in req.body) {
-      if (req.body.youtube === null || req.body.youtube === '') patch.youtubeId = null; // 자동 검색으로 되돌리기
-      else {
+    const now = yt.status(song);
+    // 영상 제목·채널도 함께 저장해 둔다 (서버가 다시 시작돼 검색 기록이 지워져도 관리자 화면에 무슨 영상인지 보이게)
+    const remember = (id) => {
+      const c = (now.candidates || []).find((x) => x.id === id);
+      patch.videoTitle = c ? c.title : null;
+      patch.videoChannel = c ? c.channel : null;
+    };
+    if (req.body.confirm) {
+      // 확인: 지금 자동으로 고른 음원을 그대로 고정 → 이 곡은 더는 검색·검사하지 않는다
+      if (now.source === 'override') return res.json({ ok: true, song: view(song), storage: overrides.info() });
+      if (now.source !== 'search' || !now.youtubeId) {
+        return res.status(400).json({ error: '확인할 음원이 없어요. 후보에서 고르거나 링크를 넣어 주세요.' });
+      }
+      patch.youtubeId = now.youtubeId;
+      remember(now.youtubeId);
+    } else if ('youtube' in req.body) {
+      if (req.body.youtube === null || req.body.youtube === '') {
+        // 확인 취소 → 자동 검색으로 되돌리기
+        patch.youtubeId = null;
+        patch.videoTitle = null;
+        patch.videoChannel = null;
+      } else {
         const id = parseYoutube(req.body.youtube);
         if (!id) return res.status(400).json({ error: '유튜브 주소나 영상 ID를 확인해 주세요.' });
-        patch.youtubeId = id;
+        patch.youtubeId = id; // 직접 고른 음원도 확인한 것으로 본다 (고정)
+        remember(id);
         yt.clearBad(song);
       }
     }

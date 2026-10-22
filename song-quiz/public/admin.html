@@ -15,7 +15,7 @@
     <header class="admin-head">
       <div>
         <h1>음원 관리</h1>
-        <p>곡마다 게임에서 나올 유튜브 음원을 확인하고 고쳐요. 음원을 못 찾은 곡은 셔플에서 빠져요.</p>
+        <p>곡마다 게임에서 나올 유튜브 음원을 듣고 <b>확인</b>을 누르면 그 음원으로 고정되고 더는 검사하지 않아요. 음원을 못 찾은 곡은 셔플에서 빠져요.</p>
       </div>
       <a class="btn" href="/">게임으로</a>
     </header>
@@ -38,7 +38,8 @@
         <div class="seg" id="years" role="group" aria-label="연도"></div>
         <div class="seg" id="filter" role="group" aria-label="보기">
           <button type="button" data-filter="all" aria-pressed="true">전체</button>
-          <button type="button" data-filter="problem" aria-pressed="false">확인이 필요한 곡</button>
+          <button type="button" data-filter="todo" aria-pressed="false">확인 전</button>
+          <button type="button" data-filter="problem" aria-pressed="false">문제 있는 곡</button>
         </div>
         <div class="toolbar-end">
           <span class="summary" id="summary"></span>
@@ -58,7 +59,10 @@
       <strong id="preview-title"></strong>
       <span id="preview-sub"></span>
     </div>
-    <button class="btn small" id="preview-close" type="button">닫기</button>
+    <div class="preview-actions">
+      <button class="btn small primary" id="preview-confirm" type="button" hidden>이 음원 확인</button>
+      <button class="btn small" id="preview-close" type="button">닫기</button>
+    </div>
   </aside>
 
   <div class="toast" id="toast" role="status" hidden></div>

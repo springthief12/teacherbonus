@@ -30,23 +30,34 @@ function restore() {
   fs.rmSync(AUDIO, { recursive: true, force: true });
 }
 
-// 준비: 2010년은 1~3위만 음원 파일, 나머지는 '음원 없음'으로 검사된 상태
+// 준비: 2010년
+//  1~3위: 음원 파일 / 4위: 뮤직비디오만 찾음(음원 없음) / 5위: 자동으로 음원을 찾음(확인 전)
+//  6위: 검사 전 / 7위: 셔플에서 뺌(검사 전) / 8위: 확인함(검색 기록 없이 설정만 남은 상태 = 서버 재시작 뒤)
+//  나머지: '음원 없음'으로 검사된 상태
 const { squash } = require('../server/answer');
 const chart = require('../data/charts/2010.json');
+const song = (rank) => chart.songs.find((s) => s.rank === rank);
+const AUTO_TITLE = `${song(5).artist} - ${song(5).title} (Audio)`;
 const cache = {};
 for (const s of chart.songs) {
-  if (s.rank <= 3) continue;
+  if (s.rank <= 3 || s.rank >= 6 && s.rank <= 8) continue;
   cache[`${squash(s.artist)}|${squash(s.title)}`] = {
     v: 3,
     candidates: s.rank === 4
       ? [{ id: 'AAAAAAAAAAA', title: `${s.title} (Official MV)`, channel: '어딘가', seconds: 230, score: 2, ok: false }]
-      : [],
+      : s.rank === 5
+        ? [{ id: 'CCCCCCCCCCC', title: AUTO_TITLE, channel: `${s.artist} - Topic`, seconds: 220, score: 18, ok: true }]
+        : [],
     bad: [],
     checkedAt: Date.now(),
   };
 }
 fs.writeFileSync(CACHE, JSON.stringify(cache));
-if (fs.existsSync(OVERRIDES)) fs.unlinkSync(OVERRIDES);
+const okey = (s) => `2010|${squash(s.artist)}|${squash(s.title)}`;
+fs.writeFileSync(OVERRIDES, JSON.stringify({ songs: {
+  [okey(song(7))]: { disabled: true, title: song(7).title, artist: song(7).artist, updatedAt: 1 },
+  [okey(song(8))]: { youtubeId: 'EEEEEEEEEEE', videoTitle: '저장해 둔 음원 제목', videoChannel: '가수 - Topic', title: song(8).title, artist: song(8).artist, updatedAt: 1 },
+} }));
 fs.mkdirSync(AUDIO, { recursive: true });
 for (const r of [1, 2, 3]) {
   const buf = Buffer.alloc(44 + 16000);
@@ -145,8 +156,26 @@ async function playWholeGame(songCount) {
 
     // ---------- 셔플 제외 ----------
     let game = await playWholeGame(10);
-    check('음원 없는 곡은 셔플에서 제외 (음원 있는 3곡만)', game.started.ok && game.seen.length === 3 && game.seen.every((x) => x.audio) && game.seen[0].total === 3,
+    const vids = (g, id) => g.seen.filter((x) => x.video === id).length;
+    check('음원 없는 곡·뺀 곡은 셔플에서 제외 (음원 파일 3 + 자동 1 + 확인함 1)',
+      game.started.ok && game.seen.length === 5 && game.seen.every((x) => x.audio || x.video) && vids(game, 'CCCCCCCCCCC') === 1 && vids(game, 'EEEEEEEEEEE') === 1,
       `나온 곡 ${game.seen.length}개`);
+
+    // ---------- 확인 (음원 고정) ----------
+    check('자동으로 찾은 곡은 확인 전', byRank(5).source === 'search' && byRank(5).youtubeId === 'CCCCCCCCCCC');
+    check('확인한 곡은 검색 기록이 없어도 저장해 둔 영상 정보로 표시', byRank(8).source === 'override' && byRank(8).videoTitle === '저장해 둔 음원 제목');
+    const noAudio = await req('/api/admin/song', { body: { key: byRank(4).key, confirm: true } });
+    check('음원이 없는 곡은 확인 거절', noAudio.status === 400);
+    const confirmed = await req('/api/admin/song', { body: { key: byRank(5).key, confirm: true } });
+    check('확인 → 지금 음원으로 고정 (영상 정보도 저장)', confirmed.status === 200 && confirmed.data.song.source === 'override'
+      && confirmed.data.song.youtubeId === 'CCCCCCCCCCC' && confirmed.data.song.videoTitle === AUTO_TITLE);
+    const pinned = JSON.parse(fs.readFileSync(OVERRIDES, 'utf8')).songs[byRank(5).key] || {};
+    check('확인한 음원이 설정 파일에 저장', pinned.youtubeId === 'CCCCCCCCCCC' && pinned.videoTitle === AUTO_TITLE);
+    const again = await req('/api/admin/song', { body: { key: byRank(5).key, confirm: true } });
+    check('이미 확인한 곡을 다시 확인해도 그대로', again.status === 200 && again.data.song.youtubeId === 'CCCCCCCCCCC');
+    const checkAll = await req('/api/admin/check', { body: { year: 2010 } });
+    check('검사 안 한 곡 검사: 확인한 곡·뺀 곡은 건너뜀 (6위만)', checkAll.data.checking && checkAll.data.checking.total === 1,
+      `검사 대상 ${checkAll.data.checking && checkAll.data.checking.total}곡`);
 
     // 관리자가 4위 곡에 링크를 직접 넣으면 다시 셔플에 들어감
     const key4 = byRank(4).key;
@@ -158,8 +187,9 @@ async function playWholeGame(songCount) {
     const key2 = byRank(2).key;
     await req('/api/admin/song', { body: { key: key2, disabled: true } });
     game = await playWholeGame(10);
-    const videos = game.seen.filter((x) => x.video === 'BBBBBBBBBBB').length;
-    check('직접 넣은 링크 곡은 다시 포함, 제외한 곡은 빠짐', game.seen.length === 3 && videos === 1, `나온 곡 ${game.seen.length}개, 링크 곡 ${videos}개`);
+    const videos = vids(game, 'BBBBBBBBBBB');
+    check('직접 넣은 링크 곡은 다시 포함, 제외한 곡은 빠짐', game.seen.length === 5 && videos === 1 && vids(game, 'CCCCCCCCCCC') === 1,
+      `나온 곡 ${game.seen.length}개, 링크 곡 ${videos}개`);
 
     const saved = JSON.parse(fs.readFileSync(OVERRIDES, 'utf8'));
     check('이 PC 파일(data/overrides.json)에 저장', Object.values(saved.songs).some((v) => v.youtubeId === 'BBBBBBBBBBB') && Object.values(saved.songs).some((v) => v.disabled));
@@ -167,6 +197,9 @@ async function playWholeGame(songCount) {
     // 되돌리기
     const reset = await req('/api/admin/song', { body: { key: key4, youtube: null, start: null } });
     check('자동 검색으로 되돌리기', reset.data.song.source === 'missing');
+    const undo = await req('/api/admin/song', { body: { key: byRank(5).key, youtube: null } });
+    const afterUndo = JSON.parse(fs.readFileSync(OVERRIDES, 'utf8')).songs[byRank(5).key];
+    check('확인 취소 → 자동 검색 결과로, 저장된 설정도 지움', undo.data.song.source === 'search' && afterUndo === undefined);
 
     // 관리자 페이지 HTML
     const page = await fetch(`${URL}/admin`);
