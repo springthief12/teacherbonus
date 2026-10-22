@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",
-    "test": "node test/profanity.test.js && node test/admin.test.js && node test/flow.test.js"
+    "test": "node test/persistence.test.js && node test/profanity.test.js && node test/admin.test.js && node test/flow.test.js"
   },
   "license": "MIT",
   "dependencies": {
@@ -24,3 +24,4 @@
   },
   "private": true
 }
+
