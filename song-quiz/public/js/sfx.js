@@ -1,9 +1,10 @@
-// 효과음: 파일 없이 브라우저에서 바로 만드는 짧고 부드러운 소리
-// 음량은 노래보다 한참 작게, 높은 음은 짧게 끝나도록 잡았다.
+// 효과음: 파일 없이 브라우저에서 바로 만드는 짧은 소리
+// 노래에 묻히지 않도록 크게 내고, 효과음이 나는 동안 노래 소리를 잠깐 낮춘다(onDuck).
 (function () {
   let ctx = null;
   let master = null;
   let enabled = true;
+  let onDuck = () => {};
   try { enabled = localStorage.getItem('songquiz.sfx') !== 'off'; } catch { /* 저장 불가 환경 */ }
 
   function ensure() {
@@ -12,63 +13,72 @@
       if (!AC) return null;
       ctx = new AC();
       master = ctx.createGain();
-      master.gain.value = 0.45;
-      const soften = ctx.createBiquadFilter(); // 귀에 거슬리는 고음을 살짝 깎는다
-      soften.type = 'lowpass';
-      soften.frequency.value = 5200;
-      master.connect(soften);
-      soften.connect(ctx.destination);
+      master.gain.value = 1.0;
+      // 작은 소리는 키우고 큰 소리는 눌러서 또렷하고 일정하게
+      const comp = ctx.createDynamicsCompressor();
+      comp.threshold.value = -20;
+      comp.knee.value = 6;
+      comp.ratio.value = 5;
+      comp.attack.value = 0.002;
+      comp.release.value = 0.12;
+      const makeup = ctx.createGain();
+      makeup.gain.value = 1.6;
+      master.connect(comp);
+      comp.connect(makeup);
+      makeup.connect(ctx.destination);
     }
     if (ctx.state === 'suspended') ctx.resume().catch(() => {});
     return ctx;
   }
 
-  function tone({ freq, to, type = 'sine', start = 0, dur = 0.12, gain = 0.08, attack = 0.008 }) {
+  function tone({ freq, to, type = 'triangle', start = 0, dur = 0.12, gain = 0.2, attack = 0.006, bright = 0 }) {
     const t0 = ctx.currentTime + start;
-    const osc = ctx.createOscillator();
-    const amp = ctx.createGain();
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, t0);
-    if (to) osc.frequency.exponentialRampToValueAtTime(to, t0 + dur);
-    amp.gain.setValueAtTime(0.0001, t0);
-    amp.gain.exponentialRampToValueAtTime(gain, t0 + attack);
-    amp.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-    osc.connect(amp);
-    amp.connect(master);
-    osc.start(t0);
-    osc.stop(t0 + dur + 0.03);
+    const voices = [{ f: freq, g: gain, type }];
+    if (bright) voices.push({ f: freq * 2, g: gain * bright, type: 'sine' }); // 한 옥타브 위를 섞어 또렷하게
+    for (const v of voices) {
+      const osc = ctx.createOscillator();
+      const amp = ctx.createGain();
+      osc.type = v.type;
+      osc.frequency.setValueAtTime(v.f, t0);
+      if (to) osc.frequency.exponentialRampToValueAtTime(to * (v.f / freq), t0 + dur);
+      amp.gain.setValueAtTime(0.0001, t0);
+      amp.gain.exponentialRampToValueAtTime(v.g, t0 + attack);
+      amp.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+      osc.connect(amp);
+      amp.connect(master);
+      osc.start(t0);
+      osc.stop(t0 + dur + 0.03);
+    }
   }
 
   const C5 = 523.25; const E5 = 659.25; const G5 = 783.99; const C6 = 1046.5; const G4 = 392;
 
+  // [소리, 노래를 낮출 시간(ms)]
   const SOUNDS = {
-    // 버튼: 아주 짧은 '톡'
-    click: () => tone({ freq: 1100, to: 820, dur: 0.045, gain: 0.04 }),
-    // 정답: 도-미-솔-도 올라가는 실로폰 느낌
-    correct: () => [C5, E5, G5, C6].forEach((f, i) => tone({ freq: f, type: 'triangle', start: i * 0.075, dur: 0.3, gain: 0.1 })),
-    // 넘기기 표 하나: 작은 '뽁'
-    vote: () => tone({ freq: 700, to: 480, dur: 0.11, gain: 0.06 }),
-    // 정답 전에 넘김: 아래로 미끄러지는 소리
-    skip: () => tone({ freq: 640, to: 300, type: 'triangle', dur: 0.24, gain: 0.07 }),
-    // 시간 끝, 아무도 못 맞힘: 내려가는 두 음
-    timeout: () => { tone({ freq: C5, type: 'triangle', dur: 0.2, gain: 0.07 }); tone({ freq: G4, type: 'triangle', start: 0.17, dur: 0.32, gain: 0.07 }); },
-    // 다음 곡으로 넘어감: '띵동'
-    next: () => { tone({ freq: G5, dur: 0.16, gain: 0.06 }); tone({ freq: C6, start: 0.11, dur: 0.24, gain: 0.06 }); },
-    // 게임 시작
-    start: () => [G4, C5, E5, G5].forEach((f, i) => tone({ freq: f, type: 'triangle', start: i * 0.09, dur: 0.22, gain: 0.08 })),
-    // 게임 끝: 짧은 팡파르
-    end: () => {
-      [C5, E5, G5].forEach((f, i) => tone({ freq: f, type: 'triangle', start: i * 0.12, dur: 0.24, gain: 0.08 }));
-      tone({ freq: C6, type: 'triangle', start: 0.38, dur: 0.6, gain: 0.09 });
-    },
+    click: [() => tone({ freq: 1200, to: 900, type: 'sine', dur: 0.05, gain: 0.12 }), 0],
+    correct: [() => [C5, E5, G5, C6].forEach((f, i) => tone({ freq: f, start: i * 0.075, dur: 0.34, gain: 0.32, bright: 0.45 })), 900],
+    vote: [() => tone({ freq: 760, to: 520, type: 'square', dur: 0.12, gain: 0.12 }), 250],
+    skip: [() => tone({ freq: 660, to: 300, dur: 0.28, gain: 0.3, bright: 0.3 }), 450],
+    timeout: [() => { tone({ freq: C5, dur: 0.22, gain: 0.28, bright: 0.3 }); tone({ freq: G4, start: 0.18, dur: 0.36, gain: 0.28, bright: 0.3 }); }, 700],
+    next: [() => { tone({ freq: G5, dur: 0.18, gain: 0.26, bright: 0.4 }); tone({ freq: C6, start: 0.12, dur: 0.28, gain: 0.26, bright: 0.4 }); }, 550],
+    start: [() => [G4, C5, E5, G5].forEach((f, i) => tone({ freq: f, start: i * 0.09, dur: 0.24, gain: 0.28, bright: 0.35 })), 700],
+    end: [() => {
+      [C5, E5, G5].forEach((f, i) => tone({ freq: f, start: i * 0.12, dur: 0.26, gain: 0.3, bright: 0.35 }));
+      tone({ freq: C6, start: 0.38, dur: 0.7, gain: 0.32, bright: 0.4 });
+    }, 1200],
   };
 
   window.Sfx = {
     play(name) {
-      if (!enabled || !SOUNDS[name] || !ensure()) return;
-      try { SOUNDS[name](); } catch { /* 소리 장치 문제는 무시 */ }
+      const sound = SOUNDS[name];
+      if (!enabled || !sound || !ensure()) return;
+      try {
+        sound[0]();
+        if (sound[1]) onDuck(sound[1]);
+      } catch { /* 소리 장치 문제는 무시 */ }
     },
     unlock() { ensure(); },
+    onDuck(fn) { onDuck = fn; },
     get enabled() { return enabled; },
     setEnabled(on) {
       enabled = Boolean(on);

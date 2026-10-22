@@ -380,14 +380,14 @@
     const r = s.round;
     const votes = s.players.filter((p) => p.skipVote).length;
 
-    const pane = { waiting: 'waiting', loading: 'play', playing: 'play', reveal: 'reveal', ended: 'ended' }[s.status];
-    $('#view-room').dataset.mode = pane === 'play' || pane === 'reveal' ? 'game' : 'room';
-    for (const name of ['waiting', 'play', 'reveal', 'ended']) $(`#pane-${name}`).hidden = name !== pane;
+    // 진행과 정답 공개는 같은 힌트 화면을 쓴다 (공개 때 세 칸이 모두 채워짐)
+    const pane = { waiting: 'waiting', loading: 'play', playing: 'play', reveal: 'play', ended: 'ended' }[s.status];
+    $('#view-room').dataset.mode = pane === 'play' ? 'game' : 'room';
+    for (const name of ['waiting', 'play', 'ended']) $(`#pane-${name}`).hidden = name !== pane;
     $('#screen').dataset.status = s.status;
 
     if (pane === 'waiting') renderWaiting();
-    if (pane === 'play') { renderHints(); renderStatusLine(); }
-    if (pane === 'reveal') renderReveal();
+    if (pane === 'play') { renderHints(); renderResult(); renderStatusLine(); }
     if (pane === 'ended') renderEnded();
 
     renderSeats();
@@ -426,24 +426,11 @@
       $('#settings-summary').innerHTML = items.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(String(v))}</dd></div>`).join('');
     }
     const chosen = new Set(state.settings.years);
-    const decades = new Map();
-    for (const y of years) {
-      const d = Math.floor(y.year / 10) * 10;
-      if (!decades.has(d)) decades.set(d, []);
-      decades.get(d).push(y);
-    }
-    $('#year-grid').innerHTML = [...decades.entries()].map(([d, list]) => `
-      <div class="decade">
-        <span class="decade-name">${d}년대</span>
-        <div class="decade-years">
-          ${list.slice().sort((a, b) => a.year - b.year).map((y) => `
-            <button type="button" class="year" data-year="${y.year}"
-              aria-pressed="${chosen.has(y.year)}" ${!y.count || !host ? 'disabled' : ''}
-              title="${y.count ? `${y.count}곡${y.verified ? '' : ' (샘플)'}` : '데이터 준비 중'}">
-              ${String(y.year).slice(2)}${y.count && !y.verified ? '<i>샘플</i>' : ''}
-            </button>`).join('')}
-        </div>
-      </div>`).join('');
+    // 2008~2026년을 한 줄로 (데이터가 없는 해는 '준비 중'으로 눌리지 않음)
+    $('#year-grid').innerHTML = years.slice().sort((a, b) => a.year - b.year).map((y) => `
+      <button type="button" class="year" data-year="${y.year}"
+        aria-pressed="${chosen.has(y.year)}" ${!y.count || !host ? 'disabled' : ''}
+        title="${y.count ? `${y.count}곡` : '데이터 준비 중'}">${y.year}</button>`).join('');
 
     $('#options').innerHTML = OPTION_ORDER.map((key) => `
       <div class="option">
@@ -490,25 +477,39 @@
   $('#btn-again').addEventListener('click', () => socket.emit('game:again'));
 
   // 힌트 3칸: 연도 → 가수 → 제목 초성. 아직 안 열린 칸은 '곧 공개'
+  // 정답이 공개되면 같은 세 칸이 모두 채워진다 (제목 칸은 초성 대신 전체 제목)
   const HINT_SLOTS = [
     { key: 'year', label: '연도' },
     { key: 'artist', label: '가수' },
-    { key: 'chosung', label: '제목 초성' },
+    { key: 'chosung', label: '제목 초성', revealLabel: '제목' },
   ];
   let hintMark = '';
   function renderHints() {
     const r = state?.round;
     if (!r) return;
     const loading = state.status === 'loading';
+    const a = state.status === 'reveal' ? r.answer : null;
     const got = new Map((r.hints || []).map((h) => [h.key, h]));
     const latest = r.hints && r.hints.length ? r.hints[r.hints.length - 1].key : null;
-    const mark = `${r.index}|${(r.hints || []).length}`;
-    const fresh = mark !== hintMark; // 새로 열린 힌트만 살짝 나타나게
+    const mark = `${r.index}|${(r.hints || []).length}|${a ? 'reveal' : ''}`;
+    const fresh = mark !== hintMark; // 새로 열린 칸만 살짝 나타나게
     hintMark = mark;
+
+    const revealed = a ? {
+      year: `${a.year}년<small>${a.rank ? `${a.rank}위` : ''}</small>`,
+      artist: esc(a.artist),
+      chosung: esc(a.title),
+    } : null;
+
     $('#hints').innerHTML = HINT_SLOTS.map((slot) => {
+      if (revealed) {
+        const answerRow = slot.key === 'chosung';
+        const cls = ['hint', 'open', answerRow ? 'answer' : '', answerRow && fresh ? 'fresh' : ''].join(' ');
+        return `<div class="${cls}"><dt>${slot.revealLabel || slot.label}</dt><dd>${revealed[slot.key]}</dd></div>`;
+      }
       const h = got.get(slot.key);
       const cls = ['hint', h ? 'open' : 'locked', h && slot.key === latest ? 'latest' : '', h && slot.key === latest && fresh ? 'fresh' : ''].join(' ');
-      return `<div class="${cls}"><dt>${slot.label}</dt><dd>${h ? esc(h.value) : (loading ? '·' : '곧 공개')}</dd></div>`;
+      return `<div class="${cls}"><dt>${slot.label}</dt><dd>${h ? esc(h.value) : (loading ? '준비 중' : '곧 공개')}</dd></div>`;
     }).join('');
     $('#song-no').textContent = String(r.index + 1);
     $('#song-total').textContent = `/ ${r.total}`;
@@ -521,35 +522,30 @@
     if (!r) return;
     let text = '';
     if (state.status === 'loading') text = '다음 곡을 준비하고 있어요';
+    else if (state.status === 'reveal') text = '';
     else if (!r.videoId && !r.audioUrl) text = '음원 없이 힌트로만 진행하는 곡이에요';
     else if (!hearsMusic()) text = '방장 화면에서 나오는 노래를 듣고 제목을 입력하세요';
     else text = '들리는 노래의 제목을 채팅으로 입력하세요';
     $('#screen-status').textContent = text;
   }
 
-  function renderReveal() {
+  // 머리줄의 결과 표시: 정답 공개 때 맞힌 사람(+점수) 또는 '아무도 못 맞혔어요'
+  function renderResult() {
+    const el = $('#q-result');
     const r = state.round;
-    const a = r.answer;
-    if (!a) return;
-    const key = `${r.index}`;
-    const full = `${a.artist} - ${a.title}`;
-    $('#reveal-title').textContent = full;
-    $('#reveal-title').dataset.text = full;
-    $('#reveal-meta').textContent = `${a.year}년 ${a.rank ? `${a.rank}위` : '차트'}`;
-
+    if (state.status !== 'reveal' || !r) { el.innerHTML = ''; el.className = 'q-result'; lastRevealKey = null; return; }
     const winner = state.players.find((p) => p.id === r.winnerId);
     const pts = pendingReveal && pendingReveal.points ? pendingReveal.points : null;
-    $('#reveal-winner').innerHTML = winner
-      ? `<div class="winner-avatar">${Avatar.svg(winner.avatar)}</div>
-         <div class="winner-text"><strong>${esc(winner.nickname)}</strong>${pts ? `<span class="points">+${pts}</span>` : ''}</div>`
-      : `<div class="winner-text none">${pendingReveal?.reason === 'skip' ? '넘겼어요' : '아무도 못 맞혔어요'}</div>`;
-
+    el.className = `q-result ${winner ? 'won' : 'none'}`;
+    el.innerHTML = winner
+      ? `<span class="q-result-avatar">${Avatar.svg(winner.avatar)}</span><strong>${esc(winner.nickname)}</strong>${pts ? `<span class="points">+${pts}</span>` : ''}`
+      : `<span>${pendingReveal?.reason === 'skip' ? '넘겼어요' : '아무도 못 맞혔어요'}</span>`;
+    const key = `${r.index}`;
     if (lastRevealKey !== key) {
       lastRevealKey = key;
-      const pane = $('#pane-reveal');
-      pane.classList.remove('celebrate');
-      void pane.offsetWidth; // 애니메이션 다시 시작
-      if (winner) pane.classList.add('celebrate');
+      el.classList.remove('pop');
+      void el.offsetWidth; // 애니메이션 다시 시작
+      el.classList.add('pop');
     }
   }
 
@@ -644,6 +640,7 @@
     $('#btn-sfx').textContent = on ? '효과음 켬' : '효과음 끔';
   }
   $('#btn-sfx').addEventListener('click', () => { Sfx.setEnabled(!Sfx.enabled); renderSfxToggle(); });
+  Sfx.onDuck((ms) => QuizPlayer.duck(ms));
   renderSfxToggle();
 
   // 모든 버튼: 누를 때 작은 '톡'
@@ -696,19 +693,21 @@
       const remain = Math.max(0, r.roundTime - elapsed);
       const p = Math.min(1, elapsed / r.roundTime);
       $('#countdown').textContent = now < r.startedAt ? '…' : String(Math.ceil(remain));
-      $('#timer').dataset.low = remain <= 5 ? 'true' : 'false';
+      $('#timer').dataset.mode = remain <= 5 ? 'low' : 'play';
       $('#timer-arc').style.strokeDashoffset = String(TIMER_LEN * p);
     } else if (state.status === 'loading') {
       $('#countdown').textContent = '…';
-      $('#timer').dataset.low = 'false';
+      $('#timer').dataset.mode = 'play';
       $('#timer-arc').style.strokeDashoffset = '0';
     } else if (state.status === 'reveal' && r.revealEndsAt) {
+      // 정답 공개 중: 원형 타이머는 다음 곡까지 남은 시간
       const leftMs = Math.max(0, r.revealEndsAt - now);
       const hold = r.winnerId ? state.settings.revealTime * 1000 : 4000;
-      const votes = state.players.filter((p) => p.skipVote).length;
       const last = r.index + 1 >= r.total;
-      $('#reveal-next').textContent = `${last ? '결과 발표' : '다음 곡'}까지 ${Math.ceil(leftMs / 1000)}초 · 넘기기 ${votes}/${r.skipNeeded}`;
-      $('#reveal-bar').style.transform = `scaleX(${Math.min(1, leftMs / hold)})`;
+      $('#countdown').textContent = String(Math.ceil(leftMs / 1000));
+      $('#timer').dataset.mode = 'next';
+      $('#timer-arc').style.strokeDashoffset = String(TIMER_LEN * (1 - Math.min(1, leftMs / hold)));
+      $('#screen-status').textContent = `${last ? '결과 발표' : '다음 곡'}까지 ${Math.ceil(leftMs / 1000)}초`;
     }
   }
   requestAnimationFrame(tick);
@@ -776,13 +775,16 @@
     paintBubble(pid, true);
   }
 
-  $('#chat-form').addEventListener('submit', (e) => {
-    e.preventDefault();
+  function sendChat() {
     const input = $('#chat-input');
     const text = input.value.trim();
     if (!text) return;
     socket.emit('chat', text);
     input.value = '';
+  }
+  $('#chat-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    sendChat();
   });
 
   $('#btn-skip').addEventListener('click', () => socket.emit('game:skip'));
@@ -792,21 +794,35 @@
     btn.addEventListener('pointerdown', (e) => {
       if (document.activeElement === $('#chat-input')) e.preventDefault();
     });
+    // 아이폰: 버튼을 손가락으로 누르면 입력창 선택이 풀려 키보드가 닫힌다 → 터치를 직접 처리
+    btn.addEventListener('touchend', (e) => {
+      if (document.activeElement !== $('#chat-input')) return;
+      e.preventDefault();
+      Sfx.play('click');
+      if (btn.type === 'submit') sendChat();
+      else socket.emit('game:skip');
+      $('#chat-input').focus();
+    });
   });
   // 방 안에서 처음 화면을 누를 때 소리 재생 허락
   document.addEventListener('pointerdown', () => { QuizPlayer.unlock(); Sfx.unlock(); }, { once: true, capture: true });
 
-  // 휴대폰 키보드가 올라오면 실제 보이는 높이에 맞춰 게임 화면을 다시 배치
+  // 휴대폰 키보드: 게임 화면을 '지금 실제로 보이는 영역'에 고정해서 입력창이 키보드 바로 위에 오게 한다
+  // (아이폰은 키보드가 올라오면 화면을 위로 밀어 올리므로, 그 위치·높이를 그대로 따라간다)
   function fitViewport() {
     const vv = window.visualViewport;
-    const h = vv ? vv.height : window.innerHeight;
-    document.documentElement.style.setProperty('--app-h', `${Math.round(h)}px`);
-    if ($('#view-room').dataset.mode === 'game' && window.matchMedia('(max-width: 760px)').matches) {
-      window.scrollTo(0, 0);
-    }
+    const root = document.documentElement.style;
+    root.setProperty('--app-h', `${Math.round(vv ? vv.height : window.innerHeight)}px`);
+    root.setProperty('--vv-top', `${Math.round(vv ? vv.offsetTop : 0)}px`);
+    // 터치 기기에서 입력창을 누르고 있으면 키보드가 올라와 있는 것으로 보고 화면을 좁게 쓴다
+    const typing = isTouch && document.activeElement === $('#chat-input');
+    document.body.classList.toggle('kb-open', typing);
   }
   window.visualViewport?.addEventListener('resize', fitViewport);
+  window.visualViewport?.addEventListener('scroll', fitViewport);
   window.addEventListener('resize', fitViewport);
+  $('#chat-input').addEventListener('focus', () => { fitViewport(); setTimeout(fitViewport, 300); });
+  $('#chat-input').addEventListener('blur', () => { setTimeout(fitViewport, 50); });
   fitViewport();
 
   document.addEventListener('keydown', (e) => {

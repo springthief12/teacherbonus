@@ -14,7 +14,7 @@
     <header class="hero">
       <div class="hero-title">
         <h1>그때 그 노래</h1>
-        <p>연도를 고르면 그해 멜론 차트 곡이 섞여 나와요. 제일 먼저 제목을 친 사람이 점수를 가져가요.</p>
+        <p>연도를 고르면 그해 멜론 차트 곡이 섞여 나와요.<br>노래를 듣고 제목을 가장 먼저 친 사람이 점수를 가져가요.</p>
       </div>
       <ol class="hero-steps" aria-label="참여 방법">
         <li><span>1</span>닉네임과 캐릭터 정하기</li>
@@ -122,12 +122,13 @@
               </div>
             </div>
 
-            <!-- 진행 -->
+            <!-- 진행·정답 공개 (같은 화면에서 힌트 칸이 모두 채워짐) -->
             <div class="screen-pane pane-play" id="pane-play" hidden>
               <div class="q-head">
                 <div class="q-progress" id="q-progress" aria-hidden="true"></div>
                 <div class="q-row">
                   <p class="q-count"><strong id="song-no">1</strong><span id="song-total">/ 20</span></p>
+                  <div class="q-result" id="q-result" aria-live="polite"></div>
                   <span class="mini-meta" id="mini-meta"></span>
                   <div class="timer" id="timer" role="timer" aria-label="남은 시간">
                     <svg viewBox="0 0 44 44" aria-hidden="true">
@@ -140,18 +141,6 @@
               </div>
               <dl class="hints" id="hints"></dl>
               <p class="screen-status" id="screen-status"></p>
-            </div>
-
-            <!-- 정답 공개 -->
-            <div class="screen-pane pane-reveal" id="pane-reveal" hidden>
-              <p class="reveal-label">정답</p>
-              <p class="reveal-title" id="reveal-title"></p>
-              <p class="reveal-meta" id="reveal-meta"></p>
-              <div class="reveal-winner" id="reveal-winner"></div>
-              <div class="reveal-foot">
-                <p class="reveal-next" id="reveal-next"></p>
-                <div class="reveal-bar"><span id="reveal-bar"></span></div>
-              </div>
             </div>
 
             <!-- 결과 -->

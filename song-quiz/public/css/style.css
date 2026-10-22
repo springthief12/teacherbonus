@@ -38,7 +38,12 @@ body {
   color: var(--ink);
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
+  /* 한국어는 단어(어절) 단위로 줄바꿈: '점/수를'처럼 단어 중간에서 끊기지 않게 */
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
+p, li, dd { text-wrap: pretty; }
+h1, h2, h3 { text-wrap: balance; }
 
 [hidden] { display: none !important; }
 button, input, select { font: inherit; color: inherit; letter-spacing: inherit; }
@@ -132,7 +137,7 @@ input::placeholder { color: var(--ink-3); }
   padding-bottom: 16px;
 }
 .hero h1 { font-size: clamp(44px, 7vw, 78px); font-weight: 850; letter-spacing: -0.05em; line-height: 1.02; }
-.hero-title p { margin-top: 16px; max-width: 30em; color: var(--ink-2); font-size: 17px; }
+.hero-title p { margin-top: 16px; max-width: 27em; color: var(--ink-2); font-size: 17px; line-height: 1.65; }
 .hero-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .hero-steps li { display: flex; align-items: center; gap: 12px; font-weight: 600; }
 .hero-steps span {
@@ -333,12 +338,12 @@ input::placeholder { color: var(--ink-3); }
 .pick-head h3 { font-size: 24px; }
 .pick-hint { font-size: 14px; color: var(--ink-2); }
 
-.year-grid { display: grid; gap: 8px; }
+.year-grid { display: flex; flex-wrap: wrap; gap: 6px; }
 .decade { display: grid; grid-template-columns: 76px 1fr; align-items: center; gap: 10px; }
 .decade-name { font-size: 13px; font-weight: 700; color: var(--ink-3); }
 .decade-years { display: flex; flex-wrap: wrap; gap: 6px; }
 .year {
-  min-width: 48px;
+  min-width: 64px;
   height: 36px;
   padding: 0 8px;
   border: 1px solid var(--line-2);
@@ -407,64 +412,50 @@ input::placeholder { color: var(--ink-3); }
 .timer svg { width: 100%; height: 100%; transform: rotate(-90deg); }
 .timer-track { fill: none; stroke: var(--line); stroke-width: 4; }
 .timer-arc { fill: none; stroke: var(--yellow-2); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 119.38; stroke-dashoffset: 0; }
-.timer[data-low="true"] .timer-arc { stroke: var(--red); }
+.timer[data-mode="low"] .timer-arc { stroke: var(--red); }
+.timer[data-mode="next"] .timer-arc { stroke: var(--ink-3); }
 .countdown { position: absolute; inset: 0; display: grid; place-items: center; font-size: 21px; font-weight: 800; font-variant-numeric: tabular-nums; }
-.timer[data-low="true"] .countdown { color: var(--red); }
+.timer[data-mode="low"] .countdown { color: var(--red); }
+.timer[data-mode="next"] .countdown { color: var(--ink-2); }
 
-.hints { display: grid; gap: 10px; margin: 22px 0 0; }
+/* 정답 공개 때 머리줄의 결과 (맞힌 사람 +점수) */
+.q-result { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.q-result:empty { display: none; }
+.q-result.won { background: var(--green-soft); color: var(--green); border-radius: 999px; padding: 4px 6px 4px 4px; }
+.q-result.none { font-size: 14px; font-weight: 700; color: var(--ink-2); background: var(--surface-2); border-radius: 999px; padding: 6px 12px; }
+.q-result-avatar { width: 28px; height: 28px; flex: none; }
+.q-result-avatar svg { width: 100%; height: 100%; display: block; }
+.q-result strong { font-size: 15px; font-weight: 800; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.q-result.pop .points { animation: pop .5s cubic-bezier(.2, 1.5, .4, 1) both; }
+
+/* 연도·가수·제목 세 칸은 언제나 같은 높이 (공개 여부와 상관없이) */
+.hints { display: grid; grid-auto-rows: 1fr; gap: 10px; margin: 22px 0 0; }
 .hint {
   display: grid;
   grid-template-columns: 112px minmax(0, 1fr);
-  align-items: baseline;
+  align-items: center;
   gap: 16px;
-  padding: 16px 20px;
+  min-height: 88px;
+  padding: 14px 20px;
   border-radius: var(--r-lg);
   background: var(--surface-2);
   transition: background-color .3s;
 }
 .hint dt { font-size: 14px; font-weight: 700; color: var(--ink-3); }
 .hint dd { margin: 0; font-size: clamp(24px, 3.1vw, 40px); font-weight: 800; letter-spacing: -0.025em; line-height: 1.2; overflow-wrap: anywhere; }
+.hint dd small { margin-left: 12px; font-size: .45em; font-weight: 700; color: var(--ink-3); letter-spacing: 0; vertical-align: middle; }
 .hint.locked dd { font-size: 17px; font-weight: 600; color: var(--ink-3); letter-spacing: 0; }
 .hint.latest { background: var(--yellow-soft); }
+.hint.answer { background: var(--green-soft); }
+.hint.answer dt { color: var(--green); }
 .hint.fresh dd { animation: hint-in .5s ease-out; }
+.screen-status:empty { display: none; }
 @keyframes hint-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
 .screen-status { margin-top: 16px; font-size: 14px; color: var(--ink-3); }
 
-/* 정답 공개 */
-.reveal-label {
-  display: inline-block;
-  font-size: 13px;
-  font-weight: 800;
-  color: var(--green);
-  background: var(--green-soft);
-  border-radius: 999px;
-  padding: 4px 12px;
-}
-.reveal-title {
-  margin: 14px 0 6px;
-  font-size: clamp(30px, 4.4vw, 56px);
-  font-weight: 850;
-  letter-spacing: -0.035em;
-  line-height: 1.15;
-  text-wrap: balance;
-}
-.reveal-meta { font-size: 16px; font-weight: 600; color: var(--ink-2); }
-.reveal-winner { display: flex; align-items: center; gap: 12px; width: fit-content; margin-top: 22px; padding: 8px 18px 8px 8px; border-radius: var(--r-lg); background: var(--surface-2); }
-.reveal-winner:has(.none) { padding: 10px 16px; }
-.winner-avatar { width: 48px; height: 48px; }
-.winner-avatar svg { width: 100%; height: 100%; display: block; }
-.winner-text { display: flex; align-items: center; gap: 10px; }
-.winner-text strong { font-size: 18px; font-weight: 800; }
-.winner-text.none { color: var(--ink-2); font-weight: 600; }
+/* 점수 배지 (정답 공개 머리줄) */
 .points { font-size: 14px; font-weight: 800; color: var(--surface); background: var(--green); border-radius: 999px; padding: 3px 10px; font-variant-numeric: tabular-nums; }
-.reveal-foot { display: grid; gap: 8px; margin-top: 26px; }
-.reveal-next { font-size: 13px; color: var(--ink-3); }
-.reveal-bar { height: 4px; border-radius: 2px; background: var(--line); overflow: hidden; }
-.reveal-bar span { display: block; height: 100%; background: var(--ink-3); transform-origin: left center; }
-
-.pane-reveal.celebrate .reveal-title { animation: hint-in .45s ease-out; }
-.pane-reveal.celebrate .points { animation: pop .5s cubic-bezier(.2, 1.5, .4, 1) both; }
 @keyframes pop { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
 /* 결과 */
@@ -669,13 +660,20 @@ input::placeholder { color: var(--ink-3); }
 
 /* 휴대폰 게임 중: 문제·자리·채팅·입력창이 한 화면에 */
 @media (max-width: 760px) {
+  /* 실제로 보이는 영역(키보드 제외)에 딱 맞춰 고정 → 입력창이 항상 키보드 바로 위 */
   .room[data-mode="game"] {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: var(--vv-top, 0px);
     height: var(--app-h, 100dvh);
+    max-width: none;
     display: flex;
     flex-direction: column;
     gap: 8px;
     padding: max(8px, env(safe-area-inset-top)) 10px calc(8px + env(safe-area-inset-bottom));
     overflow: hidden;
+    z-index: 10;
   }
   .room[data-mode="game"] .room-bar { flex: none; flex-wrap: nowrap; }
   .room[data-mode="game"] .room-bar .btn { height: 30px; padding: 0 8px; font-size: 12px; }
@@ -694,21 +692,17 @@ input::placeholder { color: var(--ink-3); }
   .room[data-mode="game"] .timer { width: 44px; height: 44px; }
   .room[data-mode="game"] .countdown { font-size: 15px; }
   .room[data-mode="game"] .hints { gap: 6px; margin-top: 10px; }
-  .room[data-mode="game"] .hint { grid-template-columns: 62px minmax(0, 1fr); gap: 10px; padding: 8px 12px; border-radius: 12px; }
+  .room[data-mode="game"] .hint { grid-template-columns: 62px minmax(0, 1fr); gap: 10px; min-height: 46px; padding: 7px 12px; border-radius: 12px; }
+  .room[data-mode="game"] .q-result.won { padding: 2px 4px 2px 2px; gap: 5px; }
+  .room[data-mode="game"] .q-result.none { font-size: 12px; padding: 4px 9px; }
+  .room[data-mode="game"] .q-result-avatar { width: 22px; height: 22px; }
+  .room[data-mode="game"] .q-result strong { font-size: 13px; }
+  .room[data-mode="game"] .q-row { gap: 8px; }
   .room[data-mode="game"] .hint dt { font-size: 12px; }
   .room[data-mode="game"] .hint dd { font-size: clamp(17px, 5.4vw, 22px); }
   .room[data-mode="game"] .hint.locked dd { font-size: 14px; }
   .room[data-mode="game"] .screen-status { margin-top: 8px; font-size: 12px; }
 
-  .room[data-mode="game"] .reveal-label { font-size: 12px; padding: 3px 10px; }
-  .room[data-mode="game"] .reveal-title { font-size: clamp(22px, 6.5vw, 30px); margin: 8px 0 4px; }
-  .room[data-mode="game"] .reveal-meta { font-size: 13px; }
-  .room[data-mode="game"] .reveal-winner { margin-top: 10px; padding: 5px 12px 5px 5px; gap: 8px; }
-  .room[data-mode="game"] .winner-avatar { width: 32px; height: 32px; }
-  .room[data-mode="game"] .winner-text strong { font-size: 15px; }
-  .room[data-mode="game"] .points { font-size: 12px; }
-  .room[data-mode="game"] .reveal-foot { margin-top: 10px; gap: 6px; }
-  .room[data-mode="game"] .reveal-next { font-size: 12px; }
 
   .room[data-mode="game"] .seats { flex: none; gap: 6px; }
   .room[data-mode="game"] .seat {
@@ -735,6 +729,24 @@ input::placeholder { color: var(--ink-3); }
   .room[data-mode="game"] .msg { font-size: 13px; gap: 6px; }
   .room[data-mode="game"] .msg time { display: none; }
   .room[data-mode="game"] .chat-form { flex: none; gap: 6px; }
+}
+
+/* 휴대폰 키보드가 열려 있을 때: 자리 카드·진행 막대·안내 문구를 접고 힌트와 채팅에 공간을 준다 */
+@media (max-width: 760px) {
+  body.kb-open .room[data-mode="game"] { padding-bottom: 6px; gap: 6px; }
+  body.kb-open .room[data-mode="game"] .seats,
+  body.kb-open .room[data-mode="game"] .q-progress,
+  body.kb-open .room[data-mode="game"] .screen-status { display: none; }
+  body.kb-open .room[data-mode="game"] .room-bar .btn { height: 26px; }
+  body.kb-open .room[data-mode="game"] .screen-pane { padding: 8px 12px; }
+  body.kb-open .room[data-mode="game"] .timer { width: 36px; height: 36px; }
+  body.kb-open .room[data-mode="game"] .countdown { font-size: 13px; }
+  body.kb-open .room[data-mode="game"] .hints { margin-top: 6px; gap: 4px; }
+  body.kb-open .room[data-mode="game"] .hint { min-height: 36px; padding: 4px 10px; }
+  body.kb-open .room[data-mode="game"] .hint dd { font-size: 16px; }
+  body.kb-open .room[data-mode="game"] .hint.locked dd { font-size: 13px; }
+  body.kb-open .room[data-mode="game"] .talk { padding: 6px; }
+  .room[data-mode="game"] .points { font-size: 11px; padding: 2px 7px; }
 }
 
 @media (max-width: 380px) {

@@ -15,6 +15,12 @@
   let startTimer = null;
   let volume = 70;
   let unlocked = false;
+  let ducked = false;
+  let duckTimer = null;
+  function applyVolume(v) {
+    audio.volume = Math.max(0, Math.min(1, v / 100));
+    if (ytReady) yt.setVolume(v);
+  }
   // 아주 짧은 무음: 휴대폰(특히 아이폰)은 사용자가 누른 순간 한 번 재생해 둬야 나중에 자동 재생이 됨
   const SILENT = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=';
   let handlers = { onError() {}, onBlocked() {}, onPlaying() {} };
@@ -153,8 +159,14 @@
     },
     setVolume(v) {
       volume = v;
-      audio.volume = v / 100;
-      if (ytReady) yt.setVolume(v);
+      if (!ducked) applyVolume(v);
+    },
+    // 효과음이 나는 동안 노래 소리를 잠깐 낮춘다 (효과음이 묻히지 않게)
+    duck(ms) {
+      clearTimeout(duckTimer);
+      ducked = true;
+      applyVolume(Math.round(volume * 0.3));
+      duckTimer = setTimeout(() => { ducked = false; applyVolume(volume); }, ms);
     },
     isAvailable: () => !apiFailed,
     get current() { return keyOf(job); },

@@ -4,9 +4,9 @@ const path = require('path');
 
 const CHART_DIR = path.join(__dirname, '..', 'data', 'charts');
 
-// 멜론 시대별 차트(연도별)가 다루는 범위. 데이터가 없는 연도는 화면에서 "준비 중"으로 표시된다.
-const FIRST_YEAR = 1984;
-const LAST_YEAR = 2025;
+// 이 게임에서 다루는 연도 범위. 데이터가 없는 연도는 화면에서 "준비 중"으로 표시된다.
+const FIRST_YEAR = 2008;
+const LAST_YEAR = 2026;
 
 let charts = new Map();
 
