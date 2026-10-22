@@ -141,7 +141,7 @@ function router() {
     });
   });
 
-  r.post('/song', (req, res) => {
+  r.post('/song', async (req, res) => {
     const song = findSong(req.body?.key);
     if (!song) return res.status(404).json({ error: '곡을 찾지 못했어요.' });
     const patch = {};
@@ -160,8 +160,16 @@ function router() {
       patch.start = n;
     }
     if ('disabled' in req.body) patch.disabled = req.body.disabled ? true : null;
-    overrides.set(song, patch);
-    return res.json({ ok: true, song: view(song) });
+    try {
+      await overrides.set(song, patch);
+      return res.json({ ok: true, song: view(song), storage: overrides.info() });
+    } catch (err) {
+      const storage = overrides.info();
+      const error = storage.github
+        ? `깃허브 저장을 완료하지 못했어요. 변경 내용은 이 서버에 임시로 남아 있으니 다시 저장해 주세요. (${err.message})`
+        : `파일 저장을 완료하지 못했어요. 다시 저장해 주세요. (${err.message})`;
+      return res.status(storage.github ? 502 : 500).json({ error, song: view(song), storage });
+    }
   });
 
   r.post('/search', async (req, res) => {
@@ -192,3 +200,4 @@ function router() {
 }
 
 module.exports = { router, parseYoutube };
+

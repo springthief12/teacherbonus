@@ -18,6 +18,7 @@
       credentials: 'same-origin',
     });
     const data = await res.json().catch(() => ({}));
+    if (data.storage) renderStorage(data.storage);
     if (res.status === 401 && path !== '/login') { showLogin(); throw new Error(data.error || '로그인이 필요해요.'); }
     if (!res.ok) { const err = new Error(data.error || `오류 ${res.status}`); err.data = data; throw err; }
     return data;
@@ -93,9 +94,9 @@
 
   function renderStorage(info) {
     const el = $('#storage');
-    el.classList.toggle('warn', Boolean(info.ephemeral));
+    el.classList.toggle('warn', Boolean(info.ephemeral || info.lastError));
     if (info.github) {
-      el.innerHTML = `저장 위치: 깃허브 <b>${esc(info.repo)}</b>. 서버가 다시 시작돼도 유지돼요.${info.lastError ? ` <span class="bad">${esc(info.lastError)}</span>` : ''}`;
+      el.innerHTML = `저장 위치: 깃허브 <b>${esc(info.repo)}</b>. 저장 완료된 설정은 서버가 다시 시작돼도 유지돼요.${info.lastError ? ` <span class="bad">${esc(info.lastError)}</span> <a href="/api/admin/export">현재 수정 내용 내려받기</a>` : ''}`;
     } else if (info.ephemeral) {
       el.innerHTML = '주의: 이 서버(Render 무료)는 잠들거나 다시 시작하면 여기서 고친 내용이 사라져요. 오래 쓰려면 설명서의 "깃허브에 저장하기"를 설정하세요. <a href="/api/admin/export">지금까지 고친 내용 내려받기</a>';
     } else {
@@ -337,3 +338,4 @@
 
   boot().catch((err) => toast(err.message));
 })();
+
