@@ -58,7 +58,8 @@ for (const r of [1, 2, 3]) {
 
 const server = spawn(process.execPath, ['server/index.js'], {
   cwd: ROOT,
-  env: { ...process.env, PORT: String(PORT), ADMIN_PASSWORD: 'test-pass-1234', ALLOW_NO_AUDIO: '', GITHUB_TOKEN: '', RENDER: '' },
+  // 저장소에 쌓인 실제 관리자 설정(song-quiz-data/overrides.json)은 읽지 않게 없는 파일을 가리킨다
+  env: { ...process.env, PORT: String(PORT), ADMIN_PASSWORD: 'test-pass-1234', ALLOW_NO_AUDIO: '', GITHUB_TOKEN: '', GITHUB_FILE: 'song-quiz/test/no-such-overrides.json', RENDER: '' },
   stdio: ['ignore', 'pipe', 'pipe'],
 });
 let serverLog = '';
