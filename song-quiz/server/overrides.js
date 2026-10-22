@@ -42,6 +42,7 @@ async function gh(method, body) {
   const url = `https://api.github.com/repos/${GH.repo}/contents/${GH.file}${method === 'GET' ? `?ref=${encodeURIComponent(GH.branch)}` : ''}`;
   const res = await fetch(url, {
     method,
+    signal: AbortSignal.timeout(15000),
     headers: {
       Authorization: `Bearer ${GH.token}`,
       Accept: 'application/vnd.github+json',
@@ -71,20 +72,21 @@ async function loadRemote() {
   }
 }
 
-let localTimer = null;
-let remoteTimer = null;
+// 저장 요청을 순서대로 처리해 이전 요청의 GitHub SHA와 내용이 서로 엇갈리지 않게 한다.
+let writeQueue = Promise.resolve();
 
-function saveLocal() {
-  clearTimeout(localTimer);
-  localTimer = setTimeout(() => {
-    fs.writeFile(FILE, `${JSON.stringify(store, null, 2)}\n`, (err) => {
-      if (err) status.lastError = `파일 저장 실패: ${err.message}`;
-    });
-  }, 300);
+async function saveLocal() {
+  try {
+    await fs.promises.writeFile(FILE, `${JSON.stringify(store, null, 2)}\n`);
+  } catch (err) {
+    status.lastError = `파일 저장 실패: ${err.message}`;
+    throw new Error(status.lastError);
+  }
 }
 
-async function pushRemote(attempt = 0) {
+async function pushRemote(attempt = 0, reapply) {
   if (!githubOn()) return;
+  status.remote = 'saving';
   try {
     const content = Buffer.from(`${JSON.stringify(store, null, 2)}\n`).toString('base64');
     const res = await gh('PUT', {
@@ -95,23 +97,23 @@ async function pushRemote(attempt = 0) {
     });
     if ((res.status === 409 || res.status === 422) && attempt < 2) {
       await loadRemote(); // 다른 곳에서 바뀌었으면 합쳐서 다시
-      return pushRemote(attempt + 1);
+      // 마지막 설정을 지운 요청도 원격 병합으로 되살아나지 않도록 다시 적용한다.
+      reapply();
+      await saveLocal();
+      return pushRemote(attempt + 1, reapply);
     }
     if (!res.ok) throw new Error(`GitHub ${res.status}`);
     const json = await res.json();
     remoteSha = json.content && json.content.sha;
     status.lastSave = Date.now();
     status.lastError = null;
+    status.remote = 'ready';
   } catch (err) {
     status.lastError = `깃허브 저장 실패: ${err.message}`;
+    status.remote = 'error';
     console.warn(`[overrides] ${status.lastError}`);
+    throw new Error(status.lastError);
   }
-}
-
-function scheduleRemote() {
-  if (!githubOn()) return;
-  clearTimeout(remoteTimer);
-  remoteTimer = setTimeout(() => pushRemote(), 1500);
 }
 
 function get(song) {
@@ -120,22 +122,31 @@ function get(song) {
 
 /** patch: { youtubeId?, start?, disabled? } (null이면 지움) */
 function set(song, patch) {
-  const key = keyOf(song);
-  const cur = { ...(store.songs[key] || {}) };
-  for (const [k, v] of Object.entries(patch)) {
-    if (v === null || v === undefined || v === '') delete cur[k];
-    else cur[k] = v;
-  }
-  cur.title = song.title;
-  cur.artist = song.artist;
-  cur.updatedAt = Date.now();
-  const meaningful = ['youtubeId', 'start', 'disabled'].some((k) => cur[k] !== undefined);
-  if (meaningful) store.songs[key] = cur;
-  else delete store.songs[key];
-  saveLocal();
-  scheduleRemote();
-  if (!githubOn()) status.lastSave = Date.now();
-  return store.songs[key] || null;
+  const pending = writeQueue.catch(() => {}).then(async () => {
+    await ready;
+    const key = keyOf(song);
+    const apply = () => {
+      const cur = { ...(store.songs[key] || {}) };
+      for (const [k, v] of Object.entries(patch)) {
+        if (v === null || v === undefined || v === '') delete cur[k];
+        else cur[k] = v;
+      }
+      cur.title = song.title;
+      cur.artist = song.artist;
+      cur.updatedAt = Date.now();
+      const meaningful = ['youtubeId', 'start', 'disabled'].some((k) => cur[k] !== undefined);
+      if (meaningful) store.songs[key] = cur;
+      else delete store.songs[key];
+    };
+    apply();
+    // 원격 저장에 실패해도 내려받거나 다시 저장할 수 있도록 로컬 수정은 남긴다.
+    await saveLocal();
+    if (githubOn()) await pushRemote(0, apply);
+    else { status.lastSave = Date.now(); status.lastError = null; }
+    return store.songs[key] || null;
+  });
+  writeQueue = pending;
+  return pending;
 }
 
 function exportAll() {
@@ -165,3 +176,4 @@ store = merge(readRepoCopy(), readLocal());
 const ready = loadRemote();
 
 module.exports = { get, set, keyOf, exportAll, info, ready };
+
