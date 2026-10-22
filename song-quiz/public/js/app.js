@@ -59,6 +59,8 @@
   let clockOffset = 0; // 서버시각 - 내시각
   let years = [];
   let lastRevealKey = null;
+  let inviteRoom = new URLSearchParams(location.search).get('room');
+  let inviteChecked = false;
 
   function enterLobby() {
     return new Promise((resolve) => {
@@ -120,7 +122,43 @@
   socket.on('chat', addChat);
 
   // ---------- 로비 ----------
+  function renderInvite(list) {
+    if (!inviteRoom) { $('#invite').hidden = true; return; }
+    const room = (list || []).find((r) => r.id === inviteRoom);
+    if (!room) {
+      $('#invite').hidden = true;
+      if (!inviteChecked && list) toast('초대받은 방이 이미 닫혔어요. 열린 방 목록에서 골라 주세요.');
+      inviteChecked = true;
+      return;
+    }
+    if (!inviteChecked) {
+      inviteChecked = true;
+      $('#nickname').focus();
+    }
+    $('#invite-room').textContent = `[${room.id}] ${room.title}`;
+    $('#invite').hidden = false;
+  }
+
+  function clearInvite() {
+    inviteRoom = null;
+    $('#invite').hidden = true;
+    if (location.search) history.replaceState(null, '', location.pathname);
+  }
+
+  async function joinRoom(roomId) {
+    await enterLobby();
+    $('#chat-log').innerHTML = '';
+    socket.emit('room:join', { roomId }, (res) => {
+      if (res?.error) return toast(res.error);
+      if (roomId === inviteRoom) clearInvite();
+      openRoom();
+    });
+  }
+
+  $('#invite-join').addEventListener('click', () => { if (inviteRoom) joinRoom(inviteRoom); });
+
   function renderRooms(list) {
+    renderInvite(list);
     const ul = $('#room-list');
     if (!list || !list.length) {
       ul.innerHTML = '<li class="room-empty">아직 열린 방이 없어요. 아래에서 첫 방을 만들어 보세요.</li>';
@@ -140,12 +178,7 @@
   $('#room-list').addEventListener('click', async (e) => {
     const btn = e.target.closest('[data-join]');
     if (!btn) return;
-    await enterLobby();
-    $('#chat-log').innerHTML = '';
-    socket.emit('room:join', { roomId: btn.dataset.join }, (res) => {
-      if (res?.error) return toast(res.error);
-      openRoom();
-    });
+    joinRoom(btn.dataset.join);
   });
 
   $('#create-form').addEventListener('submit', async (e) => {
@@ -155,14 +188,98 @@
     socket.emit('room:create', { title: $('#room-title').value }, (res) => {
       if (res?.error) return toast(res.error);
       $('#room-title').value = '';
+      clearInvite();
       openRoom();
     });
   });
 
   function openRoom() {
     showView('room');
+    qrOpen = null;
+    qrShownFor = null;
+    prevStatus = null;
     $('#chat-input').focus();
   }
+
+  // ---------- 접속 QR (대기실에서 펼치기/접기) ----------
+  const LOCAL_HOSTS = ['localhost', '127.0.0.1', '::1', '[::1]'];
+  let joinInfo = null;
+  let qrOpen = null; // null이면 기본값: 방장 + 대기 중일 때 펼침
+  let qrShownFor = null;
+  let prevStatus = null;
+  let qrUrl = '';
+
+  const qrIsOpen = () => (qrOpen === null ? isHost() && state.status === 'waiting' : qrOpen);
+
+  async function loadJoinInfo() {
+    if (joinInfo) return joinInfo;
+    try {
+      joinInfo = await (await fetch('/api/join-info')).json();
+    } catch {
+      joinInfo = { lan: [], port: Number(location.port) || null };
+    }
+    return joinInfo;
+  }
+
+  // 선생님 PC에서 localhost로 열었으면 학생용 주소는 같은 와이파이 IP로 바꾼다
+  function joinBase() {
+    if (!LOCAL_HOSTS.includes(location.hostname)) return { base: location.origin, kind: 'public' };
+    const ip = $('#qr-lan').value || (joinInfo.lan || [])[0];
+    if (!ip) return { base: location.origin, kind: 'local-only' };
+    const port = location.port || joinInfo.port;
+    return { base: `${location.protocol}//${ip}${port ? `:${port}` : ''}`, kind: 'lan' };
+  }
+
+  async function renderQr() {
+    if (!state) return;
+    const open = qrIsOpen();
+    $('#qr-panel').hidden = !open;
+    $('#btn-qr').setAttribute('aria-expanded', String(open));
+    $('#btn-qr').textContent = open ? 'QR 접기' : '접속 QR';
+    if (!open) return;
+
+    await loadJoinInfo();
+    const lan = joinInfo.lan || [];
+    const showLan = LOCAL_HOSTS.includes(location.hostname) && lan.length > 1;
+    $('#qr-lan-wrap').hidden = !showLan;
+    if (showLan && $('#qr-lan').options.length !== lan.length) {
+      $('#qr-lan').innerHTML = lan.map((ip) => `<option>${esc(ip)}</option>`).join('');
+    }
+
+    const { base, kind } = joinBase();
+    qrUrl = `${base}/?room=${encodeURIComponent(state.id)}`;
+    $('#qr-room').textContent = `[${state.id}] ${state.title}`;
+    $('#qr-url').textContent = qrUrl;
+    $('#qr-note').textContent = {
+      lan: '선생님 PC와 같은 와이파이에 연결된 기기만 들어올 수 있어요.',
+      'local-only': '이 PC의 와이파이 주소를 찾지 못했어요. 네트워크 연결을 확인하세요.',
+      public: '',
+    }[kind];
+
+    const key = `${state.id}|${qrUrl}`;
+    if (qrShownFor !== key) {
+      qrShownFor = key;
+      $('#qr-code').innerHTML = `<img src="/api/qr?text=${encodeURIComponent(qrUrl)}" width="220" height="220" alt="이 방 접속 QR 코드">`;
+    }
+  }
+
+  $('#btn-qr').addEventListener('click', () => { qrOpen = !qrIsOpen(); renderQr(); });
+  $('#qr-close').addEventListener('click', () => { qrOpen = false; renderQr(); $('#btn-qr').focus(); });
+  $('#qr-lan').addEventListener('change', () => renderQr());
+  $('#qr-copy').addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(qrUrl);
+    } catch {
+      // http 주소에서는 clipboard API가 막혀 있을 수 있어 예전 방식으로 복사
+      const t = document.createElement('textarea');
+      t.value = qrUrl;
+      document.body.appendChild(t);
+      t.select();
+      document.execCommand('copy');
+      t.remove();
+    }
+    toast('주소를 복사했어요.');
+  });
 
   $('#btn-leave').addEventListener('click', () => {
     socket.emit('room:leave', null, (res) => {
@@ -204,6 +321,11 @@
 
     renderSeats();
     syncPlayer();
+
+    // 게임이 시작되면 QR을 자동으로 접는다 (다시 펼칠 수 있음)
+    if (prevStatus === 'waiting' && s.status !== 'waiting' && qrOpen !== false) qrOpen = false;
+    prevStatus = s.status;
+    renderQr();
 
     const me = s.players.find((p) => p.id === socket.id);
     $('#btn-skip').setAttribute('aria-pressed', String(Boolean(me?.skipVote)));
@@ -364,12 +486,8 @@
           <div class="seat-score">${String(p.score).padStart(5, '0')}</div>
         </div>`);
     }
-    const prevBubbles = {};
-    document.querySelectorAll('.seat .bubble:not([hidden])').forEach((b) => {
-      prevBubbles[b.closest('.seat').dataset.pid] = b.textContent;
-    });
     $('#seats').innerHTML = seats.join('');
-    for (const [pid, text] of Object.entries(prevBubbles)) showBubble(pid, text, 1200);
+    for (const pid of Object.keys(bubbles)) paintBubble(pid, false);
   }
 
   // ---------- 재생 동기화 ----------
@@ -447,24 +565,47 @@
     } else {
       row.className = `msg${m.playerId === socket.id ? ' mine' : ''}`;
       row.innerHTML = `<b style="color:${colorOf(m.playerId)}">${esc(m.nickname)}</b><span class="msg-text">${esc(m.text)}</span><time>${timeLabel(m.at)}</time>`;
-      showBubble(m.playerId, m.text, 2600);
+      showBubble(m.playerId, m.text);
     }
     log.appendChild(row);
     while (log.children.length > 200) log.firstChild.remove();
     if (stick) log.scrollTop = log.scrollHeight;
   }
 
-  const bubbleTimers = {};
-  function showBubble(pid, text, ms) {
-    const seat = document.querySelector(`.seat[data-pid="${CSS.escape(pid)}"] .bubble`);
-    if (!seat) return;
-    seat.textContent = text;
-    seat.hidden = false;
-    clearTimeout(bubbleTimers[pid]);
-    bubbleTimers[pid] = setTimeout(() => {
-      const b = document.querySelector(`.seat[data-pid="${CSS.escape(pid)}"] .bubble`);
-      if (b) b.hidden = true;
-    }, ms);
+  // 말풍선: 채팅이 캐릭터 위에 5초 동안 보이고 사라짐. 그 사이 새 채팅이 오면 바로 바뀌고 5초를 다시 셈
+  const BUBBLE_MS = 5000;
+  const bubbles = {}; // pid -> { text, until, timer }
+
+  function bubbleEl(pid) {
+    return document.querySelector(`.seat[data-pid="${CSS.escape(pid)}"] .bubble`);
+  }
+
+  function paintBubble(pid, fresh) {
+    const b = bubbles[pid];
+    const el = bubbleEl(pid);
+    if (!b || !el) return;
+    if (Date.now() >= b.until) { el.hidden = true; return; }
+    el.textContent = b.text;
+    el.hidden = false;
+    if (fresh) {
+      el.classList.remove('pop');
+      void el.offsetWidth;
+      el.classList.add('pop');
+    }
+  }
+
+  function showBubble(pid, text) {
+    const prev = bubbles[pid];
+    if (prev) clearTimeout(prev.timer);
+    const entry = { text, until: Date.now() + BUBBLE_MS };
+    entry.timer = setTimeout(() => {
+      if (bubbles[pid] !== entry) return;
+      delete bubbles[pid];
+      const el = bubbleEl(pid);
+      if (el) el.hidden = true;
+    }, BUBBLE_MS);
+    bubbles[pid] = entry;
+    paintBubble(pid, true);
   }
 
   $('#chat-form').addEventListener('submit', (e) => {

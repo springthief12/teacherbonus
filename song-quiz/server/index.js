@@ -3,6 +3,7 @@ const os = require('os');
 const path = require('path');
 const http = require('http');
 const express = require('express');
+const QRCode = require('qrcode');
 const { Server } = require('socket.io');
 const { yearCatalog, loadCharts } = require('./charts');
 const media = require('./media');
@@ -26,6 +27,24 @@ app.get('/media/:token', (req, res) => {
 });
 app.get('/api/years', (_req, res) => res.json(yearCatalog()));
 app.get('/healthz', (_req, res) => res.send('ok'));
+
+// 접속 QR: 선생님 PC에서 localhost로 열었을 때도 학생용 주소(같은 와이파이 IP)를 알려 준다
+app.get('/api/join-info', (_req, res) => res.json({ lan: lanAddresses(), port: PORT }));
+app.get('/api/qr', async (req, res) => {
+  const text = String(req.query.text || '').slice(0, 300);
+  if (!/^https?:\/\//.test(text)) return res.sendStatus(400);
+  try {
+    const svg = await QRCode.toString(text, {
+      type: 'svg',
+      margin: 1,
+      errorCorrectionLevel: 'M',
+      color: { dark: '#5A4632', light: '#FFFFFF' },
+    });
+    res.type('image/svg+xml').set('Cache-Control', 'no-store').send(svg);
+  } catch {
+    res.sendStatus(500);
+  }
+});
 
 const rooms = new Map();
 let roomSeq = 100;
@@ -152,7 +171,9 @@ function lanAddresses() {
       if (net.family === 'IPv4' && !net.internal) out.push(net.address);
     }
   }
-  return out;
+  // 집·학교 공유기 주소(192.168, 10, 172.16~31)를 앞으로
+  const rank = (ip) => (ip.startsWith('192.168.') ? 0 : ip.startsWith('10.') ? 1 : /^172\.(1[6-9]|2\d|3[01])\./.test(ip) ? 2 : 3);
+  return out.sort((x, y) => rank(x) - rank(y));
 }
 
 server.listen(PORT, () => {

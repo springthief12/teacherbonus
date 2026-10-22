@@ -21,6 +21,11 @@
       </div>
     </section>
 
+    <section class="invite" id="invite" hidden>
+      <p class="invite-text"><strong id="invite-room"></strong> 방에 초대받았어요. 닉네임과 캐릭터를 정하고 들어가세요.</p>
+      <button type="button" class="btn primary" id="invite-join">이 방에 들어가기</button>
+    </section>
+
     <section class="panel profile" aria-labelledby="profile-title">
       <h2 id="profile-title">내 캐릭터</h2>
       <div class="profile-body">
@@ -65,8 +70,27 @@
       <span class="room-no" id="room-no">[101]</span>
       <span class="room-title" id="room-title-text">방 이름</span>
       <span class="room-meta" id="room-meta"></span>
+      <button class="btn ghost" id="btn-qr" type="button" aria-expanded="false" aria-controls="qr-panel">접속 QR</button>
       <button class="btn ghost" id="btn-leave" type="button">나가기</button>
     </header>
+
+    <section class="qr-panel" id="qr-panel" hidden aria-label="접속 QR 코드">
+      <div class="qr-code" id="qr-code"></div>
+      <div class="qr-info">
+        <h3>휴대폰 카메라로 찍으면 이 방으로 바로 들어와요</h3>
+        <p class="qr-room" id="qr-room"></p>
+        <p class="qr-url"><span id="qr-url"></span></p>
+        <label class="qr-lan" id="qr-lan-wrap" hidden>
+          <span>다른 주소</span>
+          <select id="qr-lan"></select>
+        </label>
+        <p class="qr-note" id="qr-note"></p>
+        <div class="qr-actions">
+          <button class="btn small" id="qr-copy" type="button">주소 복사</button>
+          <button class="btn small" id="qr-close" type="button">접기</button>
+        </div>
+      </div>
+    </section>
 
     <section class="stage">
       <div class="dial dial-left" aria-hidden="true">

@@ -244,6 +244,23 @@ kbd {
 .create-form { display: flex; gap: 8px; }
 .create-form input { flex: 1; }
 
+/* ---------- 초대받은 방 (QR로 들어온 경우) ---------- */
+.invite {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: var(--butter);
+  border: 2px solid var(--yellow-deep);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 5px 0 var(--yellow-deep);
+  padding: 14px 18px;
+}
+.invite-text { margin: 0; font-size: 16px; }
+.invite-text strong { font-family: var(--display); font-weight: 400; font-size: 20px; }
+
 /* ---------- 방 ---------- */
 .room {
   max-width: 1100px;
@@ -253,7 +270,44 @@ kbd {
   gap: 18px;
 }
 
-.room-bar { display: flex; align-items: center; gap: 12px; }
+.room-bar { display: flex; align-items: center; gap: 10px; }
+.room-bar .btn[aria-expanded="true"] { background: var(--butter); border-color: var(--yellow-deep); box-shadow: 0 3px 0 var(--yellow-deep); }
+
+/* 접속 QR 패널 */
+.qr-panel {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 22px;
+  align-items: center;
+  background: var(--white);
+  border: 2px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--lift);
+  padding: 18px 22px;
+}
+.qr-code {
+  width: 220px;
+  height: 220px;
+  padding: 8px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--white);
+}
+.qr-code img { display: block; width: 100%; height: 100%; }
+.qr-info { display: grid; gap: 8px; align-content: center; }
+.qr-info h3 { font-family: var(--display); font-size: 22px; line-height: 1.3; }
+.qr-room { margin: 0; font-weight: 700; color: var(--yellow-deep); font-size: 18px; }
+.qr-url {
+  margin: 0;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+.qr-url span { background: var(--butter); border-radius: 6px; padding: 2px 8px; }
+.qr-lan { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--cocoa-soft); }
+.qr-lan select { border: 2px solid var(--line); border-radius: var(--radius-sm); background: var(--paper); padding: 2px 6px; }
+.qr-note { margin: 0; font-size: 13px; color: var(--cocoa-soft); }
+.qr-note:empty { display: none; }
+.qr-actions { display: flex; gap: 8px; }
 .room-no { font-family: var(--display); font-size: 20px; color: var(--yellow-deep); }
 .room-title { font-family: var(--display); font-size: 22px; }
 .room-meta { flex: 1; font-size: 14px; color: var(--cocoa-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -518,11 +572,14 @@ kbd {
   background: var(--white);
   border: 2px solid var(--line-strong);
   border-radius: 12px;
-  padding: 2px 8px;
-  font-size: 13px;
+  padding: 3px 10px;
+  font-size: 14px;
+  font-weight: 500;
   z-index: 5;
   overflow-wrap: anywhere;
 }
+.bubble.pop { animation: bubble-pop .22s ease-out; }
+@keyframes bubble-pop { from { transform: translateX(-50%) scale(.85); opacity: .4; } to { transform: translateX(-50%) scale(1); opacity: 1; } }
 .bubble::after {
   content: '';
   position: absolute;
@@ -617,6 +674,11 @@ kbd {
   .talk { grid-template-columns: minmax(0, 1fr); grid-template-areas: "log" "form" "controls"; }
   .controls { grid-template-columns: 1fr 1fr; align-items: center; }
   .room-meta { display: none; }
+  .room-bar { flex-wrap: wrap; }
+  .room-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .qr-panel { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .qr-actions { justify-content: center; }
+  .qr-lan { justify-content: center; }
 }
 
 @media (max-width: 520px) {
