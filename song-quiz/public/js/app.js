@@ -107,7 +107,7 @@
     if (!state?.round) return;
     clockOffset = d.serverNow - Date.now();
     state.round.videoId = d.videoId;
-    syncPlayer(true);
+    syncPlayer();
     renderStatusLine();
   });
 
@@ -203,7 +203,7 @@
     if (pane === 'ended') renderEnded();
 
     renderSeats();
-    syncPlayer(false);
+    syncPlayer();
 
     const me = s.players.find((p) => p.id === socket.id);
     $('#btn-skip').setAttribute('aria-pressed', String(Boolean(me?.skipVote)));
@@ -295,7 +295,7 @@
     if (!r) return;
     let text = '';
     if (state.status === 'loading') text = '음원을 찾는 중이에요';
-    else if (!r.videoId) text = '음원 없이 힌트로만 진행하는 곡이에요';
+    else if (!r.videoId && !r.audioUrl) text = '음원 없이 힌트로만 진행하는 곡이에요';
     else text = '들리는 노래의 제목을 채팅으로 입력하세요';
     $('#screen-status').textContent = text;
   }
@@ -373,22 +373,26 @@
   }
 
   // ---------- 재생 동기화 ----------
-  function syncPlayer(force) {
+  // 소리만 재생한다 (영상은 화면에 나오지 않음)
+  function syncPlayer() {
     if (!state) return;
     const r = state.round;
-    const live = (state.status === 'playing' || state.status === 'reveal') && r && r.videoId;
-    $('#screen').dataset.video = live && state.status === 'reveal' ? 'show' : 'hide';
+    const live = (state.status === 'playing' || state.status === 'reveal') && r && (r.audioUrl || r.videoId);
     if (!live) {
-      if (QuizPlayer.currentId) QuizPlayer.stop();
+      if (QuizPlayer.current) QuizPlayer.stop();
       return;
     }
-    if (force || QuizPlayer.currentId !== r.videoId) {
-      QuizPlayer.play({ videoId: r.videoId, startSeconds: r.startSeconds, startedAt: r.startedAt, clockOffset });
-    }
+    QuizPlayer.play({
+      audioUrl: r.audioUrl,
+      videoId: r.videoId,
+      startSeconds: r.startSeconds,
+      startedAt: r.startedAt,
+      clockOffset,
+    });
   }
 
   QuizPlayer.init({
-    onError: (videoId) => socket.emit('video:error', { videoId }),
+    onError: (src) => { if (src.videoId) socket.emit('video:error', { videoId: src.videoId }); },
     onBlocked: () => { $('#sound-gate').hidden = false; },
     onPlaying: () => { $('#sound-gate').hidden = true; },
   });
@@ -430,7 +434,7 @@
 
   function colorOf(pid) {
     const p = state?.players.find((x) => x.id === pid);
-    return p ? Avatar.COLORS[p.avatar.color].dark : '#141A4A';
+    return p ? Avatar.COLORS[p.avatar.color].dark : '#5A4632';
   }
 
   function addChat(m) {

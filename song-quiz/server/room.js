@@ -1,5 +1,6 @@
 // 방 하나의 상태와 게임 진행
-const { buildPlaylist, hasYear } = require('./charts');
+const { buildPlaylist, hasYear, audioFileFor } = require('./charts');
+const media = require('./media');
 const { isCorrect, chosungHint } = require('./answer');
 const { resolveVideo, markBad } = require('./youtube');
 
@@ -100,6 +101,7 @@ class Room {
           year: r.song.year,
           hints: r.hints,
           videoId: r.videoId,
+          audioUrl: r.audioUrl,
           startSeconds: r.startSeconds,
           startedAt: r.startedAt,
           roundTime: this.settings.roundTime,
@@ -215,6 +217,7 @@ class Room {
       song,
       hints: [],
       videoId: null,
+      audioUrl: null,
       startSeconds: 0,
       startedAt: null,
       revealEndsAt: null,
@@ -224,7 +227,11 @@ class Room {
     this.broadcastState();
 
     const gen = this.generation;
-    const videoId = await Promise.race([
+    // 1순위: 선생님이 넣어 둔 음원 파일 (광고 없음, 정확한 동기화)
+    // 2순위: 유튜브 (영상은 숨기고 소리만)
+    const audioFile = audioFileFor(song);
+    const audioUrl = audioFile ? media.register(audioFile) : null;
+    const videoId = audioUrl ? null : await Promise.race([
       resolveVideo(song),
       new Promise((resolve) => setTimeout(() => resolve(null), LOAD_TIMEOUT_MS)),
     ]);
@@ -232,7 +239,7 @@ class Room {
 
     // 다음 곡을 미리 찾아 둔다
     const upcoming = this.playlist[this.index + 1];
-    if (upcoming) resolveVideo(upcoming).catch(() => {});
+    if (upcoming && !audioFileFor(upcoming)) resolveVideo(upcoming).catch(() => {});
 
     const startSeconds = this.settings.startMode === 'highlight'
       ? (song.highlight ?? 45 + Math.floor(Math.random() * 30))
@@ -240,12 +247,13 @@ class Room {
 
     Object.assign(this.round, {
       videoId,
+      audioUrl,
       startSeconds,
       startedAt: Date.now() + 800, // 모두가 영상을 불러올 여유
-      hints: [song.rank ? `${song.year}년 ${song.rank}위` : `${song.year}년 차트`],
+      hints: [`${song.year}년 차트`], // 순위는 정답 공개 때만
     });
     this.status = 'playing';
-    if (!videoId) this.system('이 곡은 음원을 찾지 못했어요. 힌트로 맞혀 보세요.', 'warn');
+    if (!videoId && !audioUrl) this.system('이 곡은 음원을 찾지 못했어요. 힌트로 맞혀 보세요.', 'warn');
     this.broadcastState();
 
     const total = this.settings.roundTime * 1000 + 800;
@@ -374,7 +382,7 @@ class Room {
 
   // ---------- 재생 오류 ----------
   videoFailed(socketId, videoId) {
-    if (!this.round || this.round.videoId !== videoId) return;
+    if (!this.round || !videoId || this.round.videoId !== videoId) return;
     const replacement = markBad(this.round.song, videoId);
     this.round.videoId = replacement;
     if (!replacement) this.system('이 곡은 재생할 수 있는 영상이 없어요. 힌트로 맞혀 보세요.', 'warn');

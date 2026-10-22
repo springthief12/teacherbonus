@@ -1,18 +1,18 @@
 // 카세트테이프 캐릭터 SVG 생성기
 (function () {
   const COLORS = [
-    { name: '코랄', body: '#FF6B5E', dark: '#C9473D' },
-    { name: '노랑', body: '#FFC93C', dark: '#D49A12' },
-    { name: '민트', body: '#2ED3A5', dark: '#1A9C79' },
-    { name: '하늘', body: '#4FB3FF', dark: '#2A82CC' },
-    { name: '보라', body: '#9B7BFF', dark: '#6E4FD6' },
-    { name: '분홍', body: '#FF7EB6', dark: '#D4558D' },
-    { name: '연두', body: '#A6E05A', dark: '#77AE2E' },
-    { name: '회색', body: '#DADFEE', dark: '#9AA2BF' },
+    { name: '살구', body: '#FFB4A2', dark: '#C9644F' },
+    { name: '노랑', body: '#FFDD6B', dark: '#A97D0B' },
+    { name: '민트', body: '#A3DCC4', dark: '#3F8A62' },
+    { name: '하늘', body: '#AED4F2', dark: '#3F7FB5' },
+    { name: '라벤더', body: '#CDBDF2', dark: '#7A5EC4' },
+    { name: '분홍', body: '#F9B9D2', dark: '#C25A85' },
+    { name: '연두', body: '#CDE5A1', dark: '#6B8F33' },
+    { name: '베이지', body: '#EADCC4', dark: '#8C7761' },
   ];
   const FACES = ['방긋', '활짝', '선글라스', '윙크'];
   const ITEMS = ['없음', '헤드폰', '왕관', '비니', '리본'];
-  const INK = '#141A4A';
+  const INK = '#5A4632';
 
   function reel(cx, cy, cls) {
     return `
@@ -54,14 +54,14 @@
                 <rect x="86" y="46" width="6" height="14" rx="3" fill="${color.body}"/>`;
       case 2: // 왕관
         return `<path d="M33 27 L35 11 L44 19 L50 7 L56 19 L65 11 L67 27 Z" fill="#FFD23F" stroke="${INK}" stroke-width="2.6" stroke-linejoin="round"/>
-                <circle cx="50" cy="20" r="2.4" fill="#FF6B5E"/>`;
+                <circle cx="50" cy="20" r="2.4" fill="#FFB4A2"/>`;
       case 3: // 비니
-        return `<path d="M22 30 Q24 6 50 6 Q76 6 78 30 Z" fill="#1E3BB3" stroke="${INK}" stroke-width="2.6" stroke-linejoin="round"/>
+        return `<path d="M22 30 Q24 6 50 6 Q76 6 78 30 Z" fill="#AED4F2" stroke="${INK}" stroke-width="2.6" stroke-linejoin="round"/>
                 <rect x="19" y="24" width="62" height="9" rx="4.5" fill="#FFD23F" stroke="${INK}" stroke-width="2.6"/>
                 <circle cx="50" cy="5" r="5" fill="#FFD23F" stroke="${INK}" stroke-width="2.4"/>`;
       case 4: // 리본
-        return `<path d="M50 24 L34 14 Q29 24 34 33 Z M50 24 L66 14 Q71 24 66 33 Z" fill="#FF7EB6" stroke="${INK}" stroke-width="2.6" stroke-linejoin="round"/>
-                <circle cx="50" cy="24" r="4.5" fill="#FF7EB6" stroke="${INK}" stroke-width="2.6"/>`;
+        return `<path d="M50 24 L34 14 Q29 24 34 33 Z M50 24 L66 14 Q71 24 66 33 Z" fill="#F9B9D2" stroke="${INK}" stroke-width="2.6" stroke-linejoin="round"/>
+                <circle cx="50" cy="24" r="4.5" fill="#F9B9D2" stroke="${INK}" stroke-width="2.6"/>`;
       default:
         return '';
     }

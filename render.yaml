@@ -1,0 +1,15 @@
+# 노래 맞히기 게임(song-quiz) 테스트 서버 – Render 무료 플랜
+# 기존 티처툴 페이지(GitHub Pages)와는 상관없이 song-quiz 폴더만 배포합니다.
+services:
+  - type: web
+    name: song-quiz
+    runtime: node
+    plan: free
+    region: singapore
+    rootDir: song-quiz
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_VERSION
+        value: "22"

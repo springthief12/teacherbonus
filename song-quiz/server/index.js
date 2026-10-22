@@ -5,6 +5,7 @@ const http = require('http');
 const express = require('express');
 const { Server } = require('socket.io');
 const { yearCatalog, loadCharts } = require('./charts');
+const media = require('./media');
 const { Room } = require('./room');
 
 const PORT = Number(process.env.PORT) || 3000;
@@ -18,6 +19,11 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 for (const font of ['black-han-sans', 'ibm-plex-sans-kr']) {
   app.use(`/vendor/${font}`, express.static(path.join(__dirname, '..', 'node_modules', '@fontsource', font)));
 }
+app.get('/media/:token', (req, res) => {
+  const file = media.lookup(req.params.token);
+  if (!file) return res.sendStatus(404);
+  return res.sendFile(file, { headers: { 'Cache-Control': 'no-store' } });
+});
 app.get('/api/years', (_req, res) => res.json(yearCatalog()));
 app.get('/healthz', (_req, res) => res.send('ok'));
 

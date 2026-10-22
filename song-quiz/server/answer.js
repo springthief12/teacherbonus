@@ -46,10 +46,43 @@ function acceptedAnswers(song) {
   return [...set];
 }
 
+function editDistance(a, b) {
+  const x = [...a];
+  const y = [...b];
+  let prev = Array.from({ length: y.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= x.length; i += 1) {
+    const cur = [i];
+    for (let j = 1; j <= y.length; j += 1) {
+      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (x[i - 1] === y[j - 1] ? 0 : 1));
+    }
+    prev = cur;
+  }
+  return prev[y.length];
+}
+
+const HANGUL_ONLY = /^[가-힣0-9]+$/;
+const LATIN_ONLY = /^[a-z0-9]+$/;
+
+/**
+ * 정답 판정 (띄어쓰기·기호·대소문자 무시)
+ * 1) 제목·부제·별칭과 정확히 같으면 정답
+ * 2) 영어 제목의 한글 발음(별칭)은 한 글자 차이까지 인정 (예: 베드걸굳걸 → Bad Girl Good Girl)
+ * 3) 긴 영어 제목은 철자 한 글자 실수까지 인정
+ */
 function isCorrect(song, guess) {
   const key = squash(guess);
   if (!key) return false;
-  return acceptedAnswers(song).includes(key);
+  const answers = acceptedAnswers(song);
+  if (answers.includes(key)) return true;
+
+  if (HANGUL_ONLY.test(key) && [...key].length >= 4) {
+    const spoken = (song.aliases || []).map(squash).filter((a) => HANGUL_ONLY.test(a) && [...a].length >= 4);
+    if (spoken.some((a) => editDistance(a, key) <= 1)) return true;
+  }
+  if (LATIN_ONLY.test(key) && key.length >= 8) {
+    if (answers.some((a) => LATIN_ONLY.test(a) && a.length >= 8 && editDistance(a, key) <= 1)) return true;
+  }
+  return false;
 }
 
 /** 제목 초성 힌트: 한글은 초성, 영문은 단어 첫 글자 + 밑줄 */

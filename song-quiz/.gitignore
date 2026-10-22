@@ -2,3 +2,6 @@ node_modules
 .DS_Store
 *.log
 .env
+# 음원 파일은 저작권 때문에 저장소에 올리지 않음
+data/audio/*
+!data/audio/README.md

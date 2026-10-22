@@ -79,6 +79,22 @@ function hasYear(year) {
   return charts.has(Number(year));
 }
 
+// 직접 넣은 음원 파일: data/audio/<연도>/<순위>.mp3 (01.mp3도 가능)
+const AUDIO_DIR = path.join(__dirname, '..', 'data', 'audio');
+const AUDIO_EXTS = ['mp3', 'm4a', 'ogg', 'wav', 'aac'];
+
+function audioFileFor(song) {
+  if (!song.rank) return null;
+  const names = [String(song.rank), String(song.rank).padStart(2, '0')];
+  for (const name of names) {
+    for (const ext of AUDIO_EXTS) {
+      const file = path.join(AUDIO_DIR, String(song.year), `${name}.${ext}`);
+      if (fs.existsSync(file)) return file;
+    }
+  }
+  return null;
+}
+
 loadCharts();
 
-module.exports = { loadCharts, yearCatalog, buildPlaylist, hasYear, FIRST_YEAR, LAST_YEAR };
+module.exports = { loadCharts, yearCatalog, buildPlaylist, hasYear, audioFileFor, FIRST_YEAR, LAST_YEAR };

@@ -1,16 +1,70 @@
-// 유튜브 IFrame 재생기 래퍼: 서버가 정한 시각에 맞춰 같은 구간을 재생
+// 소리 전용 재생기
+// - 음원 파일(audioUrl)이 있으면 <audio>로 재생: 광고 없음
+// - 없으면 유튜브를 화면 밖에 숨겨 소리만 재생 (youtube-nocookie 모드)
+// - 서버가 정한 시각 기준으로 모두 같은 구간을 듣도록 1.5초마다 위치를 맞춘다 (광고가 끼어도 끝나면 제자리로)
 (function () {
-  let player = null;
-  let ready = false;
+  let yt = null;
+  let ytReady = false;
   let apiFailed = false;
-  let pending = null; // API 준비 전에 들어온 재생 요청
-  let currentId = null;
+  let pendingYt = null;
+  const audio = new Audio();
+  audio.preload = 'auto';
+
+  let job = null; // 현재 재생 요청
+  let mode = null; // 'file' | 'yt'
   let startTimer = null;
   let volume = 70;
-  let onError = () => {};
-  let onBlocked = () => {};
-  let onPlaying = () => {};
+  let handlers = { onError() {}, onBlocked() {}, onPlaying() {} };
 
+  // ---------- 공통 ----------
+  const serverNow = () => Date.now() + (job ? job.clockOffset || 0 : 0);
+  const expectedPos = () => job.startSeconds + Math.max(0, (serverNow() - job.startedAt) / 1000);
+  const keyOf = (j) => (j ? j.audioUrl || j.videoId || null : null);
+
+  function play(next) {
+    if (!next || (!next.audioUrl && !next.videoId)) { stop(); return; }
+    if (job && keyOf(job) === keyOf(next)) { job = next; return; }
+    stop();
+    job = next;
+    mode = next.audioUrl ? 'file' : 'yt';
+    if (mode === 'file') playFile(); else playYt();
+  }
+
+  function stop() {
+    clearTimeout(startTimer);
+    pendingYt = null;
+    job = null;
+    mode = null;
+    audio.pause();
+    audio.removeAttribute('src');
+    audio.load();
+    if (ytReady) yt.stopVideo();
+  }
+
+  function scheduleStart(begin) {
+    const delay = job.startedAt - serverNow();
+    if (delay > 0) startTimer = setTimeout(begin, delay);
+    else begin();
+  }
+
+  // ---------- 음원 파일 ----------
+  function playFile() {
+    const current = job;
+    audio.src = current.audioUrl;
+    audio.volume = volume / 100;
+    audio.currentTime = current.startSeconds;
+    scheduleStart(() => {
+      if (job !== current) return;
+      audio.currentTime = expectedPos();
+      audio.play().then(() => handlers.onPlaying()).catch(() => handlers.onBlocked());
+    });
+  }
+
+  audio.addEventListener('error', () => {
+    if (mode === 'file' && job) handlers.onError({ audioUrl: job.audioUrl });
+  });
+
+  // ---------- 유튜브 ----------
   function loadApi() {
     const tag = document.createElement('script');
     tag.src = 'https://www.youtube.com/iframe_api';
@@ -19,92 +73,73 @@
   }
 
   window.onYouTubeIframeAPIReady = function () {
-    player = new YT.Player('yt-player', {
-      width: '100%',
-      height: '100%',
-      playerVars: { controls: 0, disablekb: 1, fs: 0, rel: 0, playsinline: 1, iv_load_policy: 3 },
+    yt = new YT.Player('yt-player', {
+      host: 'https://www.youtube-nocookie.com',
+      width: '200',
+      height: '200',
+      playerVars: { controls: 0, disablekb: 1, fs: 0, rel: 0, playsinline: 1, iv_load_policy: 3, modestbranding: 1 },
       events: {
         onReady: () => {
-          ready = true;
-          player.setVolume(volume);
-          if (pending) { const p = pending; pending = null; play(p); }
+          ytReady = true;
+          yt.setVolume(volume);
+          if (pendingYt) { pendingYt = null; playYt(); }
         },
         onError: (e) => {
-          if ([2, 5, 100, 101, 150].includes(e.data) && currentId) onError(currentId, e.data);
+          if (mode === 'yt' && job && [2, 5, 100, 101, 150].includes(e.data)) handlers.onError({ videoId: job.videoId });
         },
         onStateChange: (e) => {
-          if (e.data === YT.PlayerState.PLAYING) onPlaying();
+          if (e.data === YT.PlayerState.PLAYING) handlers.onPlaying();
         },
       },
     });
   };
 
-  /**
-   * job = { videoId, startSeconds, startedAt(서버 시각 ms), clockOffset(ms) }
-   * clockOffset: 서버시각 - 내시각
-   */
-  function play(job) {
-    if (!job || !job.videoId) { stop(); return; }
-    if (!ready) { pending = job; return; }
-    clearTimeout(startTimer);
+  function playYt() {
+    if (!ytReady) { pendingYt = true; return; }
+    const current = job;
+    yt.cueVideoById({ videoId: current.videoId, startSeconds: current.startSeconds });
+    scheduleStart(() => {
+      if (job !== current) return;
+      yt.loadVideoById({ videoId: current.videoId, startSeconds: expectedPos() });
+      setTimeout(() => {
+        if (job !== current) return;
+        const s = yt.getPlayerState();
+        if (s !== YT.PlayerState.PLAYING && s !== YT.PlayerState.BUFFERING) handlers.onBlocked();
+      }, 2500);
+    });
+  }
 
-    const now = Date.now() + (job.clockOffset || 0);
-    const delay = job.startedAt - now;
-    currentId = job.videoId;
-
-    if (delay > 0) {
-      player.cueVideoById({ videoId: job.videoId, startSeconds: job.startSeconds });
-      startTimer = setTimeout(() => {
-        player.playVideo();
-        watchForBlock();
-      }, delay);
-    } else {
-      player.loadVideoById({ videoId: job.videoId, startSeconds: job.startSeconds + (-delay / 1000) });
-      watchForBlock();
+  // ---------- 위치 맞추기 ----------
+  setInterval(() => {
+    if (!job || serverNow() < job.startedAt) return;
+    const want = expectedPos();
+    if (mode === 'file' && !audio.paused && audio.duration) {
+      if (want < audio.duration - 1 && Math.abs(audio.currentTime - want) > 1.5) audio.currentTime = want;
     }
-  }
+    if (mode === 'yt' && ytReady && yt.getPlayerState() === YT.PlayerState.PLAYING) {
+      const dur = yt.getDuration();
+      if (dur && want < dur - 1 && Math.abs(yt.getCurrentTime() - want) > 2) yt.seekTo(want, true);
+    }
+  }, 1500);
 
-  // 브라우저가 자동 재생을 막으면 "소리 켜기" 버튼을 띄운다
-  function watchForBlock() {
-    setTimeout(() => {
-      if (!player || !currentId) return;
-      const state = player.getPlayerState();
-      if (state !== YT.PlayerState.PLAYING && state !== YT.PlayerState.BUFFERING) onBlocked();
-    }, 2500);
-  }
-
-  function resume() {
-    if (ready && currentId) player.playVideo();
-  }
-
-  function stop() {
-    clearTimeout(startTimer);
-    pending = null;
-    currentId = null;
-    if (ready) player.stopVideo();
-  }
-
-  function setVolume(v) {
-    volume = v;
-    if (ready) player.setVolume(v);
-  }
-
-  function isAvailable() {
-    return !apiFailed;
-  }
-
+  // ---------- 바깥에 내보내는 기능 ----------
   window.QuizPlayer = {
-    init(handlers = {}) {
-      onError = handlers.onError || onError;
-      onBlocked = handlers.onBlocked || onBlocked;
-      onPlaying = handlers.onPlaying || onPlaying;
+    init(h = {}) {
+      handlers = { ...handlers, ...h };
       loadApi();
     },
     play,
     stop,
-    resume,
-    setVolume,
-    isAvailable,
-    get currentId() { return currentId; },
+    resume() {
+      if (mode === 'file') audio.play().then(() => handlers.onPlaying()).catch(() => {});
+      if (mode === 'yt' && ytReady) yt.playVideo();
+    },
+    setVolume(v) {
+      volume = v;
+      audio.volume = v / 100;
+      if (ytReady) yt.setVolume(v);
+    },
+    isAvailable: () => !apiFailed,
+    get current() { return keyOf(job); },
   };
 })();
