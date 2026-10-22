@@ -87,12 +87,17 @@ const me = (s, viewer = s) => viewer.state.players.find((p) => p.id === s.me);
   const started = await a.call('game:start');
   check('방장이 게임 시작', started.ok);
   await until(() => a.state.status === 'playing', 10000, '첫 곡 재생');
-  check('라운드 정보', a.state.round.total === 10 && a.state.round.hints[0] === '2010년 차트');
+  check('라운드 정보', a.state.round.total === 10 && a.state.round.hints[0].value === '2010년');
   check('진행 중엔 정답 비공개', a.state.round.answer === null);
 
   b.emit('chat', '이건 오답일걸');
   await until(() => c.chats.some((m) => m.text === '이건 오답일걸'), 3000, '오답 채팅');
   check('오답 채팅이 다른 사람에게 보임', c.chats.find((m) => m.text === '이건 오답일걸').playerId === b.me);
+
+  b.emit('chat', '아 ㅅ1ㅂ 모르겠다');
+  await until(() => c.chats.some((m) => m.blinded), 3000, '비속어 채팅');
+  const bad = c.chats.find((m) => m.blinded);
+  check('비속어는 가려서 전달', bad.text === '아 *** 모르겠다' && !c.chats.some((m) => m.text.includes('ㅅ1ㅂ')), bad.text);
 
   // 두리가 제목을 하나씩 입력해 정답을 찾는다
   const titles = chart.songs.map((s) => s.title.replace(/\s*\(.*?\)\s*/g, ' ').trim());
@@ -154,7 +159,7 @@ const me = (s, viewer = s) => viewer.state.players.find((p) => p.id === s.me);
   await until(() => b.state.status === 'playing', 10000, '힌트 확인용 곡');
   await wait(30 * 1000 * 0.66 + 1200);
   const hints = b.state.round.hints;
-  check('힌트 3단계', hints.length === 3 && hints[1].startsWith('가수') && hints[2].startsWith('제목'), hints.join(' / '));
+  check('힌트 3단계', hints.length === 3 && hints[1].key === 'artist' && hints[2].key === 'chosung', hints.map((h) => `${h.label}: ${h.value}`).join(' / '));
 
   [a, b, c, c2].forEach((s) => s.close());
   const failed = results.filter((r) => !r.ok).length;

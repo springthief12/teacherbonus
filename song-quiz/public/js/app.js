@@ -28,7 +28,7 @@
   };
 
   function renderProfile() {
-    $('#avatar-preview').innerHTML = Avatar.svg(profile.avatar, { label: 'SIDE A' });
+    $('#avatar-preview').innerHTML = Avatar.svg(profile.avatar);
     $('#nickname').value = profile.nickname;
     $('#pick-color').innerHTML = Avatar.COLORS.map((c, i) =>
       `<button type="button" class="swatch" data-i="${i}" aria-label="${c.name}" aria-pressed="${profile.avatar.color === i}" style="--c:${c.body}"></button>`).join('');
@@ -90,6 +90,13 @@
         if (res?.ok) {
           years = res.years;
           renderRooms(res.rooms);
+          if (res.renamed) {
+            // 닉네임에 비속어가 있으면 서버가 가린 이름으로 바꾼다
+            profile.nickname = res.profile.nickname;
+            saveProfile();
+            $('#nickname').value = profile.nickname;
+            toast('닉네임에 쓸 수 없는 표현이 있어서 바꿨어요.');
+          }
         }
         resolve(res);
       });
@@ -154,7 +161,7 @@
   socket.on('round:hint', ({ hints }) => {
     if (!state?.round) return;
     state.round.hints = hints;
-    renderLyrics();
+    renderHints();
   });
 
   socket.on('round:video', (d) => {
@@ -366,14 +373,12 @@
   function renderRoom() {
     if (!state) return;
     const s = state;
-    $('#room-no').textContent = `[${s.id}]`;
+    $('#room-no').textContent = s.id;
     $('#room-title-text').textContent = s.title;
     $('#room-meta').textContent = `${s.settings.years.join(', ') || '연도 미정'} · ${s.players.length}/8명 · ${STATUS_TEXT[s.status]}`;
 
     const r = s.round;
-    $('#dial-round').textContent = r ? `${r.index + 1}/${r.total}` : `${s.settings.songCount}곡`;
     const votes = s.players.filter((p) => p.skipVote).length;
-    $('#dial-skip').textContent = r && (s.status === 'playing' || s.status === 'reveal') ? `${votes}/${r.skipNeeded}` : '–';
 
     const pane = { waiting: 'waiting', loading: 'play', playing: 'play', reveal: 'reveal', ended: 'ended' }[s.status];
     $('#view-room').dataset.mode = pane === 'play' || pane === 'reveal' ? 'game' : 'room';
@@ -381,7 +386,7 @@
     $('#screen').dataset.status = s.status;
 
     if (pane === 'waiting') renderWaiting();
-    if (pane === 'play') { renderLyrics(); renderStatusLine(); }
+    if (pane === 'play') { renderHints(); renderStatusLine(); }
     if (pane === 'reveal') renderReveal();
     if (pane === 'ended') renderEnded();
 
@@ -402,7 +407,7 @@
       btn.setAttribute('aria-pressed', String(Boolean(me?.skipVote)));
       btn.disabled = !canSkip;
     }
-    $('#mini-meta').textContent = r && canSkip ? `${r.index + 1}/${r.total}곡 · 넘기기 ${votes}/${r.skipNeeded}` : '';
+    $('#mini-meta').textContent = r && canSkip ? `넘기기 ${votes}/${r.skipNeeded}` : '';
   }
 
   function renderWaiting() {
@@ -484,24 +489,38 @@
   });
   $('#btn-again').addEventListener('click', () => socket.emit('game:again'));
 
-  // 노래방 가사처럼 힌트 줄을 쌓고, 시간 흐름을 노란 색칠로 보여준다
-  function renderLyrics() {
+  // 힌트 3칸: 연도 → 가수 → 제목 초성. 아직 안 열린 칸은 '곧 공개'
+  const HINT_SLOTS = [
+    { key: 'year', label: '연도' },
+    { key: 'artist', label: '가수' },
+    { key: 'chosung', label: '제목 초성' },
+  ];
+  let hintMark = '';
+  function renderHints() {
     const r = state?.round;
     if (!r) return;
-    const lines = state.status === 'loading'
-      ? ['다음 곡 준비 중']
-      : r.hints;
-    const html = lines.map((h, i) => `<p class="${i === lines.length - 1 ? 'now' : ''}">${esc(h)}</p>`).join('');
-    $('#lyrics-base').innerHTML = html;
-    $('#lyrics-fill').innerHTML = html;
-    $('#song-no').textContent = `No. ${String(r.index + 1).padStart(2, '0')}`;
+    const loading = state.status === 'loading';
+    const got = new Map((r.hints || []).map((h) => [h.key, h]));
+    const latest = r.hints && r.hints.length ? r.hints[r.hints.length - 1].key : null;
+    const mark = `${r.index}|${(r.hints || []).length}`;
+    const fresh = mark !== hintMark; // 새로 열린 힌트만 살짝 나타나게
+    hintMark = mark;
+    $('#hints').innerHTML = HINT_SLOTS.map((slot) => {
+      const h = got.get(slot.key);
+      const cls = ['hint', h ? 'open' : 'locked', h && slot.key === latest ? 'latest' : '', h && slot.key === latest && fresh ? 'fresh' : ''].join(' ');
+      return `<div class="${cls}"><dt>${slot.label}</dt><dd>${h ? esc(h.value) : (loading ? '·' : '곧 공개')}</dd></div>`;
+    }).join('');
+    $('#song-no').textContent = String(r.index + 1);
+    $('#song-total').textContent = `/ ${r.total}`;
+    $('#q-progress').innerHTML = Array.from({ length: r.total }, (_, i) =>
+      `<i class="${i < r.index ? 'done' : i === r.index ? 'now' : ''}"></i>`).join('');
   }
 
   function renderStatusLine() {
     const r = state?.round;
     if (!r) return;
     let text = '';
-    if (state.status === 'loading') text = '음원을 찾는 중이에요';
+    if (state.status === 'loading') text = '다음 곡을 준비하고 있어요';
     else if (!r.videoId && !r.audioUrl) text = '음원 없이 힌트로만 진행하는 곡이에요';
     else if (!hearsMusic()) text = '방장 화면에서 나오는 노래를 듣고 제목을 입력하세요';
     else text = '들리는 노래의 제목을 채팅으로 입력하세요';
@@ -521,7 +540,7 @@
     const winner = state.players.find((p) => p.id === r.winnerId);
     const pts = pendingReveal && pendingReveal.points ? pendingReveal.points : null;
     $('#reveal-winner').innerHTML = winner
-      ? `<div class="winner-avatar">${Avatar.svg(winner.avatar, { label: 'WIN' })}</div>
+      ? `<div class="winner-avatar">${Avatar.svg(winner.avatar)}</div>
          <div class="winner-text"><strong>${esc(winner.nickname)}</strong>${pts ? `<span class="points">+${pts}</span>` : ''}</div>`
       : `<div class="winner-text none">${pendingReveal?.reason === 'skip' ? '넘겼어요' : '아무도 못 맞혔어요'}</div>`;
 
@@ -543,7 +562,7 @@
         <span class="rank-avatar">${Avatar.svg(p.avatar)}</span>
         <span class="rank-name">${esc(p.nickname)}</span>
         <span class="rank-correct">${p.correct}곡</span>
-        <span class="rank-score">${String(p.score).padStart(5, '0')}</span>
+        <span class="rank-score">${p.score}<small>점</small></span>
       </li>`).join('');
     $('#btn-again').hidden = !isHost();
   }
@@ -563,16 +582,16 @@
         p.away ? 'away' : '',
         state.round && state.round.winnerId === p.id && state.status === 'reveal' ? 'winner' : '',
         p.skipVote ? 'voted' : '',
-        playing ? 'spin' : '',
+        playing ? 'live' : '',
       ].join(' ');
       seats.push(`
         <div class="${cls}" data-pid="${p.id}">
           <div class="bubble" hidden></div>
           ${p.skipVote ? '<span class="tag-skip">넘김</span>' : ''}
           ${p.away ? '<span class="tag-away">연결 끊김</span>' : ''}
-          <div class="seat-avatar">${Avatar.svg(p.avatar, { label: `${i + 1}P` })}</div>
+          <div class="seat-avatar">${Avatar.svg(p.avatar)}</div>
           <div class="seat-name">${p.id === state.hostId ? '<span class="host" title="방장">방장</span>' : ''}${esc(p.nickname)}</div>
-          <div class="seat-score">${String(p.score).padStart(5, '0')}</div>
+          <div class="seat-score">${p.score}<small>점</small></div>
         </div>`);
     }
     $('#seats').innerHTML = seats.join('');
@@ -666,6 +685,7 @@
   $('#volume').addEventListener('input', (e) => QuizPlayer.setVolume(Number(e.target.value)));
 
   // ---------- 시계 (매 프레임) ----------
+  const TIMER_LEN = 2 * Math.PI * 19; // 원형 타이머 둘레
   function tick() {
     requestAnimationFrame(tick);
     if (!state || !state.round) return;
@@ -675,17 +695,20 @@
       const elapsed = Math.max(0, (now - r.startedAt) / 1000);
       const remain = Math.max(0, r.roundTime - elapsed);
       const p = Math.min(1, elapsed / r.roundTime);
-      $('#countdown').textContent = now < r.startedAt ? '준비' : String(Math.ceil(remain));
-      $('#countdown').dataset.low = remain <= 5 ? 'true' : 'false';
-      $('#lyrics-fill').style.clipPath = `inset(0 ${(1 - p) * 100}% 0 0)`;
+      $('#countdown').textContent = now < r.startedAt ? '…' : String(Math.ceil(remain));
+      $('#timer').dataset.low = remain <= 5 ? 'true' : 'false';
+      $('#timer-arc').style.strokeDashoffset = String(TIMER_LEN * p);
     } else if (state.status === 'loading') {
       $('#countdown').textContent = '…';
-      $('#lyrics-fill').style.clipPath = 'inset(0 100% 0 0)';
+      $('#timer').dataset.low = 'false';
+      $('#timer-arc').style.strokeDashoffset = '0';
     } else if (state.status === 'reveal' && r.revealEndsAt) {
-      const left = Math.max(0, Math.ceil((r.revealEndsAt - now) / 1000));
+      const leftMs = Math.max(0, r.revealEndsAt - now);
+      const hold = r.winnerId ? state.settings.revealTime * 1000 : 4000;
       const votes = state.players.filter((p) => p.skipVote).length;
       const last = r.index + 1 >= r.total;
-      $('#reveal-next').textContent = `${last ? '결과 발표' : '다음 곡'}까지 ${left}초 · 넘기기 ${votes}/${r.skipNeeded}`;
+      $('#reveal-next').textContent = `${last ? '결과 발표' : '다음 곡'}까지 ${Math.ceil(leftMs / 1000)}초 · 넘기기 ${votes}/${r.skipNeeded}`;
+      $('#reveal-bar').style.transform = `scaleX(${Math.min(1, leftMs / hold)})`;
     }
   }
   requestAnimationFrame(tick);
@@ -708,7 +731,7 @@
       row.className = `msg sys tone-${m.tone || 'info'}`;
       row.innerHTML = `<span class="msg-text">${esc(m.text)}</span><time>${timeLabel(m.at)}</time>`;
     } else {
-      row.className = `msg${m.playerId === myId ? ' mine' : ''}`;
+      row.className = `msg${m.playerId === myId ? ' mine' : ''}${m.blinded ? ' blinded' : ''}`;
       row.innerHTML = `<b style="color:${colorOf(m.playerId)}">${esc(m.nickname)}</b><span class="msg-text">${esc(m.text)}</span><time>${timeLabel(m.at)}</time>`;
       showBubble(m.playerId, m.text);
     }

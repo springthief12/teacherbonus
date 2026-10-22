@@ -8,6 +8,7 @@ const { Server } = require('socket.io');
 const { yearCatalog, loadCharts } = require('./charts');
 const media = require('./media');
 const { Room } = require('./room');
+const { cleanName } = require('./profanity');
 
 const PORT = Number(process.env.PORT) || 3000;
 
@@ -68,14 +69,15 @@ function cleanKey(key) {
 }
 
 function cleanProfile(profile = {}) {
-  const nickname = String(profile.nickname || '').replace(/\s+/g, ' ').trim().slice(0, 10) || '손님';
+  const typed = String(profile.nickname || '').replace(/\s+/g, ' ').trim().slice(0, 10) || '손님';
+  const nickname = cleanName(typed, `손님${Math.floor(100 + Math.random() * 900)}`);
   const a = profile.avatar || {};
   const avatar = {
     color: Number.isInteger(a.color) ? Math.max(0, Math.min(7, a.color)) : 0,
     face: Number.isInteger(a.face) ? Math.max(0, Math.min(3, a.face)) : 0,
     item: Number.isInteger(a.item) ? Math.max(0, Math.min(4, a.item)) : 0,
   };
-  return { nickname, avatar };
+  return { nickname, avatar, renamed: nickname !== typed };
 }
 
 io.on('connection', (socket) => {
@@ -108,7 +110,7 @@ io.on('connection', (socket) => {
     profile = cleanProfile(data);
     key = cleanKey(data?.key) || key || `s-${socket.id.replace(/[^a-zA-Z0-9_-]/g, '')}xxxxxxxx`;
     socket.join('lobby');
-    ack?.({ ok: true, profile, rooms: lobbyList(), years: yearCatalog() });
+    ack?.({ ok: true, profile: { nickname: profile.nickname, avatar: profile.avatar }, renamed: profile.renamed, rooms: lobbyList(), years: yearCatalog() });
   });
 
   socket.on('room:create', (data, ack) => {
@@ -116,7 +118,7 @@ io.on('connection', (socket) => {
     leaveRoom();
     roomSeq += 1;
     const id = String(roomSeq);
-    const title = String(data?.title || '').trim().slice(0, 24) || `${profile.nickname}의 노래방`;
+    const title = cleanName(String(data?.title || '').trim().slice(0, 24), '') || `${profile.nickname}의 방`;
     const created = new Room(io, {
       id,
       title,

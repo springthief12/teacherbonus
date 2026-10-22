@@ -2,6 +2,7 @@
 const { buildPlaylist, hasYear, audioFileFor } = require('./charts');
 const media = require('./media');
 const { isCorrect, chosungHint } = require('./answer');
+const { censor } = require('./profanity');
 const { resolveVideo, markBad } = require('./youtube');
 
 const crypto = require('crypto');
@@ -351,21 +352,22 @@ class Room {
       audioUrl,
       startSeconds,
       startedAt: Date.now() + 800, // 모두가 영상을 불러올 여유
-      hints: [`${song.year}년 차트`], // 순위는 정답 공개 때만
+      // 힌트 3칸: 연도 → 가수 → 제목 초성 (순위는 정답 공개 때만)
+      hints: [{ key: 'year', label: '연도', value: `${song.year}년` }],
     });
     this.status = 'playing';
     if (!videoId && !audioUrl) this.system('이 곡은 음원을 찾지 못했어요. 힌트로 맞혀 보세요.', 'warn');
     this.broadcastState();
 
     const total = this.settings.roundTime * 1000 + 800;
-    this.later(total * 0.35, () => this.addHint(`가수: ${song.artist}`));
-    this.later(total * 0.65, () => this.addHint(`제목: ${chosungHint(song.title)}`));
+    this.later(total * 0.35, () => this.addHint({ key: 'artist', label: '가수', value: song.artist }));
+    this.later(total * 0.65, () => this.addHint({ key: 'chosung', label: '제목 초성', value: chosungHint(song.title) }));
     this.later(total, () => this.reveal('timeout'));
   }
 
-  addHint(text) {
+  addHint(hint) {
     if (this.status !== 'playing') return;
-    this.round.hints.push(text);
+    this.round.hints.push(hint);
     this.emit('round:hint', { hints: this.round.hints });
   }
 
@@ -444,11 +446,15 @@ class Room {
     }
 
     // 정답이 아닌 글은 모두에게 보인다 (스타 노래맞히기처럼 오답도 채팅에 남음)
+    // 욕설·비속어는 서버에서 가린 뒤 보낸다 (정답 판정은 가리기 전 원문으로)
+    const clean = censor(text);
+    if (clean.hit) this.io.to(player.socketId).emit('toast', { text: '바르고 고운 말을 써 주세요. 부적절한 표현은 가려서 보여요.' });
     this.emit('chat', {
       kind: 'player',
       playerId: player.id,
       nickname: player.nickname,
-      text,
+      text: clean.text,
+      blinded: clean.hit,
       at: now,
     });
   }

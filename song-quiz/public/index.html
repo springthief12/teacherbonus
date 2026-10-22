@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
-  <meta name="theme-color" content="#F1E6D2">
+  <meta name="theme-color" content="#F2ECE1">
   <title>그때 그 노래 – 연도별 차트 노래 맞히기</title>
   <link rel="stylesheet" href="vendor/pretendard/pretendardvariable-dynamic-subset.css">
   <link rel="stylesheet" href="css/style.css">
@@ -11,13 +11,17 @@
 <body>
   <!-- 로비 -->
   <main id="view-lobby" class="view lobby">
-    <section class="marquee" aria-label="게임 소개">
-      <div class="marquee-screen">
-        <p class="marquee-no">No. 2010</p>
-        <h1 class="lyric" data-text="그때 그 노래">그때 그 노래</h1>
-        <p class="marquee-sub">연도별 차트에서 섞어 나오는 노래, 제일 먼저 제목을 치면 점수!</p>
+    <header class="hero">
+      <div class="hero-title">
+        <h1>그때 그 노래</h1>
+        <p>연도를 고르면 그해 멜론 차트 곡이 섞여 나와요. 제일 먼저 제목을 친 사람이 점수를 가져가요.</p>
       </div>
-    </section>
+      <ol class="hero-steps" aria-label="참여 방법">
+        <li><span>1</span>닉네임과 캐릭터 정하기</li>
+        <li><span>2</span>방 들어가기 (QR로도 가능)</li>
+        <li><span>3</span>노래를 듣고 제목 입력하기</li>
+      </ol>
+    </header>
 
     <section class="invite" id="invite" hidden>
       <p class="invite-text"><strong id="invite-room"></strong> 방에 초대받았어요. 닉네임과 캐릭터를 정하고 들어가세요.</p>
@@ -65,12 +69,12 @@
   <!-- 방 (대기 · 게임 · 결과 모두 이 화면) -->
   <main id="view-room" class="view room" hidden>
     <header class="room-bar">
-      <span class="room-no" id="room-no">[101]</span>
+      <span class="room-no" id="room-no">101</span>
       <span class="room-title" id="room-title-text">방 이름</span>
       <span class="room-meta" id="room-meta"></span>
-      <button class="btn ghost" id="btn-sfx" type="button" aria-pressed="true">효과음 켬</button>
-      <button class="btn ghost" id="btn-qr" type="button" aria-expanded="false" aria-controls="qr-panel">접속 QR</button>
-      <button class="btn ghost" id="btn-leave" type="button">나가기</button>
+      <button class="btn quiet" id="btn-sfx" type="button" aria-pressed="true">효과음 켬</button>
+      <button class="btn quiet" id="btn-qr" type="button" aria-expanded="false" aria-controls="qr-panel">접속 QR</button>
+      <button class="btn quiet" id="btn-leave" type="button">나가기</button>
     </header>
 
     <section class="qr-panel" id="qr-panel" hidden aria-label="접속 QR 코드">
@@ -92,94 +96,94 @@
     </section>
 
     <div class="room-body">
-    <aside class="ranking-board" aria-labelledby="board-title">
-      <h2 id="board-title">순위</h2>
-      <ol class="board-list" id="board-list"></ol>
-    </aside>
+      <aside class="ranking-board" aria-labelledby="board-title">
+        <h2 id="board-title">순위</h2>
+        <ol class="board-list" id="board-list"></ol>
+      </aside>
 
-    <div class="room-main">
-    <section class="stage">
-      <div class="dial dial-left" aria-hidden="true">
-        <span class="dial-label">곡</span>
-        <strong id="dial-round">–</strong>
-      </div>
+      <div class="room-main">
+        <section class="stage">
+          <div class="screen" id="screen">
+            <!-- 유튜브 재생기: 화면에 보이지 않고 소리만 -->
+            <div class="screen-video" id="screen-video" aria-hidden="true"><div id="yt-player"></div></div>
 
-      <div class="screen" id="screen">
-        <div class="screen-video" id="screen-video"><div id="yt-player"></div></div>
-        <div class="screen-cover" id="screen-cover"></div>
+            <!-- 대기: 방장은 설정, 학생은 요약 -->
+            <div class="screen-pane pane-waiting" id="pane-waiting">
+              <div class="pick-head">
+                <h3 id="pick-title">연도 고르기</h3>
+                <p id="pick-hint" class="pick-hint"></p>
+              </div>
+              <dl id="settings-summary" class="settings-summary" hidden></dl>
+              <div id="year-grid" class="year-grid"></div>
+              <div class="options" id="options"></div>
+              <div class="start-row">
+                <p id="start-note" class="start-note"></p>
+                <button class="btn primary start" id="btn-start" type="button">게임 시작</button>
+              </div>
+            </div>
 
-        <!-- 대기: 선곡 패널 -->
-        <div class="screen-pane pane-waiting" id="pane-waiting">
-          <div class="pick-head">
-            <h3 id="pick-title">연도 고르기</h3>
-            <p id="pick-hint" class="pick-hint"></p>
+            <!-- 진행 -->
+            <div class="screen-pane pane-play" id="pane-play" hidden>
+              <div class="q-head">
+                <div class="q-progress" id="q-progress" aria-hidden="true"></div>
+                <div class="q-row">
+                  <p class="q-count"><strong id="song-no">1</strong><span id="song-total">/ 20</span></p>
+                  <span class="mini-meta" id="mini-meta"></span>
+                  <div class="timer" id="timer" role="timer" aria-label="남은 시간">
+                    <svg viewBox="0 0 44 44" aria-hidden="true">
+                      <circle class="timer-track" cx="22" cy="22" r="19"></circle>
+                      <circle class="timer-arc" id="timer-arc" cx="22" cy="22" r="19"></circle>
+                    </svg>
+                    <span class="countdown" id="countdown">30</span>
+                  </div>
+                </div>
+              </div>
+              <dl class="hints" id="hints"></dl>
+              <p class="screen-status" id="screen-status"></p>
+            </div>
+
+            <!-- 정답 공개 -->
+            <div class="screen-pane pane-reveal" id="pane-reveal" hidden>
+              <p class="reveal-label">정답</p>
+              <p class="reveal-title" id="reveal-title"></p>
+              <p class="reveal-meta" id="reveal-meta"></p>
+              <div class="reveal-winner" id="reveal-winner"></div>
+              <div class="reveal-foot">
+                <p class="reveal-next" id="reveal-next"></p>
+                <div class="reveal-bar"><span id="reveal-bar"></span></div>
+              </div>
+            </div>
+
+            <!-- 결과 -->
+            <div class="screen-pane pane-ended" id="pane-ended" hidden>
+              <h3>최종 순위</h3>
+              <ol class="ranking" id="ranking"></ol>
+              <button class="btn primary start" id="btn-again" type="button">다시 하기</button>
+            </div>
+
+            <button class="sound-gate" id="sound-gate" type="button" hidden>눌러서 소리 켜기</button>
           </div>
-          <dl id="settings-summary" class="settings-summary" hidden></dl>
-          <div id="year-grid" class="year-grid"></div>
-          <div class="options" id="options"></div>
-          <div class="start-row">
-            <p id="start-note" class="start-note"></p>
-            <button class="btn start" id="btn-start" type="button">게임 시작</button>
+        </section>
+
+        <section class="seats" id="seats" aria-label="플레이어"></section>
+
+        <section class="talk">
+          <div class="chat-log" id="chat-log" role="log" aria-live="polite"></div>
+          <form class="chat-form" id="chat-form">
+            <input id="chat-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+              enterkeyhint="send" maxlength="120" placeholder="정답이나 채팅 입력">
+            <button class="btn primary" type="submit">보내기</button>
+            <button class="btn skip-mini" id="btn-skip-mini" type="button" aria-label="이 곡 넘기기">넘기기</button>
+          </form>
+          <div class="controls">
+            <button class="btn skip" id="btn-skip" type="button">넘기기 <kbd>K</kbd></button>
+            <label class="volume" id="volume-wrap">
+              <span>노래 소리</span>
+              <input type="range" id="volume" min="0" max="100" value="70">
+            </label>
           </div>
-        </div>
-
-        <!-- 진행 -->
-        <div class="screen-pane pane-play" id="pane-play" hidden>
-          <div class="screen-top">
-            <span class="song-no" id="song-no">No. 01</span>
-            <span class="mini-meta" id="mini-meta"></span>
-            <span class="countdown" id="countdown">30</span>
-          </div>
-          <div class="lyrics" id="lyrics">
-            <div class="lyrics-base" id="lyrics-base"></div>
-            <div class="lyrics-fill" id="lyrics-fill" aria-hidden="true"></div>
-          </div>
-          <p class="screen-status" id="screen-status"></p>
-        </div>
-
-        <!-- 정답 공개 -->
-        <div class="screen-pane pane-reveal" id="pane-reveal" hidden>
-          <div class="reveal-winner" id="reveal-winner"></div>
-          <p class="reveal-title lyric" id="reveal-title"></p>
-          <p class="reveal-meta" id="reveal-meta"></p>
-          <p class="reveal-next" id="reveal-next"></p>
-        </div>
-
-        <!-- 결과 -->
-        <div class="screen-pane pane-ended" id="pane-ended" hidden>
-          <h3 class="lyric">최종 점수</h3>
-          <ol class="ranking" id="ranking"></ol>
-          <button class="btn start" id="btn-again" type="button">다시 하기</button>
-        </div>
-
-        <button class="sound-gate" id="sound-gate" type="button" hidden>눌러서 소리 켜기</button>
+        </section>
       </div>
-
-      <div class="dial dial-right" aria-hidden="true">
-        <span class="dial-label">스킵</span>
-        <strong id="dial-skip">–</strong>
-      </div>
-    </section>
-
-    <section class="seats" id="seats" aria-label="플레이어"></section>
-
-    <section class="talk">
-      <div class="chat-log" id="chat-log" role="log" aria-live="polite"></div>
-      <form class="chat-form" id="chat-form">
-        <input id="chat-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-          enterkeyhint="send" maxlength="120" placeholder="정답이나 채팅 입력">
-        <button class="btn primary" type="submit">보내기</button>
-        <button class="btn skip skip-mini" id="btn-skip-mini" type="button" aria-label="이 곡 넘기기">넘기기</button>
-      </form>
-      <div class="controls">
-        <button class="btn skip" id="btn-skip" type="button">넘기기 <kbd>K</kbd></button>
-        <label class="volume" id="volume-wrap">
-          <span>노래 소리</span>
-          <input type="range" id="volume" min="0" max="100" value="70">
-        </label>
-      </div>
-    </section>
-    </div>
     </div>
   </main>
 
