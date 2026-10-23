@@ -44,6 +44,7 @@ const ARTIST_EN = {
   청하: 'CHUNG HA', 숀: 'SHAUN', 모모랜드: 'MOMOLAND', 윤종신: 'Yoon Jong Shin', 벤: 'Ben', 비투비: 'BTOB', 여자친구: 'GFRIEND',
   황치열: 'Hwang Chi Yeul', 찬열: 'CHANYEOL', 싸이: 'PSY', 우원재: 'Woo Won Jae', 신현희와김루트: 'Shin Hyunhee and Seenroot',
   한동근: 'Han Dong Geun', 정키: 'Jung Key', 효린: 'Hyolyn', 박재범: 'Jay Park', 하이라이트: 'Highlight', 정승환: 'Jung Seung Hwan', 소유: 'SOYOU',
+  WSG워너비: 'WSG Wannabe', 주시크: 'Joosiq', 케이시: 'Kassy', 윤하: 'YOUNHA', 김민석: 'Kim Min Seok', 경서: 'Kyoungseo',
 };
 
 let cache = {};
