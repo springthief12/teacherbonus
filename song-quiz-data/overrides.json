@@ -2832,6 +2832,12 @@
       "title": "너 때문에",
       "artist": "브라운 아이즈",
       "updatedAt": 1792756939298
+    },
+    "2008|joo|남자때문에": {
+      "disabled": true,
+      "title": "남자 때문에",
+      "artist": "JOO",
+      "updatedAt": 1792756941184
     }
   }
 }
