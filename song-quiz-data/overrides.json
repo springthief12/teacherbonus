@@ -1886,14 +1886,6 @@
       "artist": "비스트",
       "updatedAt": 1792720025693
     },
-    "2011|리쌍|tv를껐네": {
-      "youtubeId": "HWfpxLKA-aU",
-      "videoTitle": "리쌍 (Leessang) - TV를 껐네... (Feat. T 윤미래 & 권정열 Of 10cm)ㅣ Lyrics / 가사",
-      "videoChannel": "음악 자막 채널",
-      "title": "TV를 껐네...",
-      "artist": "리쌍",
-      "updatedAt": 1792720033922
-    },
     "2011|씨스타|socool쏘쿨": {
       "youtubeId": "8Z5p1UsKRXo",
       "videoTitle": "SISTAR (씨스타) - So Cool Lyrics [HAN|ROM|ENG]",
@@ -2038,12 +2030,6 @@
       "artist": "2am",
       "updatedAt": 1792729082405
     },
-    "2010|서영은|이거짓같은말with정엽of브라운아이드소울": {
-      "disabled": true,
-      "title": "이 거짓같은 말 (With 정엽 Of 브라운 아이드 소울)",
-      "artist": "서영은",
-      "updatedAt": 1792729085913
-    },
     "2010|디셈버|배운게사랑이라": {
       "disabled": true,
       "title": "배운게 사랑이라",
@@ -2055,6 +2041,20 @@
       "title": "흩어져",
       "artist": "먼데이 키즈",
       "updatedAt": 1792730161393
+    },
+    "2010|서영은|이거지같은말with정엽of브라운아이드소울": {
+      "disabled": true,
+      "title": "이 거지같은 말 (With 정엽 Of 브라운 아이드 소울)",
+      "artist": "서영은",
+      "updatedAt": 1792729085913
+    },
+    "2011|리쌍|tv를껐네featt윤미래권정열of10cm": {
+      "youtubeId": "HWfpxLKA-aU",
+      "videoTitle": "리쌍 (Leessang) - TV를 껐네... (Feat. T 윤미래 & 권정열 Of 10cm)ㅣ Lyrics / 가사",
+      "videoChannel": "음악 자막 채널",
+      "title": "TV를 껐네... (Feat. t윤미래, 권정열 Of 10cm)",
+      "artist": "리쌍",
+      "updatedAt": 1792720033922
     }
   }
 }

@@ -1,0 +1,371 @@
+{
+  "year": 2016,
+  "source": "melon",
+  "verified": true,
+  "note": "멜론 시대별 차트 2016년 연간 TOP 50 (KPOP)",
+  "sourceUrl": "https://www.melon.com/chart/age/index.htm?chartDate=2016&chartGenre=KPOP&chartType=YE",
+  "verifiedAt": "2026-10-23",
+  "songs": [
+    {
+      "rank": 1,
+      "title": "CHEER UP",
+      "artist": "TWICE (트와이스)",
+      "aliases": [],
+      "melonSongId": "8158031"
+    },
+    {
+      "rank": 2,
+      "title": "시간을 달려서 (Rough)",
+      "artist": "여자친구 (GFRIEND)",
+      "aliases": [],
+      "melonSongId": "8028701"
+    },
+    {
+      "rank": 3,
+      "title": "어디에도",
+      "artist": "엠씨더맥스 (M.C the MAX)",
+      "aliases": [],
+      "melonSongId": "8033528"
+    },
+    {
+      "rank": 4,
+      "title": "널 사랑하지 않아",
+      "artist": "어반자카파",
+      "aliases": [],
+      "melonSongId": "8199190"
+    },
+    {
+      "rank": 5,
+      "title": "이 사랑",
+      "artist": "다비치",
+      "aliases": [],
+      "melonSongId": "8071102"
+    },
+    {
+      "rank": 6,
+      "title": "이 소설의 끝을 다시 써보려 해",
+      "artist": "한동근",
+      "aliases": [],
+      "melonSongId": "5398990"
+    },
+    {
+      "rank": 7,
+      "title": "너는 나 나는 너",
+      "artist": "지코 (ZICO)",
+      "aliases": [],
+      "melonSongId": "8028724"
+    },
+    {
+      "rank": 8,
+      "title": "You Are My Everything",
+      "artist": "거미 (GUMMY)",
+      "aliases": [],
+      "melonSongId": "8089568"
+    },
+    {
+      "rank": 9,
+      "title": "OOH-AHH하게",
+      "artist": "TWICE (트와이스)",
+      "aliases": [],
+      "melonSongId": "7891119"
+    },
+    {
+      "rank": 10,
+      "title": "걱정말아요 그대",
+      "artist": "이적",
+      "aliases": [],
+      "melonSongId": "7921208"
+    },
+    {
+      "rank": 11,
+      "title": "또 다시 사랑",
+      "artist": "임창정",
+      "aliases": [],
+      "melonSongId": "7861392"
+    },
+    {
+      "rank": 12,
+      "title": "잊어버리지마 (Feat. 태연)",
+      "artist": "Crush",
+      "aliases": [],
+      "melonSongId": "8026677"
+    },
+    {
+      "rank": 13,
+      "title": "내가 저지른 사랑",
+      "artist": "임창정",
+      "aliases": [],
+      "melonSongId": "9631530"
+    },
+    {
+      "rank": 14,
+      "title": "D (half moon) (Feat. 개코)",
+      "artist": "DEAN",
+      "aliases": [
+        "d",
+        "디",
+        "d half moon",
+        "디하프문",
+        "디 하프 문",
+        "하프문"
+      ],
+      "melonSongId": "8109412"
+    },
+    {
+      "rank": 15,
+      "title": "넌 is 뭔들",
+      "artist": "마마무 (Mamamoo)",
+      "aliases": [],
+      "melonSongId": "8068881"
+    },
+    {
+      "rank": 16,
+      "title": "하늘바라기 (Feat. 하림)",
+      "artist": "정은지",
+      "aliases": [],
+      "melonSongId": "8148487"
+    },
+    {
+      "rank": 17,
+      "title": "우주를 줄게",
+      "artist": "볼빨간사춘기",
+      "aliases": [],
+      "melonSongId": "9620469"
+    },
+    {
+      "rank": 18,
+      "title": "Boys And Girls (Feat. Babylon)",
+      "artist": "지코 (ZICO)",
+      "aliases": [],
+      "melonSongId": "7911687"
+    },
+    {
+      "rank": 19,
+      "title": "ALWAYS",
+      "artist": "윤미래",
+      "aliases": [],
+      "melonSongId": "8053157"
+    },
+    {
+      "rank": 20,
+      "title": "오늘부터 우리는 (Me Gustas Tu)",
+      "artist": "여자친구 (GFRIEND)",
+      "aliases": [],
+      "melonSongId": "5791706"
+    },
+    {
+      "rank": 21,
+      "title": "Day Day (Feat. 박재범) (Prod. by GRAY)",
+      "artist": "BewhY (비와이)",
+      "aliases": [],
+      "melonSongId": "8261338"
+    },
+    {
+      "rank": 22,
+      "title": "Why So Lonely",
+      "artist": "원더걸스",
+      "aliases": [],
+      "melonSongId": "8254545"
+    },
+    {
+      "rank": 23,
+      "title": "돌아오지마 (Feat. 용준형 Of 비스트)",
+      "artist": "헤이즈 (Heize)",
+      "aliases": [
+        "돌아오지 마"
+      ],
+      "melonSongId": "8143111"
+    },
+    {
+      "rank": 24,
+      "title": "Dream (Prod. by 박근태)",
+      "artist": "수지 (Suzy), 백현 (BAEKHYUN)",
+      "aliases": [],
+      "melonSongId": "8005879"
+    },
+    {
+      "rank": 25,
+      "title": "봄이 좋냐??",
+      "artist": "10CM",
+      "aliases": [],
+      "melonSongId": "8124417"
+    },
+    {
+      "rank": 26,
+      "title": "말해! 뭐해?",
+      "artist": "케이윌",
+      "aliases": [],
+      "melonSongId": "8102386"
+    },
+    {
+      "rank": 27,
+      "title": "Everytime",
+      "artist": "첸 (CHEN), 펀치 (Punch)",
+      "aliases": [],
+      "melonSongId": "8067023"
+    },
+    {
+      "rank": 28,
+      "title": "Rain",
+      "artist": "태연 (TAEYEON)",
+      "aliases": [],
+      "melonSongId": "8042553"
+    },
+    {
+      "rank": 29,
+      "title": "Forever (Prod. By GRAY)",
+      "artist": "BewhY (비와이)",
+      "aliases": [],
+      "melonSongId": "8252408"
+    },
+    {
+      "rank": 30,
+      "title": "너 그리고 나 (NAVILLERA)",
+      "artist": "여자친구 (GFRIEND)",
+      "aliases": [],
+      "melonSongId": "8262125"
+    },
+    {
+      "rank": 31,
+      "title": "한숨",
+      "artist": "이하이",
+      "aliases": [],
+      "melonSongId": "8086947"
+    },
+    {
+      "rank": 32,
+      "title": "휘파람",
+      "artist": "BLACKPINK",
+      "aliases": [],
+      "melonSongId": "8304594"
+    },
+    {
+      "rank": 33,
+      "title": "소녀",
+      "artist": "오혁",
+      "aliases": [],
+      "melonSongId": "7942948"
+    },
+    {
+      "rank": 34,
+      "title": "그대라는 사치",
+      "artist": "한동근",
+      "aliases": [],
+      "melonSongId": "9614761"
+    },
+    {
+      "rank": 35,
+      "title": "TT",
+      "artist": "TWICE (트와이스)",
+      "aliases": [
+        "티티"
+      ],
+      "melonSongId": "30054344"
+    },
+    {
+      "rank": 36,
+      "title": "유레카 (Feat. Zion.T)",
+      "artist": "지코 (ZICO)",
+      "aliases": [],
+      "melonSongId": "7965449"
+    },
+    {
+      "rank": 37,
+      "title": "또 하루 (Feat. 개코)",
+      "artist": "개리",
+      "aliases": [],
+      "melonSongId": "7999021"
+    },
+    {
+      "rank": 38,
+      "title": "목요일 밤 (Feat. 빈지노)",
+      "artist": "어반자카파",
+      "aliases": [],
+      "melonSongId": "9613173"
+    },
+    {
+      "rank": 39,
+      "title": "쏘쏘",
+      "artist": "백아연",
+      "aliases": [],
+      "melonSongId": "8189661"
+    },
+    {
+      "rank": 40,
+      "title": "다시 너를",
+      "artist": "매드클라운, 김나영",
+      "aliases": [],
+      "melonSongId": "8100402"
+    },
+    {
+      "rank": 41,
+      "title": "너였다면",
+      "artist": "정승환",
+      "aliases": [],
+      "melonSongId": "8203900"
+    },
+    {
+      "rank": 42,
+      "title": "꿈처럼",
+      "artist": "벤",
+      "aliases": [],
+      "melonSongId": "8174429"
+    },
+    {
+      "rank": 43,
+      "title": "러시안 룰렛 (Russian Roulette)",
+      "artist": "Red Velvet (레드벨벳)",
+      "aliases": [],
+      "melonSongId": "9634954"
+    },
+    {
+      "rank": 44,
+      "title": "안아줘",
+      "artist": "정준일",
+      "aliases": [],
+      "melonSongId": "3620493"
+    },
+    {
+      "rank": 45,
+      "title": "puzzle",
+      "artist": "C JAMM, BewhY (비와이)",
+      "aliases": [],
+      "melonSongId": "8308231"
+    },
+    {
+      "rank": 46,
+      "title": "I Like That",
+      "artist": "씨스타",
+      "aliases": [],
+      "melonSongId": "8236055"
+    },
+    {
+      "rank": 47,
+      "title": "숨",
+      "artist": "박효신",
+      "aliases": [],
+      "melonSongId": "30011624"
+    },
+    {
+      "rank": 48,
+      "title": "The Time Goes On",
+      "artist": "BewhY (비와이)",
+      "aliases": [],
+      "melonSongId": "5620266"
+    },
+    {
+      "rank": 49,
+      "title": "스토커",
+      "artist": "10CM",
+      "aliases": [],
+      "melonSongId": "5466962"
+    },
+    {
+      "rank": 50,
+      "title": "니가 알던 내가 아냐 (Prod. By GRAY)",
+      "artist": "사이먼 도미닉, ONE, 지투 (g2), BewhY (비와이)",
+      "aliases": [],
+      "melonSongId": "8233291"
+    }
+  ]
+}

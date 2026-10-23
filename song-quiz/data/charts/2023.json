@@ -1,0 +1,390 @@
+{
+  "year": 2023,
+  "source": "melon",
+  "verified": true,
+  "note": "멜론 시대별 차트 2023년 연간 TOP 50 (KPOP)",
+  "sourceUrl": "https://www.melon.com/chart/age/index.htm?chartDate=2023&chartGenre=KPOP&chartType=YE",
+  "verifiedAt": "2026-10-23",
+  "songs": [
+    {
+      "rank": 1,
+      "title": "Ditto",
+      "artist": "NewJeans",
+      "aliases": [],
+      "melonSongId": "35945927"
+    },
+    {
+      "rank": 2,
+      "title": "Hype Boy",
+      "artist": "NewJeans",
+      "aliases": [
+        "하입보이",
+        "하이프보이",
+        "하입 보이"
+      ],
+      "melonSongId": "35454426"
+    },
+    {
+      "rank": 3,
+      "title": "I AM",
+      "artist": "IVE (아이브)",
+      "aliases": [
+        "아이엠",
+        "아이 엠"
+      ],
+      "melonSongId": "36356993"
+    },
+    {
+      "rank": 4,
+      "title": "OMG",
+      "artist": "NewJeans",
+      "aliases": [],
+      "melonSongId": "35985167"
+    },
+    {
+      "rank": 5,
+      "title": "사건의 지평선",
+      "artist": "윤하 (YOUNHA)",
+      "aliases": [
+        "event horizon",
+        "이벤트호라이즌"
+      ],
+      "melonSongId": "34819473"
+    },
+    {
+      "rank": 6,
+      "title": "Kitsch",
+      "artist": "IVE (아이브)",
+      "aliases": [],
+      "melonSongId": "36318125"
+    },
+    {
+      "rank": 7,
+      "title": "퀸카 (Queencard)",
+      "artist": "i-dle (아이들)",
+      "aliases": [],
+      "melonSongId": "36430773"
+    },
+    {
+      "rank": 8,
+      "title": "Attention",
+      "artist": "NewJeans",
+      "aliases": [
+        "어텐션"
+      ],
+      "melonSongId": "35454425"
+    },
+    {
+      "rank": 9,
+      "title": "헤어지자 말해요",
+      "artist": "박재정",
+      "aliases": [],
+      "melonSongId": "36382580"
+    },
+    {
+      "rank": 10,
+      "title": "After LIKE",
+      "artist": "IVE (아이브)",
+      "aliases": [
+        "애프터라이크",
+        "애프터 라이크"
+      ],
+      "melonSongId": "35546497"
+    },
+    {
+      "rank": 11,
+      "title": "Spicy",
+      "artist": "aespa",
+      "aliases": [],
+      "melonSongId": "36416114"
+    },
+    {
+      "rank": 12,
+      "title": "ANTIFRAGILE",
+      "artist": "LE SSERAFIM (르세라핌)",
+      "aliases": [],
+      "melonSongId": "35729104"
+    },
+    {
+      "rank": 13,
+      "title": "LOVE DIVE",
+      "artist": "IVE (아이브)",
+      "aliases": [
+        "러브다이브",
+        "러브 다이브"
+      ],
+      "melonSongId": "34847378"
+    },
+    {
+      "rank": 14,
+      "title": "Super Shy",
+      "artist": "NewJeans",
+      "aliases": [],
+      "melonSongId": "36599950"
+    },
+    {
+      "rank": 15,
+      "title": "파이팅 해야지 (Feat. 이영지)",
+      "artist": "부석순 (SEVENTEEN)",
+      "aliases": [],
+      "melonSongId": "36110996"
+    },
+    {
+      "rank": 16,
+      "title": "UNFORGIVEN (feat. Nile Rodgers)",
+      "artist": "LE SSERAFIM (르세라핌)",
+      "aliases": [],
+      "melonSongId": "36411342"
+    },
+    {
+      "rank": 17,
+      "title": "꽃",
+      "artist": "지수 (JISOO)",
+      "aliases": [],
+      "melonSongId": "36331121"
+    },
+    {
+      "rank": 18,
+      "title": "사랑은 늘 도망가",
+      "artist": "임영웅",
+      "aliases": [],
+      "melonSongId": "34061322"
+    },
+    {
+      "rank": 19,
+      "title": "너의 모든 순간",
+      "artist": "성시경",
+      "aliases": [],
+      "melonSongId": "4446485"
+    },
+    {
+      "rank": 20,
+      "title": "사랑인가 봐",
+      "artist": "멜로망스",
+      "aliases": [],
+      "melonSongId": "34657844"
+    },
+    {
+      "rank": 21,
+      "title": "Teddy Bear",
+      "artist": "STAYC(스테이씨)",
+      "aliases": [],
+      "melonSongId": "36105548"
+    },
+    {
+      "rank": 22,
+      "title": "Seven (feat. Latto) - Clean Ver.",
+      "artist": "정국",
+      "aliases": [],
+      "melonSongId": "36617841"
+    },
+    {
+      "rank": 23,
+      "title": "심(心)",
+      "artist": "DK(디셈버)",
+      "aliases": [],
+      "melonSongId": "36180700"
+    },
+    {
+      "rank": 24,
+      "title": "이브, 프시케 그리고 푸른 수염의 아내",
+      "artist": "LE SSERAFIM (르세라핌)",
+      "aliases": [],
+      "melonSongId": "36411344"
+    },
+    {
+      "rank": 25,
+      "title": "Candy",
+      "artist": "NCT DREAM",
+      "aliases": [],
+      "melonSongId": "35931532"
+    },
+    {
+      "rank": 26,
+      "title": "ETA",
+      "artist": "NewJeans",
+      "aliases": [],
+      "melonSongId": "36635522"
+    },
+    {
+      "rank": 27,
+      "title": "해요 (2022)",
+      "artist": "#안녕",
+      "aliases": [],
+      "melonSongId": "35252996"
+    },
+    {
+      "rank": 28,
+      "title": "취중고백",
+      "artist": "김민석 (멜로망스)",
+      "aliases": [],
+      "melonSongId": "34431086"
+    },
+    {
+      "rank": 29,
+      "title": "손오공",
+      "artist": "세븐틴 (SEVENTEEN)",
+      "aliases": [],
+      "melonSongId": "36391236"
+    },
+    {
+      "rank": 30,
+      "title": "Nxde",
+      "artist": "i-dle (아이들)",
+      "aliases": [],
+      "melonSongId": "35730562"
+    },
+    {
+      "rank": 31,
+      "title": "Love Lee",
+      "artist": "AKMU (악뮤)",
+      "aliases": [],
+      "melonSongId": "36713849"
+    },
+    {
+      "rank": 32,
+      "title": "우리들의 블루스",
+      "artist": "임영웅",
+      "aliases": [],
+      "melonSongId": "34908740"
+    },
+    {
+      "rank": 33,
+      "title": "Monologue",
+      "artist": "테이",
+      "aliases": [],
+      "melonSongId": "35643794"
+    },
+    {
+      "rank": 34,
+      "title": "Dynamite",
+      "artist": "방탄소년단",
+      "aliases": [
+        "다이너마이트",
+        "다이나마이트"
+      ],
+      "melonSongId": "32872978"
+    },
+    {
+      "rank": 35,
+      "title": "다정히 내 이름을 부르면",
+      "artist": "경서예지, 전건호",
+      "aliases": [],
+      "melonSongId": "33496587"
+    },
+    {
+      "rank": 36,
+      "title": "TOMBOY",
+      "artist": "i-dle (아이들)",
+      "aliases": [
+        "톰보이"
+      ],
+      "melonSongId": "34754292"
+    },
+    {
+      "rank": 37,
+      "title": "건물 사이에 피어난 장미 (Rose Blossom)",
+      "artist": "H1-KEY (하이키)",
+      "aliases": [],
+      "melonSongId": "36001290"
+    },
+    {
+      "rank": 38,
+      "title": "다시 만날 수 있을까",
+      "artist": "임영웅",
+      "aliases": [],
+      "melonSongId": "35008524"
+    },
+    {
+      "rank": 39,
+      "title": "물론",
+      "artist": "허각",
+      "aliases": [],
+      "melonSongId": "36404853"
+    },
+    {
+      "rank": 40,
+      "title": "새삥 (Prod. ZICO) (Feat. 호미들)",
+      "artist": "지코 (ZICO)",
+      "aliases": [],
+      "melonSongId": "35595136"
+    },
+    {
+      "rank": 41,
+      "title": "사랑하지 않아서 그랬어",
+      "artist": "임한별",
+      "aliases": [],
+      "melonSongId": "36334401"
+    },
+    {
+      "rank": 42,
+      "title": "봄날",
+      "artist": "방탄소년단",
+      "aliases": [
+        "spring day",
+        "스프링데이"
+      ],
+      "melonSongId": "30244931"
+    },
+    {
+      "rank": 43,
+      "title": "VIBE (feat. Jimin of BTS)",
+      "artist": "태양",
+      "aliases": [],
+      "melonSongId": "36034936"
+    },
+    {
+      "rank": 44,
+      "title": "Butter",
+      "artist": "방탄소년단",
+      "aliases": [
+        "버터"
+      ],
+      "melonSongId": "33507137"
+    },
+    {
+      "rank": 45,
+      "title": "Shut Down",
+      "artist": "BLACKPINK",
+      "aliases": [],
+      "melonSongId": "35640077"
+    },
+    {
+      "rank": 46,
+      "title": "그라데이션",
+      "artist": "10CM",
+      "aliases": [],
+      "melonSongId": "35361345"
+    },
+    {
+      "rank": 47,
+      "title": "내가 아니라도",
+      "artist": "주호",
+      "aliases": [],
+      "melonSongId": "34787226"
+    },
+    {
+      "rank": 48,
+      "title": "후라이의 꿈",
+      "artist": "AKMU (악뮤)",
+      "aliases": [],
+      "melonSongId": "36713850"
+    },
+    {
+      "rank": 49,
+      "title": "Cupid",
+      "artist": "FIFTY FIFTY",
+      "aliases": [],
+      "melonSongId": "36206259"
+    },
+    {
+      "rank": 50,
+      "title": "모든 날, 모든 순간 (Every day, Every Moment)",
+      "artist": "폴킴",
+      "aliases": [
+        "에브리데이에브리모먼트"
+      ],
+      "melonSongId": "30962526"
+    }
+  ]
+}

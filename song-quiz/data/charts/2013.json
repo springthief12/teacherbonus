@@ -1,0 +1,360 @@
+{
+  "year": 2013,
+  "source": "melon",
+  "verified": true,
+  "note": "멜론 시대별 차트 2013년 연간 TOP 50 (KPOP)",
+  "sourceUrl": "https://www.melon.com/chart/age/index.htm?chartDate=2013&chartGenre=KPOP&chartType=YE",
+  "verifiedAt": "2026-10-23",
+  "songs": [
+    {
+      "rank": 1,
+      "title": "자니 (Feat. Dynamic Duo)",
+      "artist": "프라이머리",
+      "aliases": [],
+      "melonSongId": "3726617"
+    },
+    {
+      "rank": 2,
+      "title": "눈물 (Feat. 유진 Of 더 씨야)",
+      "artist": "리쌍",
+      "aliases": [],
+      "melonSongId": "4020215"
+    },
+    {
+      "rank": 3,
+      "title": "NoNoNo",
+      "artist": "Apink (에이핑크)",
+      "aliases": [],
+      "melonSongId": "4163116"
+    },
+    {
+      "rank": 4,
+      "title": "눈물샤워 (Feat. 에일리)",
+      "artist": "배치기",
+      "aliases": [],
+      "melonSongId": "4011596"
+    },
+    {
+      "rank": 5,
+      "title": "? (물음표) (Feat. 최자 Of 다이나믹듀오, Zion.T)",
+      "artist": "프라이머리",
+      "aliases": [],
+      "melonSongId": "3947371"
+    },
+    {
+      "rank": 6,
+      "title": "Give It To Me",
+      "artist": "씨스타",
+      "aliases": [],
+      "melonSongId": "4138606"
+    },
+    {
+      "rank": 7,
+      "title": "이름이 뭐예요?",
+      "artist": "4minute",
+      "aliases": [],
+      "melonSongId": "4099280"
+    },
+    {
+      "rank": 8,
+      "title": "모노드라마 (With 유승우)",
+      "artist": "허각",
+      "aliases": [],
+      "melonSongId": "4019298"
+    },
+    {
+      "rank": 9,
+      "title": "My Love",
+      "artist": "이승철",
+      "aliases": [],
+      "melonSongId": "4142913"
+    },
+    {
+      "rank": 10,
+      "title": "있다 없으니까 (Gone Not Around Any Longer)",
+      "artist": "씨스타19",
+      "aliases": [],
+      "melonSongId": "4024692"
+    },
+    {
+      "rank": 11,
+      "title": "미친연애 (Bad Girl) (Feat. E-Sens Of 슈프림팀)",
+      "artist": "범키",
+      "aliases": [],
+      "melonSongId": "4130922"
+    },
+    {
+      "rank": 12,
+      "title": "으르렁 (Growl)",
+      "artist": "EXO",
+      "aliases": [],
+      "melonSongId": "4193337"
+    },
+    {
+      "rank": 13,
+      "title": "거북이",
+      "artist": "다비치",
+      "aliases": [],
+      "melonSongId": "4047160"
+    },
+    {
+      "rank": 14,
+      "title": "GENTLEMAN",
+      "artist": "싸이 (PSY)",
+      "aliases": [],
+      "melonSongId": "4085875"
+    },
+    {
+      "rank": 15,
+      "title": "Officially Missing You, Too",
+      "artist": "긱스 (Geeks), 소유 (SOYOU)",
+      "aliases": [],
+      "melonSongId": "3946867"
+    },
+    {
+      "rank": 16,
+      "title": "봄봄봄",
+      "artist": "로이킴",
+      "aliases": [],
+      "melonSongId": "4091105"
+    },
+    {
+      "rank": 17,
+      "title": "Touch Love",
+      "artist": "윤미래",
+      "aliases": [],
+      "melonSongId": "4221128"
+    },
+    {
+      "rank": 18,
+      "title": "아는사람 얘기",
+      "artist": "San E (산이)",
+      "aliases": [],
+      "melonSongId": "4192787"
+    },
+    {
+      "rank": 19,
+      "title": "U & I",
+      "artist": "에일리(Ailee)",
+      "aliases": [],
+      "melonSongId": "4171462"
+    },
+    {
+      "rank": 20,
+      "title": "BAAAM (Feat. Muzie Of UV)",
+      "artist": "다이나믹 듀오",
+      "aliases": [],
+      "melonSongId": "4160246"
+    },
+    {
+      "rank": 21,
+      "title": "착해 빠졌어 (Stupid In Love)",
+      "artist": "소유 (SOYOU), 매드클라운",
+      "aliases": [],
+      "melonSongId": "4237755"
+    },
+    {
+      "rank": 22,
+      "title": "빠빠빠",
+      "artist": "크레용팝",
+      "aliases": [],
+      "melonSongId": "4148967"
+    },
+    {
+      "rank": 23,
+      "title": "녹는 중 (Feat. 버벌진트)",
+      "artist": "다비치",
+      "aliases": [],
+      "melonSongId": "4072715"
+    },
+    {
+      "rank": 24,
+      "title": "짧은머리",
+      "artist": "허각, 정은지",
+      "aliases": [],
+      "melonSongId": "4129672"
+    },
+    {
+      "rank": 25,
+      "title": "벚꽃 엔딩",
+      "artist": "버스커 버스커",
+      "aliases": [],
+      "melonSongId": "3753304"
+    },
+    {
+      "rank": 26,
+      "title": "처음엔 사랑이란게",
+      "artist": "버스커 버스커",
+      "aliases": [],
+      "melonSongId": "4252728"
+    },
+    {
+      "rank": 27,
+      "title": "오늘따라 보고싶어서 그래",
+      "artist": "다비치",
+      "aliases": [],
+      "melonSongId": "4163613"
+    },
+    {
+      "rank": 28,
+      "title": "오늘 밤 (Feat. 배치기)",
+      "artist": "린(LYn)",
+      "aliases": [],
+      "melonSongId": "4082435"
+    },
+    {
+      "rank": 29,
+      "title": "청혼하는 거예요",
+      "artist": "포맨 (4MEN)",
+      "aliases": [],
+      "melonSongId": "4108714"
+    },
+    {
+      "rank": 30,
+      "title": "Crescendo (크레셴도)",
+      "artist": "AKMU (악뮤)",
+      "aliases": [],
+      "melonSongId": "4053240"
+    },
+    {
+      "rank": 31,
+      "title": "Love Blossom (러브블러썸)",
+      "artist": "케이윌",
+      "aliases": [],
+      "melonSongId": "4076051"
+    },
+    {
+      "rank": 32,
+      "title": "씨스루 (Feat. Zion.T, 개코 Of 다이나믹듀오)",
+      "artist": "프라이머리",
+      "aliases": [],
+      "melonSongId": "3948908"
+    },
+    {
+      "rank": 33,
+      "title": "갖고놀래 (Feat. 다이나믹 듀오)",
+      "artist": "범키",
+      "aliases": [],
+      "melonSongId": "4205993"
+    },
+    {
+      "rank": 34,
+      "title": "삐딱하게 (Crooked)",
+      "artist": "G-DRAGON",
+      "aliases": [],
+      "melonSongId": "4232200"
+    },
+    {
+      "rank": 35,
+      "title": "I Love You",
+      "artist": "AKMU (악뮤)",
+      "aliases": [],
+      "melonSongId": "4097003"
+    },
+    {
+      "rank": 36,
+      "title": "기대해",
+      "artist": "걸스데이",
+      "aliases": [],
+      "melonSongId": "4054983"
+    },
+    {
+      "rank": 37,
+      "title": "안녕 나야",
+      "artist": "포맨 (4MEN)",
+      "aliases": [],
+      "melonSongId": "4021445"
+    },
+    {
+      "rank": 38,
+      "title": "분홍신",
+      "artist": "아이유",
+      "aliases": [],
+      "melonSongId": "4268435"
+    },
+    {
+      "rank": 39,
+      "title": "나란놈이란",
+      "artist": "임창정",
+      "aliases": [],
+      "melonSongId": "4249547"
+    },
+    {
+      "rank": 40,
+      "title": "Wash Away (Feat. 에일리)",
+      "artist": "긱스 (Geeks)",
+      "aliases": [],
+      "melonSongId": "4100521"
+    },
+    {
+      "rank": 41,
+      "title": "니가 뭔데 (Who You?)",
+      "artist": "G-DRAGON",
+      "aliases": [],
+      "melonSongId": "4226211"
+    },
+    {
+      "rank": 42,
+      "title": "눈꽃",
+      "artist": "거미 (GUMMY)",
+      "aliases": [],
+      "melonSongId": "4044859"
+    },
+    {
+      "rank": 43,
+      "title": "꼭 한번 만나고 싶다",
+      "artist": "바이브",
+      "aliases": [],
+      "melonSongId": "4100925"
+    },
+    {
+      "rank": 44,
+      "title": "Bounce",
+      "artist": "조용필",
+      "aliases": [],
+      "melonSongId": "4089360"
+    },
+    {
+      "rank": 45,
+      "title": "I Got A Boy",
+      "artist": "소녀시대 (GIRLS' GENERATION)",
+      "aliases": [],
+      "melonSongId": "4001331"
+    },
+    {
+      "rank": 46,
+      "title": "겨울사랑",
+      "artist": "The One (더원)",
+      "aliases": [],
+      "melonSongId": "4038857"
+    },
+    {
+      "rank": 47,
+      "title": "잘할 걸",
+      "artist": "버스커 버스커",
+      "aliases": [],
+      "melonSongId": "4252726"
+    },
+    {
+      "rank": 48,
+      "title": "미치게 만들어",
+      "artist": "효린",
+      "aliases": [],
+      "melonSongId": "4212782"
+    },
+    {
+      "rank": 49,
+      "title": "All Right",
+      "artist": "림킴 (김예림)",
+      "aliases": [],
+      "melonSongId": "4144408"
+    },
+    {
+      "rank": 50,
+      "title": "어때 (Feat. 하림)",
+      "artist": "긱스 (Geeks)",
+      "aliases": [],
+      "melonSongId": "4074419"
+    }
+  ]
+}

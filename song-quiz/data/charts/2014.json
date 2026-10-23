@@ -1,0 +1,360 @@
+{
+  "year": 2014,
+  "source": "melon",
+  "verified": true,
+  "note": "멜론 시대별 차트 2014년 연간 TOP 50 (KPOP)",
+  "sourceUrl": "https://www.melon.com/chart/age/index.htm?chartDate=2014&chartGenre=KPOP&chartType=YE",
+  "verifiedAt": "2026-10-23",
+  "songs": [
+    {
+      "rank": 1,
+      "title": "썸 (Feat. 릴보이 Of 긱스)",
+      "artist": "소유 (SOYOU), 정기고",
+      "aliases": [],
+      "melonSongId": "4433490"
+    },
+    {
+      "rank": 2,
+      "title": "야생화",
+      "artist": "박효신",
+      "aliases": [],
+      "melonSongId": "4543502"
+    },
+    {
+      "rank": 3,
+      "title": "눈, 코, 입",
+      "artist": "태양",
+      "aliases": [],
+      "melonSongId": "4671151"
+    },
+    {
+      "rank": 4,
+      "title": "금요일에 만나요 (Feat. 장이정 Of HISTORY)",
+      "artist": "아이유",
+      "aliases": [],
+      "melonSongId": "4369827"
+    },
+    {
+      "rank": 5,
+      "title": "한여름밤의 꿀",
+      "artist": "San E (산이), 레이나",
+      "aliases": [],
+      "melonSongId": "4681146"
+    },
+    {
+      "rank": 6,
+      "title": "봄 사랑 벚꽃 말고",
+      "artist": "HIGH4 (하이포), 아이유",
+      "aliases": [],
+      "melonSongId": "4579468"
+    },
+    {
+      "rank": 7,
+      "title": "Mr. Chu (On Stage)",
+      "artist": "Apink (에이핑크)",
+      "aliases": [],
+      "melonSongId": "4562881"
+    },
+    {
+      "rank": 8,
+      "title": "너의 의미 (Feat. 김창완)",
+      "artist": "아이유",
+      "aliases": [],
+      "melonSongId": "4646573"
+    },
+    {
+      "rank": 9,
+      "title": "Something",
+      "artist": "걸스데이",
+      "aliases": [],
+      "melonSongId": "4383773"
+    },
+    {
+      "rank": 10,
+      "title": "200%",
+      "artist": "AKMU (악뮤)",
+      "aliases": [],
+      "melonSongId": "4583482"
+    },
+    {
+      "rank": 11,
+      "title": "그대가 분다",
+      "artist": "엠씨더맥스 (M.C the MAX)",
+      "aliases": [],
+      "melonSongId": "4381724"
+    },
+    {
+      "rank": 12,
+      "title": "사람냄새",
+      "artist": "정인, 개리",
+      "aliases": [],
+      "melonSongId": "4660909"
+    },
+    {
+      "rank": 13,
+      "title": "그 중에 그대를 만나",
+      "artist": "이선희",
+      "aliases": [],
+      "melonSongId": "4544242"
+    },
+    {
+      "rank": 14,
+      "title": "Come Back Home",
+      "artist": "2NE1",
+      "aliases": [],
+      "melonSongId": "4478187"
+    },
+    {
+      "rank": 15,
+      "title": "짧은 치마 (Miniskirt)",
+      "artist": "AOA",
+      "aliases": [],
+      "melonSongId": "4400561"
+    },
+    {
+      "rank": 16,
+      "title": "너의 모든 순간",
+      "artist": "성시경",
+      "aliases": [],
+      "melonSongId": "4446485"
+    },
+    {
+      "rank": 17,
+      "title": "너를 너를 너를",
+      "artist": "플라이 투 더 스카이",
+      "aliases": [],
+      "melonSongId": "4639518"
+    },
+    {
+      "rank": 18,
+      "title": "신촌을 못가",
+      "artist": "포스트맨 (POSTMEN)",
+      "aliases": [],
+      "melonSongId": "4016085"
+    },
+    {
+      "rank": 19,
+      "title": "예뻐졌다 (Feat. 지코 Of Block B)",
+      "artist": "박보람",
+      "aliases": [],
+      "melonSongId": "4789747"
+    },
+    {
+      "rank": 20,
+      "title": "Touch My Body",
+      "artist": "씨스타",
+      "aliases": [],
+      "melonSongId": "4756304"
+    },
+    {
+      "rank": 21,
+      "title": "공허해",
+      "artist": "WINNER",
+      "aliases": [],
+      "melonSongId": "4806686"
+    },
+    {
+      "rank": 22,
+      "title": "노래가 늘었어",
+      "artist": "에일리(Ailee)",
+      "aliases": [],
+      "melonSongId": "4383349"
+    },
+    {
+      "rank": 23,
+      "title": "너 사용법",
+      "artist": "에디킴",
+      "aliases": [],
+      "melonSongId": "4586092"
+    },
+    {
+      "rank": 24,
+      "title": "인연",
+      "artist": "윤민수(바이브), 신용재 (2F)",
+      "aliases": [],
+      "melonSongId": "4582959"
+    },
+    {
+      "rank": 25,
+      "title": "안녕",
+      "artist": "효린",
+      "aliases": [],
+      "melonSongId": "4412196"
+    },
+    {
+      "rank": 26,
+      "title": "감아 (Feat. Crush)",
+      "artist": "로꼬",
+      "aliases": [],
+      "melonSongId": "4527879"
+    },
+    {
+      "rank": 27,
+      "title": "Darling",
+      "artist": "걸스데이",
+      "aliases": [],
+      "melonSongId": "4734486"
+    },
+    {
+      "rank": 28,
+      "title": "나의 옛날이야기",
+      "artist": "아이유",
+      "aliases": [],
+      "melonSongId": "4645220"
+    },
+    {
+      "rank": 29,
+      "title": "HER",
+      "artist": "블락비 (Block B)",
+      "aliases": [],
+      "melonSongId": "4764928"
+    },
+    {
+      "rank": 30,
+      "title": "까탈레나 (Catallena)",
+      "artist": "오렌지 캬라멜",
+      "aliases": [],
+      "melonSongId": "4503810"
+    },
+    {
+      "rank": 31,
+      "title": "단발머리 (Short Hair)",
+      "artist": "AOA",
+      "aliases": [],
+      "melonSongId": "4693165"
+    },
+    {
+      "rank": 32,
+      "title": "너를 원해 (Feat. Beenzino)",
+      "artist": "정기고",
+      "aliases": [],
+      "melonSongId": "4603433"
+    },
+    {
+      "rank": 33,
+      "title": "중독 (Overdose)",
+      "artist": "EXO-K",
+      "aliases": [],
+      "melonSongId": "4633162"
+    },
+    {
+      "rank": 34,
+      "title": "너를 사랑해",
+      "artist": "윤미래",
+      "aliases": [],
+      "melonSongId": "4843704"
+    },
+    {
+      "rank": 35,
+      "title": "나 왜이래 (Feat. 강민희 Of 미스에스)",
+      "artist": "San E (산이)",
+      "aliases": [],
+      "melonSongId": "4665220"
+    },
+    {
+      "rank": 36,
+      "title": "흔한 노래",
+      "artist": "임창정",
+      "aliases": [],
+      "melonSongId": "4512170"
+    },
+    {
+      "rank": 37,
+      "title": "보름달 (Feat. Lena)",
+      "artist": "선미",
+      "aliases": [],
+      "melonSongId": "4454382"
+    },
+    {
+      "rank": 38,
+      "title": "너 아님 안돼",
+      "artist": "2NE1",
+      "aliases": [],
+      "melonSongId": "4478188"
+    },
+    {
+      "rank": 39,
+      "title": "Give Love",
+      "artist": "AKMU (악뮤)",
+      "aliases": [],
+      "melonSongId": "4583481"
+    },
+    {
+      "rank": 40,
+      "title": "견딜만해 (Feat. 효린 Of 씨스타)",
+      "artist": "매드클라운",
+      "aliases": [],
+      "melonSongId": "4579474"
+    },
+    {
+      "rank": 41,
+      "title": "애타는 마음",
+      "artist": "울랄라세션, 아이유",
+      "aliases": [],
+      "melonSongId": "4711007"
+    },
+    {
+      "rank": 42,
+      "title": "손대지마",
+      "artist": "에일리(Ailee)",
+      "aliases": [],
+      "melonSongId": "5394265"
+    },
+    {
+      "rank": 43,
+      "title": "그런 남자",
+      "artist": "Bro",
+      "aliases": [],
+      "melonSongId": "4535038"
+    },
+    {
+      "rank": 44,
+      "title": "자니 (Feat. Dynamic Duo)",
+      "artist": "프라이머리",
+      "aliases": [],
+      "melonSongId": "3726617"
+    },
+    {
+      "rank": 45,
+      "title": "My Destiny",
+      "artist": "린(LYn)",
+      "aliases": [],
+      "melonSongId": "4375626"
+    },
+    {
+      "rank": 46,
+      "title": "연결고리#힙합",
+      "artist": "BOBBY",
+      "aliases": [],
+      "melonSongId": "4854588"
+    },
+    {
+      "rank": 47,
+      "title": "오늘부터 1일 (Day 1)",
+      "artist": "케이윌",
+      "aliases": [],
+      "melonSongId": "4706174"
+    },
+    {
+      "rank": 48,
+      "title": "미운오리새끼",
+      "artist": "god",
+      "aliases": [],
+      "melonSongId": "4635701"
+    },
+    {
+      "rank": 49,
+      "title": "이제 그만 싸우자",
+      "artist": "허각, 정은지",
+      "aliases": [],
+      "melonSongId": "4723861"
+    },
+    {
+      "rank": 50,
+      "title": "틈",
+      "artist": "소유 (SOYOU), 권순일 (어반자카파), 박용인 (어반자카파)",
+      "aliases": [],
+      "melonSongId": "5390701"
+    }
+  ]
+}
