@@ -28,7 +28,14 @@
   box-shadow: var(--shadow-1);
 }
 .song.is-problem { border-color: #F1C4B8; }
-.song.is-disabled { opacity: .6; }
+/* 비활성화한 곡: 곡 정보만 흐리게 (활성화 버튼은 또렷하게) */
+.song.is-disabled .song-rank,
+.song.is-disabled .song-main,
+.song.is-disabled .pill { opacity: .5; }
+.song.is-disabled .song-title { text-decoration: line-through; text-decoration-thickness: 1.5px; }
+.pill.off { background: var(--surface-2); color: var(--ink-2); box-shadow: inset 0 0 0 1px var(--line-2); }
+.btn.power { color: var(--ink-2); }
+.btn.power.is-off { background: var(--green-soft); color: var(--green); border-color: transparent; font-weight: 800; }
 .song-row {
   display: grid;
   grid-template-columns: 40px minmax(0, 1fr) auto auto;
@@ -77,8 +84,6 @@
 .cand-tag.no { color: var(--red); }
 .cand-actions { display: flex; gap: 6px; }
 
-.switch { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
-.switch input { width: 18px; height: 18px; accent-color: var(--ink); }
 
 /* 미리 듣기 */
 .preview {
@@ -114,7 +119,7 @@
   .toolbar-end { margin-left: 0; width: 100%; justify-content: space-between; }
   .song-row { grid-template-columns: 30px minmax(0, 1fr); }
   .song-row .pill { grid-column: 2; justify-self: start; }
-  .song-actions { grid-column: 1 / -1; }
+  .song-actions { grid-column: 1 / -1; flex-wrap: wrap; }
   .cand { grid-template-columns: 72px minmax(0, 1fr); }
   .cand img { width: 72px; height: 40px; }
   .cand-actions { grid-column: 1 / -1; }

@@ -150,22 +150,27 @@ function get(song) {
 
 /** patch: { youtubeId?, start?, disabled?, videoTitle?, videoChannel? } (null이면 지움)
  *  youtubeId가 있으면 '확인한 곡': 이 영상으로 고정되고 다시 검색하지 않는다 */
-function set(song, patch) {
+function applyOne(song, patch) {
+  const key = keyOf(song);
+  const cur = { ...(store.songs[key] || {}) };
+  for (const [k, v] of Object.entries(patch)) {
+    if (v === null || v === undefined || v === '') delete cur[k];
+    else cur[k] = v;
+  }
+  cur.title = song.title;
+  cur.artist = song.artist;
+  cur.updatedAt = Date.now();
+  const meaningful = ['youtubeId', 'start', 'disabled'].some((k) => cur[k] !== undefined);
+  if (meaningful) store.songs[key] = cur;
+  else delete store.songs[key];
+}
+
+/** 여러 곡을 한 번에 고친다 (파일·깃허브 저장도 한 번). items: [[song, patch], ...] */
+function setMany(items) {
   const pending = writeQueue.catch(() => {}).then(async () => {
     await ready;
-    const key = keyOf(song);
     const apply = () => {
-      const cur = { ...(store.songs[key] || {}) };
-      for (const [k, v] of Object.entries(patch)) {
-        if (v === null || v === undefined || v === '') delete cur[k];
-        else cur[k] = v;
-      }
-      cur.title = song.title;
-      cur.artist = song.artist;
-      cur.updatedAt = Date.now();
-      const meaningful = ['youtubeId', 'start', 'disabled'].some((k) => cur[k] !== undefined);
-      if (meaningful) store.songs[key] = cur;
-      else delete store.songs[key];
+      for (const [song, patch] of items) applyOne(song, patch);
       sharedIndex = null;
     };
     apply();
@@ -173,10 +178,14 @@ function set(song, patch) {
     await saveLocal();
     if (githubOn()) await pushRemote(0, apply);
     else { status.lastSave = Date.now(); status.lastError = null; }
-    return store.songs[key] || null;
+    return items.map(([song]) => store.songs[keyOf(song)] || null);
   });
   writeQueue = pending;
   return pending;
+}
+
+function set(song, patch) {
+  return setMany([[song, patch]]).then((saved) => saved[0]);
 }
 
 function exportAll() {
@@ -205,5 +214,5 @@ function readRepoCopy() {
 store = merge(readRepoCopy(), readLocal());
 const ready = loadRemote();
 
-module.exports = { get, set, keyOf, exportAll, info, ready };
+module.exports = { get, set, setMany, keyOf, exportAll, info, ready };
 

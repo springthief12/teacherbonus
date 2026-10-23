@@ -128,7 +128,7 @@
   // 확인함: 관리자가 음원을 고정한 곡 (다시 검색·검사하지 않음)
   // 확인 전: 자동 검색으로 찾은 음원을 쓰는 중 (서버가 다시 시작되면 다시 검색함)
   function state(s) {
-    if (s.disabled) return { cls: 'idle', text: '제외함', problem: false, done: true };
+    if (s.disabled) return { cls: 'off', text: '비활성', problem: false, done: true };
     if (s.audioFile) return { cls: 'ok', text: '음원 파일', problem: false, done: true };
     if (s.source === 'override') {
       const blocked = (s.bad || []).includes(s.youtubeId);
@@ -142,7 +142,7 @@
   }
 
   function nowLine(s) {
-    if (s.disabled) return '관리자가 셔플에서 뺀 곡이에요.';
+    if (s.disabled) return '비활성화한 곡이에요. 게임에 나오지 않아요.';
     if (s.audioFile) return 'data/audio 폴더의 음원 파일로 재생해요.';
     const video = s.videoTitle ? `${s.videoTitle}${s.videoChannel ? ` · ${s.videoChannel}` : ''}` : `영상 ${s.youtubeId}`;
     if (s.source === 'override') return s.inheritedFrom ? `${s.inheritedFrom}년 차트의 같은 곡에서 확인한 음원: ${video}` : `확인한 음원: ${video}`;
@@ -164,7 +164,7 @@
       else if (s.source === 'search') counts.auto += 1;
       else counts.idle += 1;
     }
-    $('#summary').innerHTML = `확인함 <b>${counts.done}</b> · 확인 전 <b>${counts.auto}</b> · <span class="bad">문제 <b>${counts.bad}</b></span> · 검사 전 <b>${counts.idle}</b> · 제외 <b>${counts.off}</b>`;
+    $('#summary').innerHTML = `확인함 <b>${counts.done}</b> · 확인 전 <b>${counts.auto}</b> · <span class="bad">문제 <b>${counts.bad}</b></span> · 검사 전 <b>${counts.idle}</b> · 비활성 <b>${counts.off}</b>`;
   }
 
   const FILTERS = {
@@ -198,6 +198,8 @@
             ${s.youtubeId ? `<button class="btn small" data-act="play" data-id="${s.youtubeId}">미리 듣기</button>` : ''}
             ${canConfirm(s) ? '<button class="btn small primary" data-act="confirm" title="이 음원으로 고정하고 더는 검사하지 않아요">확인</button>' : ''}
             <button class="btn small" data-act="toggle" aria-expanded="${expanded}">${expanded ? '접기' : '고치기'}</button>
+            <button class="btn small power${s.disabled ? ' is-off' : ''}" data-act="power" aria-pressed="${!s.disabled}"
+              title="${s.disabled ? '다시 게임에 나오게 해요' : '게임에 나오지 않게 해요'}">${s.disabled ? '활성화' : '비활성화'}</button>
           </div>
         </div>
         ${expanded ? editor(s) : ''}
@@ -266,10 +268,6 @@
           </div>
           <p class="edit-note">'전주부터' 모드에서 이 위치부터 재생해요. 앞에 무음이나 말소리가 있을 때 쓰세요.</p>
         </div>
-        <label class="switch">
-          <input type="checkbox" data-act="disable" ${s.disabled ? 'checked' : ''}>
-          셔플에서 빼기
-        </label>
       </div>`;
   }
 
@@ -316,6 +314,14 @@
         const res = await api('/song', { key, start: value === '' ? null : Number(value) });
         replaceSong(res.song);
         toast('시작 위치를 저장했어요.');
+      } else if (act === 'power') {
+        // 활성화 ↔ 비활성화 (다른 해 차트의 같은 곡도 함께)
+        const off = !song.disabled;
+        btn.disabled = true;
+        const res = await api('/song', { key, disabled: off });
+        replaceSong(res.song);
+        const also = (res.also || []).map((x) => `${x.year}년`).join('·');
+        toast(`${off ? '비활성화했어요. 게임에 나오지 않아요.' : '활성화했어요. 다시 게임에 나와요.'}${also ? ` (${also} 차트의 같은 곡도 함께)` : ''}`);
       } else if (act === 'search') {
         btn.disabled = true;
         btn.textContent = '검색 중…';
@@ -327,19 +333,6 @@
           throw err;
         }
       }
-    } catch (err) {
-      toast(err.message);
-    }
-  });
-
-  $('#song-list').addEventListener('change', async (e) => {
-    const box = e.target.closest('[data-act="disable"]');
-    if (!box) return;
-    const key = box.closest('.song').dataset.key;
-    try {
-      const res = await api('/song', { key, disabled: box.checked });
-      replaceSong(res.song);
-      toast(box.checked ? '셔플에서 뺐어요.' : '셔플에 다시 넣었어요.');
     } catch (err) {
       toast(err.message);
     }

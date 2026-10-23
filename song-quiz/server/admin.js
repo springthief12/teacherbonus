@@ -2,7 +2,7 @@
 // 접근: 서버를 켠 PC에서 localhost로 열면 바로, 그 밖에는 ADMIN_PASSWORD 필요
 const crypto = require('crypto');
 const express = require('express');
-const { songsOf, yearCatalog, audioFileFor } = require('./charts');
+const { songsOf, yearCatalog, audioFileFor, sameSongs } = require('./charts');
 const yt = require('./youtube');
 const overrides = require('./overrides');
 
@@ -67,7 +67,7 @@ function view(song) {
 }
 
 // 연도 전체 검사 (검사 안 한 곡만, 두 곡씩)
-// 확인한 곡(음원 고정)·음원 파일이 있는 곡·셔플에서 뺀 곡은 검사하지 않는다
+// 확인한 곡(음원 고정)·음원 파일이 있는 곡·비활성화한 곡은 검사하지 않는다
 const checking = new Map(); // year -> { total, done }
 async function checkYear(year) {
   if (checking.has(year)) return;
@@ -181,10 +181,16 @@ function router() {
       if (n !== null && (!Number.isFinite(n) || n < 0 || n > 600)) return res.status(400).json({ error: '시작 위치는 0~600초 사이로 적어 주세요.' });
       patch.start = n;
     }
-    if ('disabled' in req.body) patch.disabled = req.body.disabled ? true : null;
+    // 활성화/비활성화: 다른 해 차트에 있는 같은 곡도 함께 바꾼다
+    // (한 해에서만 끄면 여러 해를 고른 게임에서 다른 해 버전이 대신 나오기 때문)
+    let also = [];
+    if ('disabled' in req.body) {
+      patch.disabled = req.body.disabled ? true : null;
+      also = typeof sameSongs === 'function' ? sameSongs(song) : [];
+    }
     try {
-      await overrides.set(song, patch);
-      return res.json({ ok: true, song: view(song), storage: overrides.info() });
+      await overrides.setMany([[song, patch], ...also.map((other) => [other, { disabled: patch.disabled }])]);
+      return res.json({ ok: true, song: view(song), also: also.map((s) => ({ year: s.year, rank: s.rank })), storage: overrides.info() });
     } catch (err) {
       const storage = overrides.info();
       const error = storage.github

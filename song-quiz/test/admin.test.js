@@ -201,6 +201,22 @@ async function playWholeGame(songCount) {
     const afterUndo = JSON.parse(fs.readFileSync(OVERRIDES, 'utf8')).songs[byRank(5).key];
     check('확인 취소 → 자동 검색 결과로, 저장된 설정도 지움', undo.data.song.source === 'search' && afterUndo === undefined);
 
+    // ---------- 활성화 / 비활성화 (다른 해 차트의 같은 곡도 함께) ----------
+    const listOf = async (y) => (await req(`/api/admin/songs?year=${y}`)).data.songs;
+    const dyn21 = (await listOf(2021)).find((s) => s.title === 'Dynamite');
+    const off = await req('/api/admin/song', { body: { key: dyn21.key, disabled: true } });
+    const dyn20 = (await listOf(2020)).find((s) => s.title === 'Dynamite');
+    check('비활성화 → 다른 해 차트의 같은 곡도 함께 꺼짐', off.status === 200 && off.data.song.disabled === true
+      && off.data.also.some((x) => x.year === 2020 && x.rank === 12) && dyn20.disabled === true);
+    const on = await req('/api/admin/song', { body: { key: dyn20.key, disabled: false } });
+    const dyn21b = (await listOf(2021)).find((s) => s.title === 'Dynamite');
+    const leftover = Object.values(JSON.parse(fs.readFileSync(OVERRIDES, 'utf8')).songs).filter((v) => v.title === 'Dynamite');
+    check('활성화도 함께 → 설정이 남지 않음', on.data.song.disabled === false && dyn21b.disabled === false && leftover.length === 0);
+    const solo = (await listOf(2021)).find((s) => s.title === 'Butter');
+    const soloOff = await req('/api/admin/song', { body: { key: solo.key, disabled: true } });
+    check('한 해에만 있는 곡은 그 곡만', soloOff.data.song.disabled === true && soloOff.data.also.length === 0);
+    await req('/api/admin/song', { body: { key: solo.key, disabled: false } });
+
     // 관리자 페이지 HTML
     const page = await fetch(`${URL}/admin`);
     check('관리자 페이지 열림', page.ok && (await page.text()).includes('음원 관리'));
