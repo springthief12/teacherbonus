@@ -10,7 +10,10 @@
       "rank": 1,
       "title": "CHEER UP",
       "artist": "TWICE (트와이스)",
-      "aliases": [],
+      "aliases": [
+        "치얼업",
+        "치어업"
+      ],
       "melonSongId": "8158031"
     },
     {
@@ -59,14 +62,20 @@
       "rank": 8,
       "title": "You Are My Everything",
       "artist": "거미 (GUMMY)",
-      "aliases": [],
+      "aliases": [
+        "유아마이에브리띵",
+        "유아마이에브리씽"
+      ],
       "melonSongId": "8089568"
     },
     {
       "rank": 9,
       "title": "OOH-AHH하게",
       "artist": "TWICE (트와이스)",
-      "aliases": [],
+      "aliases": [
+        "우아하게",
+        "oohahh"
+      ],
       "melonSongId": "7891119"
     },
     {
@@ -115,7 +124,9 @@
       "rank": 15,
       "title": "넌 is 뭔들",
       "artist": "마마무 (Mamamoo)",
-      "aliases": [],
+      "aliases": [
+        "넌이즈뭔들"
+      ],
       "melonSongId": "8068881"
     },
     {
@@ -136,14 +147,19 @@
       "rank": 18,
       "title": "Boys And Girls (Feat. Babylon)",
       "artist": "지코 (ZICO)",
-      "aliases": [],
+      "aliases": [
+        "보이즈앤걸스",
+        "보이즈앤드걸스"
+      ],
       "melonSongId": "7911687"
     },
     {
       "rank": 19,
       "title": "ALWAYS",
       "artist": "윤미래",
-      "aliases": [],
+      "aliases": [
+        "올웨이즈"
+      ],
       "melonSongId": "8053157"
     },
     {
@@ -157,14 +173,19 @@
       "rank": 21,
       "title": "Day Day (Feat. 박재범) (Prod. by GRAY)",
       "artist": "BewhY (비와이)",
-      "aliases": [],
+      "aliases": [
+        "데이데이"
+      ],
       "melonSongId": "8261338"
     },
     {
       "rank": 22,
       "title": "Why So Lonely",
       "artist": "원더걸스",
-      "aliases": [],
+      "aliases": [
+        "와이쏘론리",
+        "와이소론리"
+      ],
       "melonSongId": "8254545"
     },
     {
@@ -180,7 +201,9 @@
       "rank": 24,
       "title": "Dream (Prod. by 박근태)",
       "artist": "수지 (Suzy), 백현 (BAEKHYUN)",
-      "aliases": [],
+      "aliases": [
+        "드림"
+      ],
       "melonSongId": "8005879"
     },
     {
@@ -201,21 +224,27 @@
       "rank": 27,
       "title": "Everytime",
       "artist": "첸 (CHEN), 펀치 (Punch)",
-      "aliases": [],
+      "aliases": [
+        "에브리타임"
+      ],
       "melonSongId": "8067023"
     },
     {
       "rank": 28,
       "title": "Rain",
       "artist": "태연 (TAEYEON)",
-      "aliases": [],
+      "aliases": [
+        "레인"
+      ],
       "melonSongId": "8042553"
     },
     {
       "rank": 29,
       "title": "Forever (Prod. By GRAY)",
       "artist": "BewhY (비와이)",
-      "aliases": [],
+      "aliases": [
+        "포에버"
+      ],
       "melonSongId": "8252408"
     },
     {
@@ -329,14 +358,18 @@
       "rank": 45,
       "title": "puzzle",
       "artist": "C JAMM, BewhY (비와이)",
-      "aliases": [],
+      "aliases": [
+        "퍼즐"
+      ],
       "melonSongId": "8308231"
     },
     {
       "rank": 46,
       "title": "I Like That",
       "artist": "씨스타",
-      "aliases": [],
+      "aliases": [
+        "아이라이크댓"
+      ],
       "melonSongId": "8236055"
     },
     {
@@ -350,7 +383,9 @@
       "rank": 48,
       "title": "The Time Goes On",
       "artist": "BewhY (비와이)",
-      "aliases": [],
+      "aliases": [
+        "더타임고즈온"
+      ],
       "melonSongId": "5620266"
     },
     {

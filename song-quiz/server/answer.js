@@ -19,8 +19,22 @@ function stripExtras(text) {
     .replace(/\(.*?\)|\[.*?\]/g, ' ')
     .replace(/\b(feat|ft|with)\b\.?.*$/i, ' ')
     .replace(/[()[\]]/g, ' ') // 겹친 괄호에서 남은 조각
+    .replace(/\s+-\s+[^-]*\bver(sion)?\.?\s*$/i, ' ') // Seven - Clean Ver.
     .replace(/\s+/g, ' ')
     .trim();
+}
+
+/** 괄호 속이 부제가 아니라 곡 정보인지 (정답으로 치지 않음)
+ *  피처링·프로듀서·내레이션, 숫자만 있는 괄호(Square (2017)), 버전(Clean Ver.), 무대(On Stage),
+ *  파트(Part.1), 삽입곡·화제곡 표기 */
+function isExtraNote(body) {
+  const text = String(body).trim();
+  return /^(rap\s+)?(feat|ft|with|prod|narr)\b/i.test(text)
+    || /^\d+$/.test(text)
+    || /\bver(sion)?\.?$/i.test(text)
+    || /^on\s*stage$/i.test(text)
+    || /^part\.?\s*\d+$/i.test(text)
+    || /(삽입곡|화제곡)$/.test(text);
 }
 
 /**
@@ -45,8 +59,7 @@ function acceptedAnswers(song) {
   const inner = String(song.title || '').match(/\(([^)]+)\)/g) || [];
   inner.forEach((part) => {
     const body = part.slice(1, -1);
-    // 피처링·프로듀서·내레이션 표기와 숫자만 있는 괄호(예: Square (2017))는 정답으로 치지 않음
-    if (!/^(feat|ft|with|prod|narr)\b/i.test(body.trim()) && !/^\d+$/.test(body.trim())) add(body, true);
+    if (!isExtraNote(body)) add(body, true);
   });
 
   (song.aliases || []).forEach(add);
@@ -98,7 +111,7 @@ function chosungHint(text) {
   // 제목 앞부분이 영어 한 글자뿐이면(D (half moon)) 괄호 속 부제까지 힌트로 보여 준다 ('D'만으로는 정답이 아님)
   if (/^[a-z0-9]$/i.test(base.trim())) {
     const sub = (String(text).match(/\(([^)]+)\)/g) || []).map((p) => p.slice(1, -1).trim())
-      .find((body) => !/^(feat|ft|with|prod|narr)\b/i.test(body) && !/^\d+$/.test(body));
+      .find((body) => !isExtraNote(body));
     if (sub) base = `${base.trim()} (${sub})`;
   }
   return base
@@ -115,7 +128,7 @@ function chosungHint(text) {
         } else if (/[a-z]/i.test(ch)) {
           out += latinStarted ? '_' : ch.toUpperCase();
           latinStarted = true;
-        } else if (latinStarted && /[₩$@*€¥£]/.test(ch)) {
+        } else if (latinStarted && /[₩￦$@*€¥£]/.test(ch)) {
           out += '_'; // 글자 대신 쓴 기호(PO₩ER의 ₩)는 글자처럼 가린다
         } else {
           out += ch;

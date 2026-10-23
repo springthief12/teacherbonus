@@ -52,7 +52,10 @@
       "rank": 7,
       "title": "Mr. Chu (On Stage)",
       "artist": "Apink (에이핑크)",
-      "aliases": [],
+      "aliases": [
+        "미스터츄",
+        "미스터추"
+      ],
       "melonSongId": "4562881"
     },
     {
@@ -66,7 +69,11 @@
       "rank": 9,
       "title": "Something",
       "artist": "걸스데이",
-      "aliases": [],
+      "aliases": [
+        "썸띵",
+        "섬씽",
+        "썸씽"
+      ],
       "melonSongId": "4383773"
     },
     {
@@ -101,7 +108,9 @@
       "rank": 14,
       "title": "Come Back Home",
       "artist": "2NE1",
-      "aliases": [],
+      "aliases": [
+        "컴백홈"
+      ],
       "melonSongId": "4478187"
     },
     {
@@ -143,7 +152,9 @@
       "rank": 20,
       "title": "Touch My Body",
       "artist": "씨스타",
-      "aliases": [],
+      "aliases": [
+        "터치마이바디"
+      ],
       "melonSongId": "4756304"
     },
     {
@@ -192,7 +203,9 @@
       "rank": 27,
       "title": "Darling",
       "artist": "걸스데이",
-      "aliases": [],
+      "aliases": [
+        "달링"
+      ],
       "melonSongId": "4734486"
     },
     {
@@ -206,7 +219,10 @@
       "rank": 29,
       "title": "HER",
       "artist": "블락비 (Block B)",
-      "aliases": [],
+      "aliases": [
+        "허",
+        "헐"
+      ],
       "melonSongId": "4764928"
     },
     {
@@ -276,7 +292,10 @@
       "rank": 39,
       "title": "Give Love",
       "artist": "AKMU (악뮤)",
-      "aliases": [],
+      "aliases": [
+        "기브러브",
+        "기브럽"
+      ],
       "melonSongId": "4583481"
     },
     {
@@ -318,7 +337,9 @@
       "rank": 45,
       "title": "My Destiny",
       "artist": "린(LYn)",
-      "aliases": [],
+      "aliases": [
+        "마이데스티니"
+      ],
       "melonSongId": "4375626"
     },
     {

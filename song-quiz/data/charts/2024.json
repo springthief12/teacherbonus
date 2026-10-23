@@ -87,7 +87,9 @@
       "rank": 11,
       "title": "To. X",
       "artist": "태연 (TAEYEON)",
-      "aliases": [],
+      "aliases": [
+        "투엑스"
+      ],
       "melonSongId": "37003911"
     },
     {
@@ -152,14 +154,18 @@
       "rank": 19,
       "title": "SPOT! (feat. JENNIE)",
       "artist": "지코 (ZICO)",
-      "aliases": [],
+      "aliases": [
+        "스팟"
+      ],
       "melonSongId": "37460832"
     },
     {
       "rank": 20,
       "title": "Drama",
       "artist": "aespa",
-      "aliases": [],
+      "aliases": [
+        "드라마"
+      ],
       "melonSongId": "36956630"
     },
     {
@@ -194,14 +200,20 @@
       "rank": 24,
       "title": "Perfect Night",
       "artist": "LE SSERAFIM (르세라핌)",
-      "aliases": [],
+      "aliases": [
+        "퍼펙트나잇"
+      ],
       "melonSongId": "36910957"
     },
     {
       "rank": 25,
       "title": "Love 119",
       "artist": "RIIZE",
-      "aliases": [],
+      "aliases": [
+        "러브119",
+        "럽119",
+        "러브일일구"
+      ],
       "melonSongId": "37098744"
     },
     {
@@ -222,7 +234,9 @@
       "rank": 28,
       "title": "Seven (feat. Latto) - Clean Ver.",
       "artist": "정국",
-      "aliases": [],
+      "aliases": [
+        "세븐"
+      ],
       "melonSongId": "36617841"
     },
     {
@@ -252,14 +266,18 @@
       "rank": 32,
       "title": "Small girl (feat. 도경수(D.O.))",
       "artist": "이영지",
-      "aliases": [],
+      "aliases": [
+        "스몰걸"
+      ],
       "melonSongId": "37657039"
     },
     {
       "rank": 33,
       "title": "Ditto",
       "artist": "NewJeans",
-      "aliases": [],
+      "aliases": [
+        "디토"
+      ],
       "melonSongId": "35945927"
     },
     {
@@ -273,21 +291,28 @@
       "rank": 35,
       "title": "Bubble Gum",
       "artist": "NewJeans",
-      "aliases": [],
+      "aliases": [
+        "버블검"
+      ],
       "melonSongId": "37464459"
     },
     {
       "rank": 36,
       "title": "ETA",
       "artist": "NewJeans",
-      "aliases": [],
+      "aliases": [
+        "이티에이",
+        "에타"
+      ],
       "melonSongId": "36635522"
     },
     {
       "rank": 37,
       "title": "Super Shy",
       "artist": "NewJeans",
-      "aliases": [],
+      "aliases": [
+        "슈퍼샤이"
+      ],
       "melonSongId": "36599950"
     },
     {
@@ -317,21 +342,28 @@
       "rank": 41,
       "title": "Armageddon",
       "artist": "aespa",
-      "aliases": [],
+      "aliases": [
+        "아마겟돈"
+      ],
       "melonSongId": "37524038"
     },
     {
       "rank": 42,
       "title": "Love Lee",
       "artist": "AKMU (악뮤)",
-      "aliases": [],
+      "aliases": [
+        "러브리",
+        "럽리"
+      ],
       "melonSongId": "36713849"
     },
     {
       "rank": 43,
       "title": "EASY",
       "artist": "LE SSERAFIM (르세라핌)",
-      "aliases": [],
+      "aliases": [
+        "이지"
+      ],
       "melonSongId": "37225604"
     },
     {
@@ -348,7 +380,9 @@
       "rank": 45,
       "title": "Get A Guitar",
       "artist": "RIIZE",
-      "aliases": [],
+      "aliases": [
+        "겟어기타"
+      ],
       "melonSongId": "36717264"
     },
     {

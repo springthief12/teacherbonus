@@ -10,7 +10,9 @@
       "rank": 1,
       "title": "Ditto",
       "artist": "NewJeans",
-      "aliases": [],
+      "aliases": [
+        "디토"
+      ],
       "melonSongId": "35945927"
     },
     {
@@ -38,7 +40,10 @@
       "rank": 4,
       "title": "OMG",
       "artist": "NewJeans",
-      "aliases": [],
+      "aliases": [
+        "오엠지",
+        "오마이갓"
+      ],
       "melonSongId": "35985167"
     },
     {
@@ -55,7 +60,9 @@
       "rank": 6,
       "title": "Kitsch",
       "artist": "IVE (아이브)",
-      "aliases": [],
+      "aliases": [
+        "키치"
+      ],
       "melonSongId": "36318125"
     },
     {
@@ -95,14 +102,19 @@
       "rank": 11,
       "title": "Spicy",
       "artist": "aespa",
-      "aliases": [],
+      "aliases": [
+        "스파이시"
+      ],
       "melonSongId": "36416114"
     },
     {
       "rank": 12,
       "title": "ANTIFRAGILE",
       "artist": "LE SSERAFIM (르세라핌)",
-      "aliases": [],
+      "aliases": [
+        "안티프래자일",
+        "안티프레자일"
+      ],
       "melonSongId": "35729104"
     },
     {
@@ -119,7 +131,9 @@
       "rank": 14,
       "title": "Super Shy",
       "artist": "NewJeans",
-      "aliases": [],
+      "aliases": [
+        "슈퍼샤이"
+      ],
       "melonSongId": "36599950"
     },
     {
@@ -133,7 +147,9 @@
       "rank": 16,
       "title": "UNFORGIVEN (feat. Nile Rodgers)",
       "artist": "LE SSERAFIM (르세라핌)",
-      "aliases": [],
+      "aliases": [
+        "언포기븐"
+      ],
       "melonSongId": "36411342"
     },
     {
@@ -168,14 +184,18 @@
       "rank": 21,
       "title": "Teddy Bear",
       "artist": "STAYC(스테이씨)",
-      "aliases": [],
+      "aliases": [
+        "테디베어"
+      ],
       "melonSongId": "36105548"
     },
     {
       "rank": 22,
       "title": "Seven (feat. Latto) - Clean Ver.",
       "artist": "정국",
-      "aliases": [],
+      "aliases": [
+        "세븐"
+      ],
       "melonSongId": "36617841"
     },
     {
@@ -196,14 +216,19 @@
       "rank": 25,
       "title": "Candy",
       "artist": "NCT DREAM",
-      "aliases": [],
+      "aliases": [
+        "캔디"
+      ],
       "melonSongId": "35931532"
     },
     {
       "rank": 26,
       "title": "ETA",
       "artist": "NewJeans",
-      "aliases": [],
+      "aliases": [
+        "이티에이",
+        "에타"
+      ],
       "melonSongId": "36635522"
     },
     {
@@ -231,14 +256,20 @@
       "rank": 30,
       "title": "Nxde",
       "artist": "i-dle (아이들)",
-      "aliases": [],
+      "aliases": [
+        "누드",
+        "nude"
+      ],
       "melonSongId": "35730562"
     },
     {
       "rank": 31,
       "title": "Love Lee",
       "artist": "AKMU (악뮤)",
-      "aliases": [],
+      "aliases": [
+        "러브리",
+        "럽리"
+      ],
       "melonSongId": "36713849"
     },
     {
@@ -252,7 +283,9 @@
       "rank": 33,
       "title": "Monologue",
       "artist": "테이",
-      "aliases": [],
+      "aliases": [
+        "모놀로그"
+      ],
       "melonSongId": "35643794"
     },
     {
@@ -330,7 +363,9 @@
       "rank": 43,
       "title": "VIBE (feat. Jimin of BTS)",
       "artist": "태양",
-      "aliases": [],
+      "aliases": [
+        "바이브"
+      ],
       "melonSongId": "36034936"
     },
     {
@@ -346,7 +381,9 @@
       "rank": 45,
       "title": "Shut Down",
       "artist": "BLACKPINK",
-      "aliases": [],
+      "aliases": [
+        "셧다운"
+      ],
       "melonSongId": "35640077"
     },
     {
@@ -374,7 +411,9 @@
       "rank": 49,
       "title": "Cupid",
       "artist": "FIFTY FIFTY",
-      "aliases": [],
+      "aliases": [
+        "큐피드"
+      ],
       "melonSongId": "36206259"
     },
     {

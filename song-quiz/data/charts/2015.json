@@ -45,14 +45,18 @@
       "rank": 6,
       "title": "LOSER",
       "artist": "BIGBANG (빅뱅)",
-      "aliases": [],
+      "aliases": [
+        "루저"
+      ],
       "melonSongId": "5682700"
     },
     {
       "rank": 7,
       "title": "BAE BAE",
       "artist": "BIGBANG (빅뱅)",
-      "aliases": [],
+      "aliases": [
+        "배배"
+      ],
       "melonSongId": "5684826"
     },
     {
@@ -94,7 +98,10 @@
       "rank": 13,
       "title": "SHAKE IT",
       "artist": "씨스타",
-      "aliases": [],
+      "aliases": [
+        "쉐이크잇",
+        "셰이크잇"
+      ],
       "melonSongId": "5748499"
     },
     {
@@ -129,7 +136,10 @@
       "rank": 18,
       "title": "Puss (Prod.by 라이머)",
       "artist": "지민, 아이언",
-      "aliases": [],
+      "aliases": [
+        "푸스",
+        "퍼스"
+      ],
       "melonSongId": "5634219"
     },
     {
@@ -157,14 +167,18 @@
       "rank": 22,
       "title": "CALL ME BABY",
       "artist": "EXO",
-      "aliases": [],
+      "aliases": [
+        "콜미베이비"
+      ],
       "melonSongId": "5644620"
     },
     {
       "rank": 23,
       "title": "Me You (Feat. 백예린 Of 15&)",
       "artist": "San E (산이)",
-      "aliases": [],
+      "aliases": [
+        "미유"
+      ],
       "melonSongId": "5674119"
     },
     {
@@ -220,7 +234,10 @@
       "rank": 31,
       "title": "Ah Yeah",
       "artist": "EXID",
-      "aliases": [],
+      "aliases": [
+        "아예",
+        "아예이"
+      ],
       "melonSongId": "5660040"
     },
     {
@@ -241,14 +258,19 @@
       "rank": 34,
       "title": "I (Feat. 버벌진트)",
       "artist": "태연 (TAEYEON)",
-      "aliases": [],
+      "aliases": [
+        "i",
+        "아이"
+      ],
       "melonSongId": "7877917"
     },
     {
       "rank": 35,
       "title": "IF YOU",
       "artist": "BIGBANG (빅뱅)",
-      "aliases": [],
+      "aliases": [
+        "이프유"
+      ],
       "melonSongId": "5760115"
     },
     {
@@ -297,7 +319,9 @@
       "rank": 42,
       "title": "Oasis (Feat. ZICO)",
       "artist": "Crush",
-      "aliases": [],
+      "aliases": [
+        "오아시스"
+      ],
       "melonSongId": "5771304"
     },
     {
@@ -311,7 +335,10 @@
       "rank": 44,
       "title": "LOVE ME RIGHT",
       "artist": "EXO",
-      "aliases": [],
+      "aliases": [
+        "러브미라잇",
+        "러브미라이트"
+      ],
       "melonSongId": "5721440"
     },
     {
@@ -325,7 +352,11 @@
       "rank": 46,
       "title": "LUV",
       "artist": "Apink (에이핑크)",
-      "aliases": [],
+      "aliases": [
+        "러브",
+        "럽",
+        "love"
+      ],
       "melonSongId": "5473905"
     },
     {
@@ -353,7 +384,9 @@
       "rank": 50,
       "title": "My Type (Prod. By 버벌진트)",
       "artist": "제시 (Jessi), 치타 (CHEETAH), 강남",
-      "aliases": [],
+      "aliases": [
+        "마이타입"
+      ],
       "melonSongId": "5592623"
     }
   ]

@@ -45,6 +45,19 @@ const ARTIST_EN = {
   황치열: 'Hwang Chi Yeul', 찬열: 'CHANYEOL', 싸이: 'PSY', 우원재: 'Woo Won Jae', 신현희와김루트: 'Shin Hyunhee and Seenroot',
   한동근: 'Han Dong Geun', 정키: 'Jung Key', 효린: 'Hyolyn', 박재범: 'Jay Park', 하이라이트: 'Highlight', 정승환: 'Jung Seung Hwan', 소유: 'SOYOU',
   WSG워너비: 'WSG Wannabe', 주시크: 'Joosiq', 케이시: 'Kassy', 윤하: 'YOUNHA', 김민석: 'Kim Min Seok', 경서: 'Kyoungseo',
+  황가람: 'Hwang Garam', 조째즈: 'Jo Jazz', 순순희: 'Soonsoonhee', 경서예지: 'Kyoungseo Yeji', 범진: 'Beomjin', 정국: 'Jung Kook',
+  이영지: 'Lee Young Ji', '#안녕': '#Annyeong', 테이: 'Tei', 임한별: 'Onestar', 주호: 'JUHO', 송이한: 'Song Yihan',
+  이예준: 'Lee Ye Joon', 송하예: 'Song Ha Ye', 장혜진: 'Jang Hye Jin', 황인욱: 'Hwang In Wook', 김나영: 'Kim Na Young',
+  이소라: 'Lee So Ra', 윤건: 'Yoon Gun', 박효신: 'Park Hyo Shin', 어반자카파: 'Urban Zakapa', 이적: 'Lee Juck',
+  정은지: 'Jung Eun Ji', 윤미래: 'Yoon Mi Rae', 이하이: 'LEE HI', 오혁: 'OHHYUK', 개리: 'Gary', 백아연: 'Baek A Yeon',
+  매드클라운: 'Mad Clown', 정준일: 'Jung Joon Il', 나얼: 'Naul', 지민: 'JIMIN', 박진영: 'J.Y. Park', 황태지: 'Hwang Tae Ji',
+  정인: 'Jung In', 이선희: 'Lee Sun Hee', 플라이투더스카이: 'Fly To The Sky', 박보람: 'Park Boram', 에디킴: 'Eddy Kim',
+  오렌지캬라멜: 'Orange Caramel', 정기고: 'Junggigo', 프라이머리: 'Primary', 배치기: 'Baechigi', 이승철: 'Lee Seung Chul',
+  범키: 'BUMKEY', 다이나믹듀오: 'Dynamic Duo', 크레용팝: 'Crayon Pop', 조용필: 'Cho Yong Pil', 림킴: 'Lim Kim',
+  버벌진트: 'Verbal Jint', 트러블메이커: 'Trouble Maker', 에이트: '8eight', 김태우: 'Kim Tae Woo', 아웃사이더: 'Outsider',
+  손담비: 'Son Dam Bi', 바비킴: 'Bobby Kim', 박화요비: 'Hwayobi', 서인국: 'Seo In Guk', 럼블피쉬: 'Rumble Fish', 이효리: 'Lee Hyori',
+  브라운아이즈: 'Brown Eyes', 쥬얼리: 'Jewelry', 김동률: 'Kim Dong Ryul', 박지헌: 'Park Ji Heon', 지아: 'Zia', 원투: 'One Two',
+  김종국: 'Kim Jong Kook',
 };
 
 let cache = {};
