@@ -2798,6 +2798,12 @@
       "title": "Beautiful Life",
       "artist": "V.O.S",
       "updatedAt": 1792756914924
+    },
+    "2008|bigbang빅뱅|howgee하우지": {
+      "disabled": true,
+      "title": "How Gee (하우지)",
+      "artist": "BIGBANG (빅뱅)",
+      "updatedAt": 1792756917327
     }
   }
 }
