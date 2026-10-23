@@ -1,6 +1,7 @@
 // 연도별 차트 데이터 로더 (data/charts/<연도>.json)
 const fs = require('fs');
 const path = require('path');
+const { songKey } = require('./answer');
 
 const CHART_DIR = path.join(__dirname, '..', 'data', 'charts');
 
@@ -65,14 +66,33 @@ function shuffle(list) {
   return arr;
 }
 
-/** 선택한 연도들의 곡을 모아 섞는다 (eligible: 셔플에 넣을 곡만 남기는 조건) */
+/** 선택한 연도들의 곡을 모아 섞는다 (eligible: 셔플에 넣을 곡만 남기는 조건)
+ *  여러 해에 걸쳐 차트에 오른 곡은 한 번만 넣는다 (먼저 오른 해 기준) */
 function buildPool(years, eligible = () => true) {
   const pool = [];
-  for (const y of years) {
-    const chart = charts.get(Number(y));
-    if (chart) pool.push(...chart.songs.filter(eligible));
+  const seen = new Set();
+  for (const y of [...new Set(years.map(Number))].sort((a, b) => a - b)) {
+    const chart = charts.get(y);
+    if (!chart) continue;
+    for (const song of chart.songs) {
+      if (!eligible(song)) continue;
+      const key = songKey(song);
+      if (seen.has(key)) continue;
+      seen.add(key);
+      pool.push(song);
+    }
   }
   return shuffle(pool);
+}
+
+/** 다른 해 차트에 있는 같은 곡들 */
+function sameSongs(song) {
+  const key = songKey(song);
+  const out = [];
+  for (const chart of charts.values()) {
+    for (const s of chart.songs) if (s !== song && s.year !== song.year && songKey(s) === key) out.push(s);
+  }
+  return out;
 }
 
 function songsOf(year) {
@@ -88,7 +108,7 @@ function hasYear(year) {
 const AUDIO_DIR = path.join(__dirname, '..', 'data', 'audio');
 const AUDIO_EXTS = ['mp3', 'm4a', 'ogg', 'wav', 'aac'];
 
-function audioFileFor(song) {
+function ownAudioFile(song) {
   if (!song.rank) return null;
   const names = [String(song.rank), String(song.rank).padStart(2, '0')];
   for (const name of names) {
@@ -100,6 +120,17 @@ function audioFileFor(song) {
   return null;
 }
 
+/** 이 곡의 음원 파일. 없으면 다른 해 차트의 같은 곡에 넣어 둔 파일을 같이 쓴다 */
+function audioFileFor(song) {
+  const own = ownAudioFile(song);
+  if (own || !song.year) return own;
+  for (const other of sameSongs(song)) {
+    const file = ownAudioFile(other);
+    if (file) return file;
+  }
+  return null;
+}
+
 loadCharts();
 
-module.exports = { loadCharts, yearCatalog, buildPool, songsOf, hasYear, audioFileFor, FIRST_YEAR, LAST_YEAR };
+module.exports = { loadCharts, yearCatalog, buildPool, songsOf, hasYear, audioFileFor, sameSongs, FIRST_YEAR, LAST_YEAR };

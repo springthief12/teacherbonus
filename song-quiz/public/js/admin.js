@@ -132,7 +132,8 @@
     if (s.audioFile) return { cls: 'ok', text: '음원 파일', problem: false, done: true };
     if (s.source === 'override') {
       const blocked = (s.bad || []).includes(s.youtubeId);
-      return blocked ? { cls: 'bad', text: '확인함 · 재생 안 됨', problem: true, done: true } : { cls: 'ok', text: '확인함', problem: false, done: true };
+      const text = s.inheritedFrom ? `확인함 (${s.inheritedFrom}년)` : '확인함';
+      return blocked ? { cls: 'bad', text: `${text} · 재생 안 됨`, problem: true, done: true } : { cls: 'ok', text, problem: false, done: true };
     }
     if (s.source === 'data') return { cls: 'ok', text: '차트 파일', problem: false, done: true };
     if (s.source === 'search') return { cls: 'pick', text: '자동 · 확인 전', problem: false, done: false };
@@ -144,7 +145,7 @@
     if (s.disabled) return '관리자가 셔플에서 뺀 곡이에요.';
     if (s.audioFile) return 'data/audio 폴더의 음원 파일로 재생해요.';
     const video = s.videoTitle ? `${s.videoTitle}${s.videoChannel ? ` · ${s.videoChannel}` : ''}` : `영상 ${s.youtubeId}`;
-    if (s.source === 'override') return `확인한 음원: ${video}`;
+    if (s.source === 'override') return s.inheritedFrom ? `${s.inheritedFrom}년 차트의 같은 곡에서 확인한 음원: ${video}` : `확인한 음원: ${video}`;
     if (s.source === 'search') return `자동으로 찾은 음원: ${video}`;
     if (s.youtubeId) return `현재: ${video}`;
     if (s.source === 'missing') return '음원 버전을 찾지 못해 셔플에서 빠져 있어요. 후보에서 고르거나 링크를 붙여 넣으세요.';
@@ -248,7 +249,9 @@
             <button class="btn small primary" data-act="save-link">저장</button>
           </div>
           <p class="edit-note">음원 영상(채널 이름이 "가수 - Topic"인 것)이나 Official Audio를 고르면 노래가 바로 시작해요. 후보에서 고르거나 링크를 저장하면 확인한 것으로 고정돼요.</p>
-          ${s.source === 'override' ? `
+          ${s.inheritedFrom ? `
+          <p class="edit-note">${s.inheritedFrom}년 차트의 같은 곡에서 확인한 음원을 같이 쓰고 있어요. 이 해만 다른 음원을 쓰려면 후보에서 고르거나 링크를 넣으세요.</p>` : ''}
+          ${s.source === 'override' && !s.inheritedFrom ? `
           <div class="edit-row">
             <button class="btn small" data-act="reset">확인 취소</button>
             <span class="edit-note">고정을 풀고 자동 검색 결과로 돌아가요. 그 뒤로는 다시 검사해요.</span>

@@ -115,4 +115,11 @@ function chosungHint(text) {
     .join('');
 }
 
-module.exports = { squash, stripExtras, acceptedAnswers, isCorrect, chosungHint };
+/** 연도가 달라도 같은 곡인지 알아보는 열쇠 (첫 번째 가수 + 괄호를 뺀 제목)
+ *  예: 2020년 12위와 2021년 3위의 "방탄소년단 - Dynamite" → 같은 곡 */
+function songKey(song) {
+  const first = String(song.artist || '').split(/[(),&]/)[0];
+  return `${squash(first)}|${squash(stripExtras(song.title) || song.title)}`;
+}
+
+module.exports = { squash, stripExtras, acceptedAnswers, isCorrect, chosungHint, songKey };

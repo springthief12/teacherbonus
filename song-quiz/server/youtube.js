@@ -34,6 +34,9 @@ const ARTIST_EN = {
   전미도: 'Jeon Mi Do', 김필: 'Kim Feel', 산들: 'SANDEUL', 신예영: 'Shin Yeyoung', 조이: 'JOY', 백현: 'BAEKHYUN',
   볼빨간사춘기: 'BOL4', 백예린: 'Yerin Baek', 제시: 'Jessi', 하현우: 'Ha Hyun Woo', 스탠딩에그: 'Standing Egg',
   전상근: 'Jeon Sang Keun', 진민호: 'Jin Min Ho', 아이즈원: 'IZ*ONE', 염따: 'YUMDDA', 임재현: 'Lim Jae Hyun',
+  브레이브걸스: 'Brave Girls', 이무진: 'Lee Mu Jin', MSG워너비: 'MSG Wannabe', 헤이즈: 'Heize', 미란이: 'Mirani',
+  양요섭: 'Yang Yoseob', 적재: 'Jukjae', SG워너비: 'SG Wannabe', 호미들: 'Homies', 태연: 'TAEYEON', 정동하: 'Jung Dong Ha',
+  디핵: 'D-Hack', 임영웅: 'Lim Young Woong', 로제: 'ROSÉ', 임창정: 'Lim Chang Jung',
 };
 
 let cache = {};

@@ -1,12 +1,12 @@
 {
   "name": "geuttae-geu-norae",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "멜론 연도별 차트 노래 맞히기 – 실시간 멀티플레이",
   "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",
-    "test": "node test/persistence.test.js && node test/profanity.test.js && node test/admin.test.js && node test/flow.test.js"
+    "test": "node test/persistence.test.js && node test/years.test.js && node test/profanity.test.js && node test/admin.test.js && node test/flow.test.js"
   },
   "license": "MIT",
   "dependencies": {

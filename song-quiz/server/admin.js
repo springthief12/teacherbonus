@@ -61,6 +61,7 @@ function view(song) {
     audioFile: Boolean(audioFileFor(song)),
     disabled: Boolean(o.disabled),
     start: Number.isFinite(o.start) ? o.start : null,
+    inheritedFrom: o.inheritedFrom || null, // 다른 해 차트의 같은 곡에서 확인한 음원을 같이 쓰는 경우
     ...yt.status(song),
   };
 }

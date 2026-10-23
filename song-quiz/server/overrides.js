@@ -4,7 +4,7 @@
 //         Render처럼 다시 시작하면 파일이 지워지는 서버에서도 유지된다.
 const fs = require('fs');
 const path = require('path');
-const { squash } = require('./answer');
+const { squash, songKey } = require('./answer');
 
 const FILE = path.join(__dirname, '..', 'data', 'overrides.json');
 const GH = {
@@ -64,6 +64,7 @@ async function loadRemote() {
     remoteSha = json.sha;
     const remote = JSON.parse(Buffer.from(json.content, 'base64').toString('utf8'));
     store = merge(store, remote);
+    sharedIndex = null;
     status.remote = 'ready';
   } catch (err) {
     status.remote = 'error';
@@ -116,8 +117,35 @@ async function pushRemote(attempt = 0, reapply) {
   }
 }
 
+// 다른 해 차트의 같은 곡에서 확인해 둔 음원 (곡 열쇠 → 가장 최근에 고친 설정)
+let sharedIndex = null;
+function shared() {
+  if (sharedIndex) return sharedIndex;
+  sharedIndex = new Map();
+  for (const [key, v] of Object.entries(store.songs)) {
+    if (!v || !v.youtubeId || !v.title || !v.artist) continue;
+    const k = songKey(v);
+    const prev = sharedIndex.get(k);
+    if (!prev || (v.updatedAt || 0) > (prev.updatedAt || 0)) sharedIndex.set(k, { ...v, year: Number(key.split('|')[0]), key });
+  }
+  return sharedIndex;
+}
+
 function get(song) {
-  return store.songs[keyOf(song)] || null;
+  const key = keyOf(song);
+  const own = store.songs[key] || null;
+  if (own && own.youtubeId) return own;
+  // 2020년에서 확인한 "Dynamite"를 2021년 "Dynamite"에도 그대로 쓴다 (다시 확인하지 않아도 됨)
+  const from = shared().get(songKey(song));
+  if (!from || from.key === key) return own;
+  return {
+    ...(own || {}),
+    youtubeId: from.youtubeId,
+    videoTitle: from.videoTitle,
+    videoChannel: from.videoChannel,
+    start: own && own.start !== undefined ? own.start : from.start,
+    inheritedFrom: from.year,
+  };
 }
 
 /** patch: { youtubeId?, start?, disabled?, videoTitle?, videoChannel? } (null이면 지움)
@@ -138,6 +166,7 @@ function set(song, patch) {
       const meaningful = ['youtubeId', 'start', 'disabled'].some((k) => cur[k] !== undefined);
       if (meaningful) store.songs[key] = cur;
       else delete store.songs[key];
+      sharedIndex = null;
     };
     apply();
     // 원격 저장에 실패해도 내려받거나 다시 저장할 수 있도록 로컬 수정은 남긴다.
