@@ -597,7 +597,8 @@
       "videoChannel": "베어뮤직 BearMusic",
       "title": "밝게 빛나는 별이 되어 비춰줄게",
       "artist": "송이한",
-      "updatedAt": 1792717395276
+      "updatedAt": 1792728785786,
+      "disabled": true
     },
     "2021|msg워너비mom|바라만본다": {
       "youtubeId": "vAPIS8DfLGk",
