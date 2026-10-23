@@ -2786,6 +2786,12 @@
       "title": "거짓말",
       "artist": "BIGBANG (빅뱅)",
       "updatedAt": 1792756908166
+    },
+    "2008|다비치|슬픈다짐": {
+      "disabled": true,
+      "title": "슬픈 다짐",
+      "artist": "다비치",
+      "updatedAt": 1792756911143
     }
   }
 }
