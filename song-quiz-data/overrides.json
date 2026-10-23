@@ -2345,6 +2345,18 @@
       "title": "Shut Down",
       "artist": "BLACKPINK",
       "updatedAt": 1792756338321
+    },
+    "2023|주호|내가아니라도": {
+      "disabled": true,
+      "title": "내가 아니라도",
+      "artist": "주호",
+      "updatedAt": 1792756343395
+    },
+    "2022|주호|내가아니라도": {
+      "disabled": true,
+      "title": "내가 아니라도",
+      "artist": "주호",
+      "updatedAt": 1792756343395
     }
   }
 }
