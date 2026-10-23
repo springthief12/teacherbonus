@@ -30,19 +30,23 @@ function stripExtras(text) {
  */
 function acceptedAnswers(song) {
   const set = new Set();
-  const add = (value) => {
+  const full = squash(song.title);
+  const add = (value, part = false) => {
     const key = squash(value);
-    if (key.length > 0) set.add(key);
+    if (!key.length) return;
+    // 제목 일부가 영어·숫자 한 글자면(D (half moon)의 "D", All I Wanna Do (K)의 "K") 아무 글자나 쳐도 맞게 되므로 뺀다
+    if (part && key !== full && /^[a-z0-9]$/.test(key)) return;
+    set.add(key);
   };
 
   add(song.title);
-  add(stripExtras(song.title));
+  add(stripExtras(song.title), true);
 
   const inner = String(song.title || '').match(/\(([^)]+)\)/g) || [];
   inner.forEach((part) => {
     const body = part.slice(1, -1);
     // 피처링·프로듀서·내레이션 표기와 숫자만 있는 괄호(예: Square (2017))는 정답으로 치지 않음
-    if (!/^(feat|ft|with|prod|narr)\b/i.test(body.trim()) && !/^\d+$/.test(body.trim())) add(body);
+    if (!/^(feat|ft|with|prod|narr)\b/i.test(body.trim()) && !/^\d+$/.test(body.trim())) add(body, true);
   });
 
   (song.aliases || []).forEach(add);
@@ -90,7 +94,13 @@ function isCorrect(song, guess) {
 
 /** 제목 초성 힌트: 한글은 초성, 영문은 단어 첫 글자 + 밑줄 */
 function chosungHint(text) {
-  const base = stripExtras(text) || String(text || '');
+  let base = stripExtras(text) || String(text || '');
+  // 제목 앞부분이 영어 한 글자뿐이면(D (half moon)) 괄호 속 부제까지 힌트로 보여 준다 ('D'만으로는 정답이 아님)
+  if (/^[a-z0-9]$/i.test(base.trim())) {
+    const sub = (String(text).match(/\(([^)]+)\)/g) || []).map((p) => p.slice(1, -1).trim())
+      .find((body) => !/^(feat|ft|with|prod|narr)\b/i.test(body) && !/^\d+$/.test(body));
+    if (sub) base = `${base.trim()} (${sub})`;
+  }
   return base
     .split(/(\s+)/)
     .map((word) => {

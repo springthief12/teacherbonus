@@ -42,6 +42,8 @@ const ARTIST_EN = {
   장덕철: 'Jang Deok Cheol', 닐로: 'Nilo', 로꼬: 'Loco', 이수: 'Lee Soo', 양다일: 'Yang Da Il', 문문: 'MoonMoon',
   길구봉구: 'Gilgu Bonggu', 펀치: 'Punch', 김하온: 'HAON', 용준형: 'Yong Jun Hyung', 박원: 'Park Won', 선미: 'SUNMI',
   청하: 'CHUNG HA', 숀: 'SHAUN', 모모랜드: 'MOMOLAND', 윤종신: 'Yoon Jong Shin', 벤: 'Ben', 비투비: 'BTOB', 여자친구: 'GFRIEND',
+  황치열: 'Hwang Chi Yeul', 찬열: 'CHANYEOL', 싸이: 'PSY', 우원재: 'Woo Won Jae', 신현희와김루트: 'Shin Hyunhee and Seenroot',
+  한동근: 'Han Dong Geun', 정키: 'Jung Key', 효린: 'Hyolyn', 박재범: 'Jay Park', 하이라이트: 'Highlight', 정승환: 'Jung Seung Hwan', 소유: 'SOYOU',
 };
 
 let cache = {};
