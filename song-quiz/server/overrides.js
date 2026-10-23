@@ -119,12 +119,18 @@ async function pushRemote(attempt = 0, reapply) {
 
 // 다른 해 차트의 같은 곡에서 확인해 둔 음원 (곡 열쇠 → 가장 최근에 고친 설정)
 let sharedIndex = null;
+let sharedDisabled = new Set();
 function shared() {
   if (sharedIndex) return sharedIndex;
   sharedIndex = new Map();
+  sharedDisabled = new Set();
   for (const [key, v] of Object.entries(store.songs)) {
-    if (!v || !v.youtubeId || !v.title || !v.artist) continue;
+    if (!v || !v.title || !v.artist) continue;
     const k = songKey(v);
+    // 차트에 새 연도가 추가되어도 기존에 제외한 같은 곡은 다시 출제하지 않는다.
+    // 영상 링크 없이 비활성화만 저장한 곡도 포함한다.
+    if (v.disabled) sharedDisabled.add(k);
+    if (!v.youtubeId) continue;
     const prev = sharedIndex.get(k);
     if (!prev || (v.updatedAt || 0) > (prev.updatedAt || 0)) sharedIndex.set(k, { ...v, year: Number(key.split('|')[0]), key });
   }
@@ -134,11 +140,10 @@ function shared() {
 function get(song) {
   const key = keyOf(song);
   const own = store.songs[key] || null;
-  if (own && own.youtubeId) return own;
+  const commonKey = songKey(song);
   // 2020년에서 확인한 "Dynamite"를 2021년 "Dynamite"에도 그대로 쓴다 (다시 확인하지 않아도 됨)
-  const from = shared().get(songKey(song));
-  if (!from || from.key === key) return own;
-  return {
+  const from = shared().get(commonKey);
+  const current = ((own && own.youtubeId) || !from || from.key === key) ? own : {
     ...(own || {}),
     youtubeId: from.youtubeId,
     videoTitle: from.videoTitle,
@@ -146,6 +151,9 @@ function get(song) {
     start: own && own.start !== undefined ? own.start : from.start,
     inheritedFrom: from.year,
   };
+  // 그 해에 별도 영상을 고른 경우에도 다른 해에서 제외한 설정은 함께 적용한다.
+  if (sharedDisabled.has(commonKey) && !(current && current.disabled)) return { ...(current || {}), disabled: true };
+  return current;
 }
 
 /** patch: { youtubeId?, start?, disabled?, videoTitle?, videoChannel? } (null이면 지움)
@@ -215,4 +223,3 @@ store = merge(readRepoCopy(), readLocal());
 const ready = loadRemote();
 
 module.exports = { get, set, setMany, keyOf, exportAll, info, ready };
-
