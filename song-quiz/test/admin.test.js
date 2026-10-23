@@ -212,7 +212,10 @@ async function playWholeGame(songCount) {
     const dyn21b = (await listOf(2021)).find((s) => s.title === 'Dynamite');
     const leftover = Object.values(JSON.parse(fs.readFileSync(OVERRIDES, 'utf8')).songs).filter((v) => v.title === 'Dynamite');
     check('활성화도 함께 → 설정이 남지 않음', on.data.song.disabled === false && dyn21b.disabled === false && leftover.length === 0);
-    const solo = (await listOf(2021)).find((s) => s.title === 'Butter');
+    // 다른 해 차트에 없는 곡을 골라서 확인 (차트가 늘어나도 맞게)
+    const charts = require('../server/charts');
+    const soloSong = charts.songsOf(2021).find((s) => !charts.sameSongs(s).length);
+    const solo = (await listOf(2021)).find((s) => s.rank === soloSong.rank);
     const soloOff = await req('/api/admin/song', { body: { key: solo.key, disabled: true } });
     check('한 해에만 있는 곡은 그 곡만', soloOff.data.song.disabled === true && soloOff.data.also.length === 0);
     await req('/api/admin/song', { body: { key: solo.key, disabled: false } });
