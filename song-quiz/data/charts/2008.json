@@ -10,7 +10,10 @@
       "rank": 1,
       "title": "So Hot",
       "artist": "원더걸스",
-      "aliases": [],
+      "aliases": [
+        "쏘핫",
+        "소핫"
+      ],
       "melonSongId": "1874397"
     },
     {
@@ -24,14 +27,20 @@
       "rank": 3,
       "title": "Love",
       "artist": "브라운아이드걸스",
-      "aliases": [],
+      "aliases": [
+        "러브",
+        "럽"
+      ],
       "melonSongId": "1788174"
     },
     {
       "rank": 4,
       "title": "Nobody",
       "artist": "원더걸스",
-      "aliases": [],
+      "aliases": [
+        "노바디",
+        "노바리"
+      ],
       "melonSongId": "1929329"
     },
     {
@@ -59,7 +68,10 @@
       "rank": 8,
       "title": "U-Go-Girl (With 낯선)",
       "artist": "이효리",
-      "aliases": [],
+      "aliases": [
+        "유고걸",
+        "유고우걸"
+      ],
       "melonSongId": "1903050"
     },
     {
@@ -87,7 +99,10 @@
       "rank": 12,
       "title": "One More Time",
       "artist": "쥬얼리",
-      "aliases": [],
+      "aliases": [
+        "원모어타임",
+        "원모타임"
+      ],
       "melonSongId": "1807098"
     },
     {
@@ -108,7 +123,9 @@
       "rank": 15,
       "title": "One (Feat. 지선)",
       "artist": "에픽하이 (EPIK HIGH)",
-      "aliases": [],
+      "aliases": [
+        "원"
+      ],
       "melonSongId": "1850242"
     },
     {
@@ -143,7 +160,10 @@
       "rank": 20,
       "title": "Hey Mr. Big",
       "artist": "이효리",
-      "aliases": [],
+      "aliases": [
+        "헤이미스터빅",
+        "헤이미스타빅"
+      ],
       "melonSongId": "1903057"
     },
     {
@@ -185,7 +205,9 @@
       "rank": 26,
       "title": "Blue Moon",
       "artist": "씨야, 다비치, 블랙펄",
-      "aliases": [],
+      "aliases": [
+        "블루문"
+      ],
       "melonSongId": "1879332"
     },
     {
@@ -206,7 +228,10 @@
       "rank": 29,
       "title": "Kissing You",
       "artist": "소녀시대 (GIRLS' GENERATION)",
-      "aliases": [],
+      "aliases": [
+        "키싱유",
+        "키씽유"
+      ],
       "melonSongId": "1756969"
     },
     {
@@ -234,7 +259,12 @@
       "rank": 33,
       "title": "주문-MIROTIC (Clean Ver.)",
       "artist": "동방신기 (TVXQ!)",
-      "aliases": [],
+      "aliases": [
+        "주문",
+        "mirotic",
+        "미로틱",
+        "주문미로틱"
+      ],
       "melonSongId": "1928828"
     },
     {
@@ -248,14 +278,19 @@
       "rank": 35,
       "title": "How Gee (하우지)",
       "artist": "BIGBANG (빅뱅)",
-      "aliases": [],
+      "aliases": [
+        "하우쥐"
+      ],
       "melonSongId": "1786851"
     },
     {
       "rank": 36,
       "title": "Beautiful Life",
       "artist": "V.O.S",
-      "aliases": [],
+      "aliases": [
+        "뷰티풀라이프",
+        "뷰리풀라이프"
+      ],
       "melonSongId": "1867568"
     },
     {
@@ -311,7 +346,9 @@
       "rank": 44,
       "title": "Too Much (With 서인영) (우리결혼했어요 화제곡)",
       "artist": "크라운제이 (CROWN J)",
-      "aliases": [],
+      "aliases": [
+        "투머치"
+      ],
       "melonSongId": "1871159"
     },
     {
@@ -332,7 +369,10 @@
       "rank": 47,
       "title": "Love Story",
       "artist": "비",
-      "aliases": [],
+      "aliases": [
+        "러브스토리",
+        "럽스토리"
+      ],
       "melonSongId": "1935599"
     },
     {

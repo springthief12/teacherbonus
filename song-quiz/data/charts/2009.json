@@ -10,35 +10,49 @@
       "rank": 1,
       "title": "Gee",
       "artist": "소녀시대 (GIRLS' GENERATION)",
-      "aliases": [],
+      "aliases": [
+        "지",
+        "쥐"
+      ],
       "melonSongId": "2012282"
     },
     {
       "rank": 2,
       "title": "I Don't Care",
       "artist": "2NE1",
-      "aliases": [],
+      "aliases": [
+        "아이돈케어",
+        "아돈케어"
+      ],
       "melonSongId": "2212365"
     },
     {
       "rank": 3,
       "title": "Abracadabra",
       "artist": "브라운아이드걸스",
-      "aliases": [],
+      "aliases": [
+        "아브라카다브라"
+      ],
       "melonSongId": "2229259"
     },
     {
       "rank": 4,
       "title": "Heartbreaker",
       "artist": "G-DRAGON",
-      "aliases": [],
+      "aliases": [
+        "하트브레이커"
+      ],
       "melonSongId": "2258761"
     },
     {
       "rank": 5,
       "title": "Again＆Again",
       "artist": "2PM",
-      "aliases": [],
+      "aliases": [
+        "어게인앤어게인",
+        "어게인어게인",
+        "againandagain"
+      ],
       "melonSongId": "2135469"
     },
     {
@@ -59,7 +73,10 @@
       "rank": 8,
       "title": "Fire",
       "artist": "2NE1",
-      "aliases": [],
+      "aliases": [
+        "파이어",
+        "화이어"
+      ],
       "melonSongId": "2160048"
     },
     {
@@ -73,7 +90,10 @@
       "rank": 10,
       "title": "Lollipop",
       "artist": "BIGBANG (빅뱅), 2NE1",
-      "aliases": [],
+      "aliases": [
+        "롤리팝",
+        "롤리팜"
+      ],
       "melonSongId": "2117748"
     },
     {
@@ -108,7 +128,10 @@
       "rank": 15,
       "title": "TTL (Time To Love)",
       "artist": "티아라, 초신성",
-      "aliases": [],
+      "aliases": [
+        "티티엘",
+        "타임투러브"
+      ],
       "melonSongId": "2289852"
     },
     {
@@ -143,21 +166,27 @@
       "rank": 20,
       "title": "Hot Issue",
       "artist": "4minute",
-      "aliases": [],
+      "aliases": [
+        "핫이슈"
+      ],
       "melonSongId": "2197448"
     },
     {
       "rank": 21,
       "title": "Muzik",
       "artist": "4minute",
-      "aliases": [],
+      "aliases": [
+        "뮤직"
+      ],
       "melonSongId": "2269959"
     },
     {
       "rank": 22,
       "title": "Diva",
       "artist": "애프터스쿨",
-      "aliases": [],
+      "aliases": [
+        "디바"
+      ],
       "melonSongId": "2129151"
     },
     {
@@ -171,21 +200,30 @@
       "rank": 24,
       "title": "Insomnia (불면증)",
       "artist": "휘성 (Realslow)",
-      "aliases": [],
+      "aliases": [
+        "인썸니아",
+        "인섬니아"
+      ],
       "melonSongId": "2063248"
     },
     {
       "rank": 25,
       "title": "My Man",
       "artist": "다비치",
-      "aliases": [],
+      "aliases": [
+        "마이맨"
+      ],
       "melonSongId": "2093362"
     },
     {
       "rank": 26,
       "title": "YOU AND I",
       "artist": "박봄 (Park Bom)",
-      "aliases": [],
+      "aliases": [
+        "유앤아이",
+        "유엔아이",
+        "youandi"
+      ],
       "melonSongId": "2338186"
     },
     {
@@ -248,7 +286,10 @@
       "rank": 35,
       "title": "Wanna",
       "artist": "카라",
-      "aliases": [],
+      "aliases": [
+        "워너",
+        "원나"
+      ],
       "melonSongId": "2235965"
     },
     {
@@ -269,14 +310,19 @@
       "rank": 38,
       "title": "Ring Ding Dong",
       "artist": "SHINee (샤이니)",
-      "aliases": [],
+      "aliases": [
+        "링딩동"
+      ],
       "melonSongId": "2320988"
     },
     {
       "rank": 39,
       "title": "Sign",
       "artist": "브라운아이드걸스",
-      "aliases": [],
+      "aliases": [
+        "사인",
+        "싸인"
+      ],
       "melonSongId": "2339048"
     },
     {
@@ -290,7 +336,9 @@
       "rank": 41,
       "title": "Honey",
       "artist": "카라",
-      "aliases": [],
+      "aliases": [
+        "허니"
+      ],
       "melonSongId": "2056871"
     },
     {
@@ -304,7 +352,9 @@
       "rank": 43,
       "title": "AH",
       "artist": "애프터스쿨",
-      "aliases": [],
+      "aliases": [
+        "아"
+      ],
       "melonSongId": "2024974"
     },
     {

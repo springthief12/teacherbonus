@@ -212,7 +212,10 @@
       "rank": 28,
       "title": "FANCY",
       "artist": "TWICE (트와이스)",
-      "aliases": [],
+      "aliases": [
+        "팬시",
+        "펜시"
+      ],
       "melonSongId": "31754579"
     },
     {
@@ -281,7 +284,9 @@
       "rank": 37,
       "title": "IDOL",
       "artist": "방탄소년단",
-      "aliases": [],
+      "aliases": [
+        "아이돌"
+      ],
       "melonSongId": "31266290"
     },
     {
@@ -323,7 +328,9 @@
       "rank": 43,
       "title": "Kill This Love",
       "artist": "BLACKPINK",
-      "aliases": [],
+      "aliases": [
+        "킬디스러브"
+      ],
       "melonSongId": "31717822"
     },
     {
@@ -337,7 +344,9 @@
       "rank": 45,
       "title": "SOLO",
       "artist": "제니 (JENNIE)",
-      "aliases": [],
+      "aliases": [
+        "솔로"
+      ],
       "melonSongId": "31417871"
     },
     {
@@ -358,21 +367,29 @@
       "rank": 48,
       "title": "YES or YES",
       "artist": "TWICE (트와이스)",
-      "aliases": [],
+      "aliases": [
+        "예스오어예스",
+        "예스올예스"
+      ],
       "melonSongId": "31403163"
     },
     {
       "rank": 49,
       "title": "Love Shot",
       "artist": "EXO",
-      "aliases": [],
+      "aliases": [
+        "러브샷",
+        "럽샷"
+      ],
       "melonSongId": "31492319"
     },
     {
       "rank": 50,
       "title": "Goodbye",
       "artist": "박효신",
-      "aliases": [],
+      "aliases": [
+        "굿바이"
+      ],
       "melonSongId": "31777113"
     }
   ]

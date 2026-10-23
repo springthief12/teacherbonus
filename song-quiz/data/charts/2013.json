@@ -24,7 +24,9 @@
       "rank": 3,
       "title": "NoNoNo",
       "artist": "Apink (에이핑크)",
-      "aliases": [],
+      "aliases": [
+        "노노노"
+      ],
       "melonSongId": "4163116"
     },
     {
@@ -45,7 +47,9 @@
       "rank": 6,
       "title": "Give It To Me",
       "artist": "씨스타",
-      "aliases": [],
+      "aliases": [
+        "기브잇투미"
+      ],
       "melonSongId": "4138606"
     },
     {
@@ -66,7 +70,10 @@
       "rank": 9,
       "title": "My Love",
       "artist": "이승철",
-      "aliases": [],
+      "aliases": [
+        "마이러브",
+        "마이럽"
+      ],
       "melonSongId": "4142913"
     },
     {
@@ -101,14 +108,20 @@
       "rank": 14,
       "title": "GENTLEMAN",
       "artist": "싸이 (PSY)",
-      "aliases": [],
+      "aliases": [
+        "젠틀맨"
+      ],
       "melonSongId": "4085875"
     },
     {
       "rank": 15,
       "title": "Officially Missing You, Too",
       "artist": "긱스 (Geeks), 소유 (SOYOU)",
-      "aliases": [],
+      "aliases": [
+        "오피셜리미싱유투",
+        "오피셜리미씽유투",
+        "오피셜리미싱유"
+      ],
       "melonSongId": "3946867"
     },
     {
@@ -122,7 +135,9 @@
       "rank": 17,
       "title": "Touch Love",
       "artist": "윤미래",
-      "aliases": [],
+      "aliases": [
+        "터치러브"
+      ],
       "melonSongId": "4221128"
     },
     {
@@ -136,14 +151,23 @@
       "rank": 19,
       "title": "U & I",
       "artist": "에일리(Ailee)",
-      "aliases": [],
+      "aliases": [
+        "유앤아이",
+        "유엔아이",
+        "uandi"
+      ],
       "melonSongId": "4171462"
     },
     {
       "rank": 20,
       "title": "BAAAM (Feat. Muzie Of UV)",
       "artist": "다이나믹 듀오",
-      "aliases": [],
+      "aliases": [
+        "뱀",
+        "밤",
+        "baam",
+        "bam"
+      ],
       "melonSongId": "4160246"
     },
     {
@@ -213,14 +237,19 @@
       "rank": 30,
       "title": "Crescendo (크레셴도)",
       "artist": "AKMU (악뮤)",
-      "aliases": [],
+      "aliases": [
+        "크레센도"
+      ],
       "melonSongId": "4053240"
     },
     {
       "rank": 31,
       "title": "Love Blossom (러브블러썸)",
       "artist": "케이윌",
-      "aliases": [],
+      "aliases": [
+        "러브블러섬",
+        "러브블로썸"
+      ],
       "melonSongId": "4076051"
     },
     {
@@ -248,7 +277,10 @@
       "rank": 35,
       "title": "I Love You",
       "artist": "AKMU (악뮤)",
-      "aliases": [],
+      "aliases": [
+        "아이러브유",
+        "아이럽유"
+      ],
       "melonSongId": "4097003"
     },
     {
@@ -283,7 +315,9 @@
       "rank": 40,
       "title": "Wash Away (Feat. 에일리)",
       "artist": "긱스 (Geeks)",
-      "aliases": [],
+      "aliases": [
+        "워시어웨이"
+      ],
       "melonSongId": "4100521"
     },
     {
@@ -311,14 +345,19 @@
       "rank": 44,
       "title": "Bounce",
       "artist": "조용필",
-      "aliases": [],
+      "aliases": [
+        "바운스"
+      ],
       "melonSongId": "4089360"
     },
     {
       "rank": 45,
       "title": "I Got A Boy",
       "artist": "소녀시대 (GIRLS' GENERATION)",
-      "aliases": [],
+      "aliases": [
+        "아이갓어보이",
+        "아이가러보이"
+      ],
       "melonSongId": "4001331"
     },
     {
@@ -346,7 +385,10 @@
       "rank": 49,
       "title": "All Right",
       "artist": "림킴 (김예림)",
-      "aliases": [],
+      "aliases": [
+        "올라잇",
+        "올라이트"
+      ],
       "melonSongId": "4144408"
     },
     {

@@ -31,21 +31,29 @@
       "rank": 4,
       "title": "Loving U (러빙유)",
       "artist": "씨스타",
-      "aliases": [],
+      "aliases": [
+        "러빙유"
+      ],
       "melonSongId": "3837683"
     },
     {
       "rank": 5,
       "title": "FANTASTIC BABY",
       "artist": "BIGBANG (빅뱅)",
-      "aliases": [],
+      "aliases": [
+        "판타스틱베이비",
+        "환타스틱베이비"
+      ],
       "melonSongId": "3715676"
     },
     {
       "rank": 6,
       "title": "I Love You",
       "artist": "2NE1",
-      "aliases": [],
+      "aliases": [
+        "아이러브유",
+        "아이럽유"
+      ],
       "melonSongId": "3847197"
     },
     {
@@ -59,7 +67,9 @@
       "rank": 8,
       "title": "Heaven",
       "artist": "에일리(Ailee)",
-      "aliases": [],
+      "aliases": [
+        "헤븐"
+      ],
       "melonSongId": "3701333"
     },
     {
@@ -80,14 +90,19 @@
       "rank": 11,
       "title": "Lovey-Dovey",
       "artist": "티아라",
-      "aliases": [],
+      "aliases": [
+        "러비더비",
+        "러비도비"
+      ],
       "melonSongId": "3663978"
     },
     {
       "rank": 12,
       "title": "Twinkle",
       "artist": "소녀시대-태티서 (Girls' Generation-TTS)",
-      "aliases": [],
+      "aliases": [
+        "트윙클"
+      ],
       "melonSongId": "3783041"
     },
     {
@@ -115,21 +130,27 @@
       "rank": 16,
       "title": "MONSTER",
       "artist": "BIGBANG (빅뱅)",
-      "aliases": [],
+      "aliases": [
+        "몬스터"
+      ],
       "melonSongId": "3818487"
     },
     {
       "rank": 17,
       "title": "I Need You",
       "artist": "허각, 지아",
-      "aliases": [],
+      "aliases": [
+        "아이니드유"
+      ],
       "melonSongId": "3884575"
     },
     {
       "rank": 18,
       "title": "BLUE",
       "artist": "BIGBANG (빅뱅)",
-      "aliases": [],
+      "aliases": [
+        "블루"
+      ],
       "melonSongId": "3715672"
     },
     {
@@ -143,7 +164,9 @@
       "rank": 20,
       "title": "Like this",
       "artist": "원더걸스",
-      "aliases": [],
+      "aliases": [
+        "라이크디스"
+      ],
       "melonSongId": "3815739"
     },
     {
@@ -192,7 +215,9 @@
       "rank": 27,
       "title": "DAY BY DAY",
       "artist": "티아라",
-      "aliases": [],
+      "aliases": [
+        "데이바이데이"
+      ],
       "melonSongId": "3840800"
     },
     {
@@ -213,7 +238,9 @@
       "rank": 30,
       "title": "Electric Shock",
       "artist": "f(x)",
-      "aliases": [],
+      "aliases": [
+        "일렉트릭쇼크"
+      ],
       "melonSongId": "3822622"
     },
     {
@@ -227,7 +254,9 @@
       "rank": 32,
       "title": "illa illa (일라 일라)",
       "artist": "JUNIEL",
-      "aliases": [],
+      "aliases": [
+        "일라일라"
+      ],
       "melonSongId": "3820647"
     },
     {
@@ -255,7 +284,9 @@
       "rank": 36,
       "title": "Trouble Maker",
       "artist": "트러블메이커",
-      "aliases": [],
+      "aliases": [
+        "트러블메이커"
+      ],
       "melonSongId": "3630755"
     },
     {
@@ -269,7 +300,11 @@
       "rank": 38,
       "title": "Officially Missing You, Too",
       "artist": "긱스 (Geeks), 소유 (SOYOU)",
-      "aliases": [],
+      "aliases": [
+        "오피셜리미싱유투",
+        "오피셜리미씽유투",
+        "오피셜리미싱유"
+      ],
       "melonSongId": "3946867"
     },
     {
@@ -283,7 +318,9 @@
       "rank": 40,
       "title": "Only One",
       "artist": "보아 (BoA)",
-      "aliases": [],
+      "aliases": [
+        "온리원"
+      ],
       "melonSongId": "3859894"
     },
     {
@@ -304,7 +341,10 @@
       "rank": 43,
       "title": "Missing You (Feat. 김윤아 Of 자우림)",
       "artist": "G-DRAGON",
-      "aliases": [],
+      "aliases": [
+        "미싱유",
+        "미씽유"
+      ],
       "melonSongId": "3906383"
     },
     {
@@ -325,7 +365,9 @@
       "rank": 46,
       "title": "Touch",
       "artist": "미쓰에이",
-      "aliases": [],
+      "aliases": [
+        "터치"
+      ],
       "melonSongId": "3713013"
     },
     {
@@ -339,7 +381,9 @@
       "rank": 48,
       "title": "Volume Up",
       "artist": "4minute",
-      "aliases": [],
+      "aliases": [
+        "볼륨업"
+      ],
       "melonSongId": "3764899"
     },
     {
@@ -353,7 +397,10 @@
       "rank": 50,
       "title": "그XX",
       "artist": "G-DRAGON",
-      "aliases": [],
+      "aliases": [
+        "그xx",
+        "그엑스엑스"
+      ],
       "melonSongId": "3894730"
     }
   ]
