@@ -678,7 +678,8 @@
       "videoChannel": "Music is my life",
       "title": "그날에 나는 맘이 편했을까",
       "artist": "이예준",
-      "updatedAt": 1792717484116
+      "updatedAt": 1792728793068,
+      "disabled": true
     },
     "2021|방탄소년단|lifegoeson": {
       "youtubeId": "r27uNWGTGfk",
