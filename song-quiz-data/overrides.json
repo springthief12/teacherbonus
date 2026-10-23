@@ -2233,6 +2233,12 @@
       "title": "ETA",
       "artist": "NewJeans",
       "updatedAt": 1792756264180
+    },
+    "2023|안녕|해요2022": {
+      "disabled": true,
+      "title": "해요 (2022)",
+      "artist": "#안녕",
+      "updatedAt": 1792756269777
     }
   }
 }
