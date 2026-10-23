@@ -1,0 +1,379 @@
+{
+  "year": 2019,
+  "source": "melon",
+  "verified": true,
+  "note": "멜론 시대별 차트 2019년 연간 TOP 50 (KPOP)",
+  "sourceUrl": "https://www.melon.com/chart/age/index.htm?chartDate=2019&chartGenre=KPOP&chartType=YE",
+  "verifiedAt": "2026-10-23",
+  "songs": [
+    {
+      "rank": 1,
+      "title": "사랑에 연습이 있었다면 (Prod. 2soo)",
+      "artist": "임재현",
+      "aliases": [],
+      "melonSongId": "31324607"
+    },
+    {
+      "rank": 2,
+      "title": "그때가 좋았어",
+      "artist": "케이시 (Kassy)",
+      "aliases": [],
+      "melonSongId": "31524320"
+    },
+    {
+      "rank": 3,
+      "title": "작은 것들을 위한 시 (Boy With Luv) (Feat. Halsey)",
+      "artist": "방탄소년단",
+      "aliases": [
+        "보이위드러브",
+        "보이 위드 럽",
+        "boy with love"
+      ],
+      "melonSongId": "31737197"
+    },
+    {
+      "rank": 4,
+      "title": "넘쳐흘러",
+      "artist": "엠씨더맥스 (M.C the MAX)",
+      "aliases": [],
+      "melonSongId": "31532643"
+    },
+    {
+      "rank": 5,
+      "title": "모든 날, 모든 순간 (Every day, Every Moment)",
+      "artist": "폴킴",
+      "aliases": [
+        "에브리데이에브리모먼트"
+      ],
+      "melonSongId": "30962526"
+    },
+    {
+      "rank": 6,
+      "title": "너를 만나",
+      "artist": "폴킴",
+      "aliases": [],
+      "melonSongId": "31388145"
+    },
+    {
+      "rank": 7,
+      "title": "사계 (Four Seasons)",
+      "artist": "태연 (TAEYEON)",
+      "aliases": [],
+      "melonSongId": "31688205"
+    },
+    {
+      "rank": 8,
+      "title": "주저하는 연인들을 위해",
+      "artist": "잔나비",
+      "aliases": [],
+      "melonSongId": "31666417"
+    },
+    {
+      "rank": 9,
+      "title": "니 소식",
+      "artist": "송하예",
+      "aliases": [],
+      "melonSongId": "31788850"
+    },
+    {
+      "rank": 10,
+      "title": "오늘도 빛나는 너에게 (To You My Light) (Feat.이라온)",
+      "artist": "마크툽 (MAKTUB)",
+      "aliases": [
+        "투유마이라이트"
+      ],
+      "melonSongId": "31853557"
+    },
+    {
+      "rank": 11,
+      "title": "벌써 12시",
+      "artist": "청하",
+      "aliases": [],
+      "melonSongId": "31532438"
+    },
+    {
+      "rank": 12,
+      "title": "술이 문제야",
+      "artist": "장혜진, 윤민수(바이브)",
+      "aliases": [],
+      "melonSongId": "31870517"
+    },
+    {
+      "rank": 13,
+      "title": "옥탑방 (Rooftop)",
+      "artist": "엔플라잉 (N.Flying)",
+      "aliases": [],
+      "melonSongId": "31532656"
+    },
+    {
+      "rank": 14,
+      "title": "달라달라",
+      "artist": "ITZY (있지)",
+      "aliases": [],
+      "melonSongId": "31606729"
+    },
+    {
+      "rank": 15,
+      "title": "노래방에서",
+      "artist": "장범준",
+      "aliases": [],
+      "melonSongId": "31684636"
+    },
+    {
+      "rank": 16,
+      "title": "이 노래가 클럽에서 나온다면",
+      "artist": "우디 (Woody)",
+      "aliases": [],
+      "melonSongId": "31576009"
+    },
+    {
+      "rank": 17,
+      "title": "포장마차",
+      "artist": "황인욱",
+      "aliases": [],
+      "melonSongId": "31873020"
+    },
+    {
+      "rank": 18,
+      "title": "나만, 봄",
+      "artist": "볼빨간사춘기",
+      "aliases": [],
+      "melonSongId": "31709523"
+    },
+    {
+      "rank": 19,
+      "title": "사계 (하루살이)",
+      "artist": "엠씨더맥스 (M.C the MAX)",
+      "aliases": [],
+      "melonSongId": "31532642"
+    },
+    {
+      "rank": 20,
+      "title": "안녕",
+      "artist": "폴킴",
+      "aliases": [],
+      "melonSongId": "31984204"
+    },
+    {
+      "rank": 21,
+      "title": "180도",
+      "artist": "벤",
+      "aliases": [],
+      "melonSongId": "31477685"
+    },
+    {
+      "rank": 22,
+      "title": "너에게 못했던 내 마지막 말은",
+      "artist": "다비치",
+      "aliases": [],
+      "melonSongId": "31804010"
+    },
+    {
+      "rank": 23,
+      "title": "신용재",
+      "artist": "하은 (HAEUN)",
+      "aliases": [],
+      "melonSongId": "31406357"
+    },
+    {
+      "rank": 24,
+      "title": "흔들리는 꽃들 속에서 네 샴푸향이 느껴진거야",
+      "artist": "장범준",
+      "aliases": [
+        "흔들리는 꽃들 속에서",
+        "흔들리는 꽃들 속에서 네 샴푸향이 느껴진 거야"
+      ],
+      "melonSongId": "32003395"
+    },
+    {
+      "rank": 25,
+      "title": "어떻게 이별까지 사랑하겠어, 널 사랑하는 거지",
+      "artist": "AKMU (악뮤)",
+      "aliases": [
+        "어떻게 이별까지 사랑하겠어"
+      ],
+      "melonSongId": "32061975"
+    },
+    {
+      "rank": 26,
+      "title": "솔직하게 말해서 나",
+      "artist": "김나영",
+      "aliases": [],
+      "melonSongId": "31854442"
+    },
+    {
+      "rank": 27,
+      "title": "사월이 지나면 우리 헤어져요 (Beautiful goodbye)",
+      "artist": "첸 (CHEN)",
+      "aliases": [],
+      "melonSongId": "31706215"
+    },
+    {
+      "rank": 28,
+      "title": "FANCY",
+      "artist": "TWICE (트와이스)",
+      "aliases": [],
+      "melonSongId": "31754579"
+    },
+    {
+      "rank": 29,
+      "title": "헤어져줘서 고마워",
+      "artist": "벤",
+      "aliases": [],
+      "melonSongId": "31901475"
+    },
+    {
+      "rank": 30,
+      "title": "사랑이 식었다고 말해도 돼",
+      "artist": "먼데이 키즈",
+      "aliases": [],
+      "melonSongId": "31829536"
+    },
+    {
+      "rank": 31,
+      "title": "시든 꽃에 물을 주듯",
+      "artist": "HYNN (박혜원)",
+      "aliases": [],
+      "melonSongId": "31703498"
+    },
+    {
+      "rank": 32,
+      "title": "초록빛",
+      "artist": "폴킴",
+      "aliases": [],
+      "melonSongId": "31565593"
+    },
+    {
+      "rank": 33,
+      "title": "기억해줘요 내 모든 날과 그때를",
+      "artist": "거미 (GUMMY)",
+      "aliases": [],
+      "melonSongId": "31967064"
+    },
+    {
+      "rank": 34,
+      "title": "그대라는 시",
+      "artist": "태연 (TAEYEON)",
+      "aliases": [],
+      "melonSongId": "31938460"
+    },
+    {
+      "rank": 35,
+      "title": "Way Back Home",
+      "artist": "숀 (SHAUN)",
+      "aliases": [
+        "웨이백홈",
+        "웨이 백 홈"
+      ],
+      "melonSongId": "31151836"
+    },
+    {
+      "rank": 36,
+      "title": "봄날",
+      "artist": "방탄소년단",
+      "aliases": [
+        "spring day",
+        "스프링데이"
+      ],
+      "melonSongId": "30244931"
+    },
+    {
+      "rank": 37,
+      "title": "IDOL",
+      "artist": "방탄소년단",
+      "aliases": [],
+      "melonSongId": "31266290"
+    },
+    {
+      "rank": 38,
+      "title": "멍청이(twit)",
+      "artist": "화사 (HWASA)",
+      "aliases": [],
+      "melonSongId": "31608765"
+    },
+    {
+      "rank": 39,
+      "title": "신청곡 (Feat. SUGA of BTS)",
+      "artist": "이소라",
+      "aliases": [],
+      "melonSongId": "31571110"
+    },
+    {
+      "rank": 40,
+      "title": "띵 (Prod. By 기리보이)",
+      "artist": "Jvcki Wai, 양홍원, Osshun Gum, 한요한",
+      "aliases": [],
+      "melonSongId": "31554317"
+    },
+    {
+      "rank": 41,
+      "title": "너도 그냥 날 놓아주면 돼",
+      "artist": "윤건",
+      "aliases": [],
+      "melonSongId": "31455159"
+    },
+    {
+      "rank": 42,
+      "title": "당신과는 천천히",
+      "artist": "장범준",
+      "aliases": [],
+      "melonSongId": "31684634"
+    },
+    {
+      "rank": 43,
+      "title": "Kill This Love",
+      "artist": "BLACKPINK",
+      "aliases": [],
+      "melonSongId": "31717822"
+    },
+    {
+      "rank": 44,
+      "title": "이별하러 가는 길",
+      "artist": "임한별",
+      "aliases": [],
+      "melonSongId": "31304766"
+    },
+    {
+      "rank": 45,
+      "title": "SOLO",
+      "artist": "제니 (JENNIE)",
+      "aliases": [],
+      "melonSongId": "31417871"
+    },
+    {
+      "rank": 46,
+      "title": "비",
+      "artist": "폴킴",
+      "aliases": [],
+      "melonSongId": "8235260"
+    },
+    {
+      "rank": 47,
+      "title": "내 생에 아름다운",
+      "artist": "케이윌",
+      "aliases": [],
+      "melonSongId": "31373277"
+    },
+    {
+      "rank": 48,
+      "title": "YES or YES",
+      "artist": "TWICE (트와이스)",
+      "aliases": [],
+      "melonSongId": "31403163"
+    },
+    {
+      "rank": 49,
+      "title": "Love Shot",
+      "artist": "EXO",
+      "aliases": [],
+      "melonSongId": "31492319"
+    },
+    {
+      "rank": 50,
+      "title": "Goodbye",
+      "artist": "박효신",
+      "aliases": [],
+      "melonSongId": "31777113"
+    }
+  ]
+}

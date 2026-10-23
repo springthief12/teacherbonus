@@ -1,0 +1,394 @@
+{
+  "year": 2024,
+  "source": "melon",
+  "verified": true,
+  "note": "멜론 시대별 차트 2024년 연간 TOP 50 (KPOP)",
+  "sourceUrl": "https://www.melon.com/chart/age/index.htm?chartDate=2024&chartGenre=KPOP&chartType=YE",
+  "verifiedAt": "2026-10-23",
+  "songs": [
+    {
+      "rank": 1,
+      "title": "첫 만남은 계획대로 되지 않아",
+      "artist": "TWS (투어스)",
+      "aliases": [],
+      "melonSongId": "37140709"
+    },
+    {
+      "rank": 2,
+      "title": "나는 아픈 건 딱 질색이니까",
+      "artist": "i-dle (아이들)",
+      "aliases": [],
+      "melonSongId": "37138469"
+    },
+    {
+      "rank": 3,
+      "title": "Supernova",
+      "artist": "aespa",
+      "aliases": [
+        "슈퍼노바"
+      ],
+      "melonSongId": "37524037"
+    },
+    {
+      "rank": 4,
+      "title": "Love wins all",
+      "artist": "아이유",
+      "aliases": [
+        "러브윈즈올",
+        "러브 윈즈 올"
+      ],
+      "melonSongId": "37145732"
+    },
+    {
+      "rank": 5,
+      "title": "한 페이지가 될 수 있게",
+      "artist": "DAY6 (데이식스)",
+      "aliases": [],
+      "melonSongId": "31927275"
+    },
+    {
+      "rank": 6,
+      "title": "비의 랩소디",
+      "artist": "임재현",
+      "aliases": [],
+      "melonSongId": "37023625"
+    },
+    {
+      "rank": 7,
+      "title": "예뻤어",
+      "artist": "DAY6 (데이식스)",
+      "aliases": [],
+      "melonSongId": "30232719"
+    },
+    {
+      "rank": 8,
+      "title": "Magnetic",
+      "artist": "아일릿(ILLIT)",
+      "aliases": [
+        "마그네틱"
+      ],
+      "melonSongId": "37347911"
+    },
+    {
+      "rank": 9,
+      "title": "천상연",
+      "artist": "이창섭",
+      "aliases": [],
+      "melonSongId": "37228861"
+    },
+    {
+      "rank": 10,
+      "title": "고민중독",
+      "artist": "QWER",
+      "aliases": [],
+      "melonSongId": "37373234"
+    },
+    {
+      "rank": 11,
+      "title": "To. X",
+      "artist": "태연 (TAEYEON)",
+      "aliases": [],
+      "melonSongId": "37003911"
+    },
+    {
+      "rank": 12,
+      "title": "에피소드",
+      "artist": "이무진",
+      "aliases": [
+        "episode"
+      ],
+      "melonSongId": "37053556"
+    },
+    {
+      "rank": 13,
+      "title": "그대만 있다면 (여름날 우리 X 너드커넥션 (Nerd Connection))",
+      "artist": "너드커넥션 (Nerd Connection)",
+      "aliases": [],
+      "melonSongId": "36699489"
+    },
+    {
+      "rank": 14,
+      "title": "소나기",
+      "artist": "이클립스 (ECLIPSE)",
+      "aliases": [],
+      "melonSongId": "37390939"
+    },
+    {
+      "rank": 15,
+      "title": "How Sweet",
+      "artist": "NewJeans",
+      "aliases": [
+        "하우스윗",
+        "하우스위트",
+        "하우 스윗"
+      ],
+      "melonSongId": "37563682"
+    },
+    {
+      "rank": 16,
+      "title": "밤양갱",
+      "artist": "비비 (BIBI)",
+      "aliases": [],
+      "melonSongId": "37194943"
+    },
+    {
+      "rank": 17,
+      "title": "Welcome to the Show",
+      "artist": "DAY6 (데이식스)",
+      "aliases": [
+        "웰컴투더쇼",
+        "웰컴 투 더 쇼"
+      ],
+      "melonSongId": "37323943"
+    },
+    {
+      "rank": 18,
+      "title": "헤어지자 말해요",
+      "artist": "박재정",
+      "aliases": [],
+      "melonSongId": "36382580"
+    },
+    {
+      "rank": 19,
+      "title": "SPOT! (feat. JENNIE)",
+      "artist": "지코 (ZICO)",
+      "aliases": [],
+      "melonSongId": "37460832"
+    },
+    {
+      "rank": 20,
+      "title": "Drama",
+      "artist": "aespa",
+      "aliases": [],
+      "melonSongId": "36956630"
+    },
+    {
+      "rank": 21,
+      "title": "I AM",
+      "artist": "IVE (아이브)",
+      "aliases": [
+        "아이엠",
+        "아이 엠"
+      ],
+      "melonSongId": "36356993"
+    },
+    {
+      "rank": 22,
+      "title": "인사",
+      "artist": "범진",
+      "aliases": [],
+      "melonSongId": "34451383"
+    },
+    {
+      "rank": 23,
+      "title": "Hype Boy",
+      "artist": "NewJeans",
+      "aliases": [
+        "하입보이",
+        "하이프보이",
+        "하입 보이"
+      ],
+      "melonSongId": "35454426"
+    },
+    {
+      "rank": 24,
+      "title": "Perfect Night",
+      "artist": "LE SSERAFIM (르세라핌)",
+      "aliases": [],
+      "melonSongId": "36910957"
+    },
+    {
+      "rank": 25,
+      "title": "Love 119",
+      "artist": "RIIZE",
+      "aliases": [],
+      "melonSongId": "37098744"
+    },
+    {
+      "rank": 26,
+      "title": "해야 (HEYA)",
+      "artist": "IVE (아이브)",
+      "aliases": [],
+      "melonSongId": "37463572"
+    },
+    {
+      "rank": 27,
+      "title": "너의 모든 순간",
+      "artist": "성시경",
+      "aliases": [],
+      "melonSongId": "4446485"
+    },
+    {
+      "rank": 28,
+      "title": "Seven (feat. Latto) - Clean Ver.",
+      "artist": "정국",
+      "aliases": [],
+      "melonSongId": "36617841"
+    },
+    {
+      "rank": 29,
+      "title": "어떻게 이별까지 사랑하겠어, 널 사랑하는 거지",
+      "artist": "AKMU (악뮤)",
+      "aliases": [
+        "어떻게 이별까지 사랑하겠어"
+      ],
+      "melonSongId": "32061975"
+    },
+    {
+      "rank": 30,
+      "title": "미안해 미워해 사랑해",
+      "artist": "Crush",
+      "aliases": [],
+      "melonSongId": "37344905"
+    },
+    {
+      "rank": 31,
+      "title": "사랑은 늘 도망가",
+      "artist": "임영웅",
+      "aliases": [],
+      "melonSongId": "34061322"
+    },
+    {
+      "rank": 32,
+      "title": "Small girl (feat. 도경수(D.O.))",
+      "artist": "이영지",
+      "aliases": [],
+      "melonSongId": "37657039"
+    },
+    {
+      "rank": 33,
+      "title": "Ditto",
+      "artist": "NewJeans",
+      "aliases": [],
+      "melonSongId": "35945927"
+    },
+    {
+      "rank": 34,
+      "title": "사랑인가 봐",
+      "artist": "멜로망스",
+      "aliases": [],
+      "melonSongId": "34657844"
+    },
+    {
+      "rank": 35,
+      "title": "Bubble Gum",
+      "artist": "NewJeans",
+      "aliases": [],
+      "melonSongId": "37464459"
+    },
+    {
+      "rank": 36,
+      "title": "ETA",
+      "artist": "NewJeans",
+      "aliases": [],
+      "melonSongId": "36635522"
+    },
+    {
+      "rank": 37,
+      "title": "Super Shy",
+      "artist": "NewJeans",
+      "aliases": [],
+      "melonSongId": "36599950"
+    },
+    {
+      "rank": 38,
+      "title": "HAPPY",
+      "artist": "DAY6 (데이식스)",
+      "aliases": [
+        "해피"
+      ],
+      "melonSongId": "37323944"
+    },
+    {
+      "rank": 39,
+      "title": "사막에서 꽃을 피우듯",
+      "artist": "우디 (Woody)",
+      "aliases": [],
+      "melonSongId": "36616378"
+    },
+    {
+      "rank": 40,
+      "title": "주저하는 연인들을 위해",
+      "artist": "잔나비",
+      "aliases": [],
+      "melonSongId": "31666417"
+    },
+    {
+      "rank": 41,
+      "title": "Armageddon",
+      "artist": "aespa",
+      "aliases": [],
+      "melonSongId": "37524038"
+    },
+    {
+      "rank": 42,
+      "title": "Love Lee",
+      "artist": "AKMU (악뮤)",
+      "aliases": [],
+      "melonSongId": "36713849"
+    },
+    {
+      "rank": 43,
+      "title": "EASY",
+      "artist": "LE SSERAFIM (르세라핌)",
+      "aliases": [],
+      "melonSongId": "37225604"
+    },
+    {
+      "rank": 44,
+      "title": "사건의 지평선",
+      "artist": "윤하 (YOUNHA)",
+      "aliases": [
+        "event horizon",
+        "이벤트호라이즌"
+      ],
+      "melonSongId": "34819473"
+    },
+    {
+      "rank": 45,
+      "title": "Get A Guitar",
+      "artist": "RIIZE",
+      "aliases": [],
+      "melonSongId": "36717264"
+    },
+    {
+      "rank": 46,
+      "title": "APT.",
+      "artist": "로제 (ROSÉ), Bruno Mars",
+      "aliases": [
+        "아파트"
+      ],
+      "melonSongId": "38120327"
+    },
+    {
+      "rank": 47,
+      "title": "슬픈 초대장",
+      "artist": "순순희(지환)",
+      "aliases": [],
+      "melonSongId": "37069064"
+    },
+    {
+      "rank": 48,
+      "title": "모든 날, 모든 순간 (Every day, Every Moment)",
+      "artist": "폴킴",
+      "aliases": [
+        "에브리데이에브리모먼트"
+      ],
+      "melonSongId": "30962526"
+    },
+    {
+      "rank": 49,
+      "title": "취중고백",
+      "artist": "김민석 (멜로망스)",
+      "aliases": [],
+      "melonSongId": "34431086"
+    },
+    {
+      "rank": 50,
+      "title": "다정히 내 이름을 부르면",
+      "artist": "경서예지, 전건호",
+      "aliases": [],
+      "melonSongId": "33496587"
+    }
+  ]
+}

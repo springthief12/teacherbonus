@@ -1,0 +1,360 @@
+{
+  "year": 2015,
+  "source": "melon",
+  "verified": true,
+  "note": "멜론 시대별 차트 2015년 연간 TOP 50 (KPOP)",
+  "sourceUrl": "https://www.melon.com/chart/age/index.htm?chartDate=2015&chartGenre=KPOP&chartType=YE",
+  "verifiedAt": "2026-10-23",
+  "songs": [
+    {
+      "rank": 1,
+      "title": "뱅뱅뱅 (BANG BANG BANG)",
+      "artist": "BIGBANG (빅뱅)",
+      "aliases": [],
+      "melonSongId": "5719286"
+    },
+    {
+      "rank": 2,
+      "title": "같은 시간 속의 너",
+      "artist": "나얼",
+      "aliases": [],
+      "melonSongId": "5576417"
+    },
+    {
+      "rank": 3,
+      "title": "꺼내 먹어요",
+      "artist": "Zion.T",
+      "aliases": [],
+      "melonSongId": "5702706"
+    },
+    {
+      "rank": 4,
+      "title": "이럴거면 그러지말지 (Feat. Young K)",
+      "artist": "백아연",
+      "aliases": [],
+      "melonSongId": "5704397"
+    },
+    {
+      "rank": 5,
+      "title": "위잉위잉",
+      "artist": "혁오 (HYUKOH)",
+      "aliases": [],
+      "melonSongId": "5385974"
+    },
+    {
+      "rank": 6,
+      "title": "LOSER",
+      "artist": "BIGBANG (빅뱅)",
+      "aliases": [],
+      "melonSongId": "5682700"
+    },
+    {
+      "rank": 7,
+      "title": "BAE BAE",
+      "artist": "BIGBANG (빅뱅)",
+      "aliases": [],
+      "melonSongId": "5684826"
+    },
+    {
+      "rank": 8,
+      "title": "그냥 (Just)",
+      "artist": "Zion.T, Crush",
+      "aliases": [],
+      "melonSongId": "5572312"
+    },
+    {
+      "rank": 9,
+      "title": "양화대교",
+      "artist": "Zion.T",
+      "aliases": [],
+      "melonSongId": "5389475"
+    },
+    {
+      "rank": 10,
+      "title": "우연히 봄",
+      "artist": "로꼬, 유주 (YUJU)",
+      "aliases": [],
+      "melonSongId": "5650996"
+    },
+    {
+      "rank": 11,
+      "title": "또 다시 사랑",
+      "artist": "임창정",
+      "aliases": [],
+      "melonSongId": "7861392"
+    },
+    {
+      "rank": 12,
+      "title": "레옹",
+      "artist": "이유 갓지(GOD G) 않은 이유 (박명수, 아이유)",
+      "aliases": [],
+      "melonSongId": "5826461"
+    },
+    {
+      "rank": 13,
+      "title": "SHAKE IT",
+      "artist": "씨스타",
+      "aliases": [],
+      "melonSongId": "5748499"
+    },
+    {
+      "rank": 14,
+      "title": "와리가리",
+      "artist": "혁오 (HYUKOH)",
+      "aliases": [],
+      "melonSongId": "5713422"
+    },
+    {
+      "rank": 15,
+      "title": "위아래",
+      "artist": "EXID",
+      "aliases": [],
+      "melonSongId": "4840271"
+    },
+    {
+      "rank": 16,
+      "title": "심쿵해 (Heart Attack)",
+      "artist": "AOA",
+      "aliases": [],
+      "melonSongId": "5748406"
+    },
+    {
+      "rank": 17,
+      "title": "겁 (Feat. 태양)",
+      "artist": "MINO (송민호)",
+      "aliases": [],
+      "melonSongId": "5826447"
+    },
+    {
+      "rank": 18,
+      "title": "Puss (Prod.by 라이머)",
+      "artist": "지민, 아이언",
+      "aliases": [],
+      "melonSongId": "5634219"
+    },
+    {
+      "rank": 19,
+      "title": "다른 남자 말고 너",
+      "artist": "미쓰에이",
+      "aliases": [],
+      "melonSongId": "5644636"
+    },
+    {
+      "rank": 20,
+      "title": "두사랑 (Feat. 매드클라운)",
+      "artist": "다비치",
+      "aliases": [],
+      "melonSongId": "5628083"
+    },
+    {
+      "rank": 21,
+      "title": "마음",
+      "artist": "아이유",
+      "aliases": [],
+      "melonSongId": "5700639"
+    },
+    {
+      "rank": 22,
+      "title": "CALL ME BABY",
+      "artist": "EXO",
+      "aliases": [],
+      "melonSongId": "5644620"
+    },
+    {
+      "rank": 23,
+      "title": "Me You (Feat. 백예린 Of 15&)",
+      "artist": "San E (산이)",
+      "aliases": [],
+      "melonSongId": "5674119"
+    },
+    {
+      "rank": 24,
+      "title": "그 남잔 말야",
+      "artist": "엠씨더맥스 (M.C the MAX)",
+      "aliases": [],
+      "melonSongId": "5668985"
+    },
+    {
+      "rank": 25,
+      "title": "목소리",
+      "artist": "노을",
+      "aliases": [],
+      "melonSongId": "5536206"
+    },
+    {
+      "rank": 26,
+      "title": "음오아예 (Um Oh Ah Yeh)",
+      "artist": "마마무 (Mamamoo)",
+      "aliases": [],
+      "melonSongId": "5743804"
+    },
+    {
+      "rank": 27,
+      "title": "사월의 눈",
+      "artist": "허각",
+      "aliases": [],
+      "melonSongId": "5629186"
+    },
+    {
+      "rank": 28,
+      "title": "어머님이 누구니 (Feat. 제시)",
+      "artist": "박진영",
+      "aliases": [],
+      "melonSongId": "5658708"
+    },
+    {
+      "rank": 29,
+      "title": "취향저격",
+      "artist": "iKON",
+      "aliases": [],
+      "melonSongId": "7854179"
+    },
+    {
+      "rank": 30,
+      "title": "야생화",
+      "artist": "박효신",
+      "aliases": [],
+      "melonSongId": "4543502"
+    },
+    {
+      "rank": 31,
+      "title": "Ah Yeah",
+      "artist": "EXID",
+      "aliases": [],
+      "melonSongId": "5660040"
+    },
+    {
+      "rank": 32,
+      "title": "오늘부터 우리는 (Me Gustas Tu)",
+      "artist": "여자친구 (GFRIEND)",
+      "aliases": [],
+      "melonSongId": "5791706"
+    },
+    {
+      "rank": 33,
+      "title": "화 (Feat. 진실 Of Mad Soul Child) (Fire)",
+      "artist": "매드클라운",
+      "aliases": [],
+      "melonSongId": "5531227"
+    },
+    {
+      "rank": 34,
+      "title": "I (Feat. 버벌진트)",
+      "artist": "태연 (TAEYEON)",
+      "aliases": [],
+      "melonSongId": "7877917"
+    },
+    {
+      "rank": 35,
+      "title": "IF YOU",
+      "artist": "BIGBANG (빅뱅)",
+      "aliases": [],
+      "melonSongId": "5760115"
+    },
+    {
+      "rank": 36,
+      "title": "바람이나 좀 쐐 (Feat. 우혜미)",
+      "artist": "개리",
+      "aliases": [],
+      "melonSongId": "7858908"
+    },
+    {
+      "rank": 37,
+      "title": "맙소사",
+      "artist": "황태지 (황광희, 태양, 지드래곤)",
+      "aliases": [],
+      "melonSongId": "5824839"
+    },
+    {
+      "rank": 38,
+      "title": "거북선 (Feat. 팔로알토)",
+      "artist": "Ja Mezz, Andup (앤덥), MINO (송민호)",
+      "aliases": [],
+      "melonSongId": "5804040"
+    },
+    {
+      "rank": 39,
+      "title": "금요일에 만나요 (Feat. 장이정 Of HISTORY)",
+      "artist": "아이유",
+      "aliases": [],
+      "melonSongId": "4369827"
+    },
+    {
+      "rank": 40,
+      "title": "우리 사랑하지 말아요",
+      "artist": "BIGBANG (빅뱅)",
+      "aliases": [],
+      "melonSongId": "5807274"
+    },
+    {
+      "rank": 41,
+      "title": "오빠차",
+      "artist": "인크레더블, TABLO, 지누션",
+      "aliases": [],
+      "melonSongId": "5818522"
+    },
+    {
+      "rank": 42,
+      "title": "Oasis (Feat. ZICO)",
+      "artist": "Crush",
+      "aliases": [],
+      "melonSongId": "5771304"
+    },
+    {
+      "rank": 43,
+      "title": "또 운다 또",
+      "artist": "다비치",
+      "aliases": [],
+      "melonSongId": "5555751"
+    },
+    {
+      "rank": 44,
+      "title": "LOVE ME RIGHT",
+      "artist": "EXO",
+      "aliases": [],
+      "melonSongId": "5721440"
+    },
+    {
+      "rank": 45,
+      "title": "어깨",
+      "artist": "소유 (SOYOU), 권정열",
+      "aliases": [],
+      "melonSongId": "7858989"
+    },
+    {
+      "rank": 46,
+      "title": "LUV",
+      "artist": "Apink (에이핑크)",
+      "aliases": [],
+      "melonSongId": "5473905"
+    },
+    {
+      "rank": 47,
+      "title": "바라보기",
+      "artist": "엠씨더맥스 (M.C the MAX)",
+      "aliases": [],
+      "melonSongId": "5482064"
+    },
+    {
+      "rank": 48,
+      "title": "사랑 범벅 (Feat. 챈슬러 of the channels)",
+      "artist": "MC몽",
+      "aliases": [],
+      "melonSongId": "5610343"
+    },
+    {
+      "rank": 49,
+      "title": "광화문에서 (At Gwanghwamun)",
+      "artist": "규현 (KYUHYUN)",
+      "aliases": [],
+      "melonSongId": "5458267"
+    },
+    {
+      "rank": 50,
+      "title": "My Type (Prod. By 버벌진트)",
+      "artist": "제시 (Jessi), 치타 (CHEETAH), 강남",
+      "aliases": [],
+      "melonSongId": "5592623"
+    }
+  ]
+}

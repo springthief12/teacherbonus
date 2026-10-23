@@ -4,55 +4,438 @@
   "verified": true,
   "note": "멜론 시대별 차트 2017년 연간 TOP 50 (KPOP)",
   "songs": [
-    { "rank": 1, "title": "첫눈처럼 너에게 가겠다", "artist": "에일리(Ailee)", "aliases": ["첫눈처럼"] },
-    { "rank": 2, "title": "밤편지", "artist": "아이유", "aliases": ["through the night"] },
-    { "rank": 3, "title": "좋니", "artist": "윤종신", "aliases": [] },
-    { "rank": 4, "title": "좋다고 말해", "artist": "볼빨간사춘기", "aliases": [] },
-    { "rank": 5, "title": "Marry Me", "artist": "마크툽 (MAKTUB), 구윤회", "aliases": ["메리미", "매리미", "메리 미"] },
-    { "rank": 6, "title": "비도 오고 그래서 (Feat. 신용재)", "artist": "헤이즈 (Heize)", "aliases": [] },
-    { "rank": 7, "title": "팔레트 (Feat. G-DRAGON)", "artist": "아이유", "aliases": ["palette"] },
-    { "rank": 8, "title": "Beautiful", "artist": "Crush", "aliases": ["뷰티풀"] },
-    { "rank": 9, "title": "오늘 취하면 (Feat. 창모) (Prod. SUGA)", "artist": "SURAN (수란)", "aliases": [] },
-    { "rank": 10, "title": "KNOCK KNOCK", "artist": "TWICE (트와이스)", "aliases": ["낙낙", "넉넉", "노크노크"] },
-    { "rank": 11, "title": "REALLY REALLY", "artist": "WINNER", "aliases": ["릴리릴리", "리얼리리얼리", "릴리 릴리"] },
-    { "rank": 12, "title": "봄날", "artist": "방탄소년단", "aliases": ["spring day", "스프링데이"] },
-    { "rank": 13, "title": "오랜 날 오랜 밤", "artist": "AKMU (악뮤)", "aliases": [] },
-    { "rank": 14, "title": "우주를 줄게", "artist": "볼빨간사춘기", "aliases": [] },
-    { "rank": 15, "title": "나만 안되는 연애", "artist": "볼빨간사춘기", "aliases": ["나만 안 되는 연애"] },
-    { "rank": 16, "title": "남이 될 수 있을까", "artist": "볼빨간사춘기, 스무살", "aliases": [] },
-    { "rank": 17, "title": "사랑이 잘 (With 오혁)", "artist": "아이유", "aliases": [] },
-    { "rank": 18, "title": "선물", "artist": "멜로망스", "aliases": [] },
-    { "rank": 19, "title": "마지막처럼", "artist": "BLACKPINK", "aliases": ["as if it's your last"] },
-    { "rank": 20, "title": "매일 듣는 노래 (A Daily Song)", "artist": "황치열", "aliases": [] },
-    { "rank": 21, "title": "에라 모르겠다", "artist": "BIGBANG (빅뱅)", "aliases": [] },
-    { "rank": 22, "title": "널 너무 모르고", "artist": "헤이즈 (Heize)", "aliases": [] },
-    { "rank": 23, "title": "불장난", "artist": "BLACKPINK", "aliases": ["playing with fire"] },
-    { "rank": 24, "title": "빨간 맛 (Red Flavor)", "artist": "Red Velvet (레드벨벳)", "aliases": ["레드플레이버", "레드 플레이버"] },
-    { "rank": 25, "title": "Stay With Me", "artist": "찬열 (CHANYEOL), 펀치 (Punch)", "aliases": ["스테이위드미", "스테이 위드 미"] },
-    { "rank": 26, "title": "New Face", "artist": "싸이 (PSY)", "aliases": ["뉴페이스", "뉴 페이스"] },
-    { "rank": 27, "title": "TT", "artist": "TWICE (트와이스)", "aliases": ["티티"] },
-    { "rank": 28, "title": "처음부터 너와 나", "artist": "볼빨간사춘기", "aliases": [] },
-    { "rank": 29, "title": "시차 (We Are) (Feat. 로꼬 & GRAY)", "artist": "우원재", "aliases": ["위아", "위 아"] },
-    { "rank": 30, "title": "Rookie", "artist": "Red Velvet (레드벨벳)", "aliases": ["루키"] },
-    { "rank": 31, "title": "오빠야", "artist": "신현희와김루트", "aliases": [] },
-    { "rank": 32, "title": "SIGNAL", "artist": "TWICE (트와이스)", "aliases": ["시그널"] },
-    { "rank": 33, "title": "Decalcomanie (데칼코마니)", "artist": "마마무 (Mamamoo)", "aliases": [] },
-    { "rank": 34, "title": "그대라는 사치", "artist": "한동근", "aliases": [] },
-    { "rank": 35, "title": "무제(無題) (Untitled, 2014)", "artist": "G-DRAGON", "aliases": ["untitled", "언타이틀드", "언타이틀"] },
-    { "rank": 36, "title": "부담이 돼 (Feat. 휘인 Of 마마무)", "artist": "정키", "aliases": [] },
-    { "rank": 37, "title": "BLUE MOON (Prod. GroovyRoom)", "artist": "효린, 창모 (CHANGMO)", "aliases": ["블루문", "블루 문"] },
-    { "rank": 38, "title": "가시나", "artist": "선미", "aliases": ["gashina"] },
-    { "rank": 39, "title": "All I Wanna Do (K) (Feat. Hoody, Loco)", "artist": "박재범", "aliases": ["올아이워너두", "올 아이 워너 두"] },
-    { "rank": 40, "title": "어디에도", "artist": "엠씨더맥스 (M.C the MAX)", "aliases": [] },
-    { "rank": 41, "title": "돌아오지마 (Feat. 용준형 Of 비스트)", "artist": "헤이즈 (Heize)", "aliases": ["돌아오지 마"] },
-    { "rank": 42, "title": "I LUV IT", "artist": "싸이 (PSY)", "aliases": ["i love it", "아이러브잇", "아이럽잇", "아이 러브 잇"] },
-    { "rank": 43, "title": "심술", "artist": "볼빨간사춘기", "aliases": [] },
-    { "rank": 44, "title": "피 땀 눈물", "artist": "방탄소년단", "aliases": ["blood sweat & tears", "블러드스웻앤티어스"] },
-    { "rank": 45, "title": "D (half moon) (Feat. 개코)", "artist": "DEAN", "aliases": ["d", "디", "d half moon", "디하프문", "디 하프 문", "하프문"] },
-    { "rank": 46, "title": "썸 탈꺼야", "artist": "볼빨간사춘기", "aliases": ["썸 탈 거야"] },
-    { "rank": 47, "title": "얼굴 찌푸리지 말아요", "artist": "하이라이트 (HIGHLIGHT)", "aliases": [] },
-    { "rank": 48, "title": "너였다면", "artist": "정승환", "aliases": [] },
-    { "rank": 49, "title": "I Miss You", "artist": "소유 (SOYOU)", "aliases": ["아이미스유", "아이 미스 유"] },
-    { "rank": 50, "title": "이 소설의 끝을 다시 써보려 해", "artist": "한동근", "aliases": [] }
-  ]
+    {
+      "rank": 1,
+      "title": "첫눈처럼 너에게 가겠다",
+      "artist": "에일리(Ailee)",
+      "aliases": [
+        "첫눈처럼"
+      ],
+      "melonSongId": "30190630"
+    },
+    {
+      "rank": 2,
+      "title": "밤편지",
+      "artist": "아이유",
+      "aliases": [
+        "through the night"
+      ],
+      "melonSongId": "30314784"
+    },
+    {
+      "rank": 3,
+      "title": "좋니",
+      "artist": "윤종신",
+      "aliases": [],
+      "melonSongId": "30486509"
+    },
+    {
+      "rank": 4,
+      "title": "좋다고 말해",
+      "artist": "볼빨간사춘기",
+      "aliases": [],
+      "melonSongId": "30163110"
+    },
+    {
+      "rank": 5,
+      "title": "Marry Me",
+      "artist": "마크툽 (MAKTUB), 구윤회",
+      "aliases": [
+        "메리미",
+        "매리미",
+        "메리 미"
+      ],
+      "melonSongId": "4786735"
+    },
+    {
+      "rank": 6,
+      "title": "비도 오고 그래서 (Feat. 신용재)",
+      "artist": "헤이즈 (Heize)",
+      "aliases": [],
+      "melonSongId": "30492279"
+    },
+    {
+      "rank": 7,
+      "title": "팔레트 (Feat. G-DRAGON)",
+      "artist": "아이유",
+      "aliases": [
+        "palette"
+      ],
+      "melonSongId": "30378156"
+    },
+    {
+      "rank": 8,
+      "title": "Beautiful",
+      "artist": "Crush",
+      "aliases": [
+        "뷰티풀"
+      ],
+      "melonSongId": "30157753"
+    },
+    {
+      "rank": 9,
+      "title": "오늘 취하면 (Feat. 창모) (Prod. SUGA)",
+      "artist": "SURAN (수란)",
+      "aliases": [],
+      "melonSongId": "30390068"
+    },
+    {
+      "rank": 10,
+      "title": "KNOCK KNOCK",
+      "artist": "TWICE (트와이스)",
+      "aliases": [
+        "낙낙",
+        "넉넉",
+        "노크노크"
+      ],
+      "melonSongId": "30261007"
+    },
+    {
+      "rank": 11,
+      "title": "REALLY REALLY",
+      "artist": "WINNER",
+      "aliases": [
+        "릴리릴리",
+        "리얼리리얼리",
+        "릴리 릴리"
+      ],
+      "melonSongId": "30341745"
+    },
+    {
+      "rank": 12,
+      "title": "봄날",
+      "artist": "방탄소년단",
+      "aliases": [
+        "spring day",
+        "스프링데이"
+      ],
+      "melonSongId": "30244931"
+    },
+    {
+      "rank": 13,
+      "title": "오랜 날 오랜 밤",
+      "artist": "AKMU (악뮤)",
+      "aliases": [],
+      "melonSongId": "30181278"
+    },
+    {
+      "rank": 14,
+      "title": "우주를 줄게",
+      "artist": "볼빨간사춘기",
+      "aliases": [],
+      "melonSongId": "9620469"
+    },
+    {
+      "rank": 15,
+      "title": "나만 안되는 연애",
+      "artist": "볼빨간사춘기",
+      "aliases": [
+        "나만 안 되는 연애"
+      ],
+      "melonSongId": "9620473"
+    },
+    {
+      "rank": 16,
+      "title": "남이 될 수 있을까",
+      "artist": "볼빨간사춘기, 스무살",
+      "aliases": [],
+      "melonSongId": "30468654"
+    },
+    {
+      "rank": 17,
+      "title": "사랑이 잘 (With 오혁)",
+      "artist": "아이유",
+      "aliases": [],
+      "melonSongId": "30349593"
+    },
+    {
+      "rank": 18,
+      "title": "선물",
+      "artist": "멜로망스",
+      "aliases": [],
+      "melonSongId": "30514366"
+    },
+    {
+      "rank": 19,
+      "title": "마지막처럼",
+      "artist": "BLACKPINK",
+      "aliases": [
+        "as if it's your last"
+      ],
+      "melonSongId": "30481578"
+    },
+    {
+      "rank": 20,
+      "title": "매일 듣는 노래 (A Daily Song)",
+      "artist": "황치열",
+      "aliases": [],
+      "melonSongId": "30467550"
+    },
+    {
+      "rank": 21,
+      "title": "에라 모르겠다",
+      "artist": "BIGBANG (빅뱅)",
+      "aliases": [],
+      "melonSongId": "30147445"
+    },
+    {
+      "rank": 22,
+      "title": "널 너무 모르고",
+      "artist": "헤이즈 (Heize)",
+      "aliases": [],
+      "melonSongId": "30492276"
+    },
+    {
+      "rank": 23,
+      "title": "불장난",
+      "artist": "BLACKPINK",
+      "aliases": [
+        "playing with fire"
+      ],
+      "melonSongId": "30069773"
+    },
+    {
+      "rank": 24,
+      "title": "빨간 맛 (Red Flavor)",
+      "artist": "Red Velvet (레드벨벳)",
+      "aliases": [
+        "레드플레이버",
+        "레드 플레이버"
+      ],
+      "melonSongId": "30512671"
+    },
+    {
+      "rank": 25,
+      "title": "Stay With Me",
+      "artist": "찬열 (CHANYEOL), 펀치 (Punch)",
+      "aliases": [
+        "스테이위드미",
+        "스테이 위드 미"
+      ],
+      "melonSongId": "30132687"
+    },
+    {
+      "rank": 26,
+      "title": "New Face",
+      "artist": "싸이 (PSY)",
+      "aliases": [
+        "뉴페이스",
+        "뉴 페이스"
+      ],
+      "melonSongId": "30403590"
+    },
+    {
+      "rank": 27,
+      "title": "TT",
+      "artist": "TWICE (트와이스)",
+      "aliases": [
+        "티티"
+      ],
+      "melonSongId": "30054344"
+    },
+    {
+      "rank": 28,
+      "title": "처음부터 너와 나",
+      "artist": "볼빨간사춘기",
+      "aliases": [],
+      "melonSongId": "30414090"
+    },
+    {
+      "rank": 29,
+      "title": "시차 (We Are) (Feat. 로꼬 & GRAY)",
+      "artist": "우원재",
+      "aliases": [
+        "위아",
+        "위 아"
+      ],
+      "melonSongId": "30613202"
+    },
+    {
+      "rank": 30,
+      "title": "Rookie",
+      "artist": "Red Velvet (레드벨벳)",
+      "aliases": [
+        "루키"
+      ],
+      "melonSongId": "30227054"
+    },
+    {
+      "rank": 31,
+      "title": "오빠야",
+      "artist": "신현희와김루트",
+      "aliases": [],
+      "melonSongId": "5605860"
+    },
+    {
+      "rank": 32,
+      "title": "SIGNAL",
+      "artist": "TWICE (트와이스)",
+      "aliases": [
+        "시그널"
+      ],
+      "melonSongId": "30413326"
+    },
+    {
+      "rank": 33,
+      "title": "Decalcomanie (데칼코마니)",
+      "artist": "마마무 (Mamamoo)",
+      "aliases": [],
+      "melonSongId": "30079086"
+    },
+    {
+      "rank": 34,
+      "title": "그대라는 사치",
+      "artist": "한동근",
+      "aliases": [],
+      "melonSongId": "9614761"
+    },
+    {
+      "rank": 35,
+      "title": "무제(無題) (Untitled, 2014)",
+      "artist": "G-DRAGON",
+      "aliases": [
+        "untitled",
+        "언타이틀드",
+        "언타이틀"
+      ],
+      "melonSongId": "30461396"
+    },
+    {
+      "rank": 36,
+      "title": "부담이 돼 (Feat. 휘인 Of 마마무)",
+      "artist": "정키",
+      "aliases": [],
+      "melonSongId": "30290011"
+    },
+    {
+      "rank": 37,
+      "title": "BLUE MOON (Prod. GroovyRoom)",
+      "artist": "효린, 창모 (CHANGMO)",
+      "aliases": [
+        "블루문",
+        "블루 문"
+      ],
+      "melonSongId": "30367365"
+    },
+    {
+      "rank": 38,
+      "title": "가시나",
+      "artist": "선미",
+      "aliases": [
+        "gashina"
+      ],
+      "melonSongId": "30587846"
+    },
+    {
+      "rank": 39,
+      "title": "All I Wanna Do (K) (Feat. Hoody, Loco)",
+      "artist": "박재범",
+      "aliases": [
+        "올아이워너두",
+        "올 아이 워너 두"
+      ],
+      "melonSongId": "30049271"
+    },
+    {
+      "rank": 40,
+      "title": "어디에도",
+      "artist": "엠씨더맥스 (M.C the MAX)",
+      "aliases": [],
+      "melonSongId": "8033528"
+    },
+    {
+      "rank": 41,
+      "title": "돌아오지마 (Feat. 용준형 Of 비스트)",
+      "artist": "헤이즈 (Heize)",
+      "aliases": [
+        "돌아오지 마"
+      ],
+      "melonSongId": "8143111"
+    },
+    {
+      "rank": 42,
+      "title": "I LUV IT",
+      "artist": "싸이 (PSY)",
+      "aliases": [
+        "i love it",
+        "아이러브잇",
+        "아이럽잇",
+        "아이 러브 잇"
+      ],
+      "melonSongId": "30403589"
+    },
+    {
+      "rank": 43,
+      "title": "심술",
+      "artist": "볼빨간사춘기",
+      "aliases": [],
+      "melonSongId": "8155478"
+    },
+    {
+      "rank": 44,
+      "title": "피 땀 눈물",
+      "artist": "방탄소년단",
+      "aliases": [
+        "blood sweat & tears",
+        "블러드스웻앤티어스"
+      ],
+      "melonSongId": "30029173"
+    },
+    {
+      "rank": 45,
+      "title": "D (half moon) (Feat. 개코)",
+      "artist": "DEAN",
+      "aliases": [
+        "d",
+        "디",
+        "d half moon",
+        "디하프문",
+        "디 하프 문",
+        "하프문"
+      ],
+      "melonSongId": "8109412"
+    },
+    {
+      "rank": 46,
+      "title": "썸 탈꺼야",
+      "artist": "볼빨간사춘기",
+      "aliases": [
+        "썸 탈 거야"
+      ],
+      "melonSongId": "30657307"
+    },
+    {
+      "rank": 47,
+      "title": "얼굴 찌푸리지 말아요",
+      "artist": "하이라이트 (HIGHLIGHT)",
+      "aliases": [],
+      "melonSongId": "30310862"
+    },
+    {
+      "rank": 48,
+      "title": "너였다면",
+      "artist": "정승환",
+      "aliases": [],
+      "melonSongId": "8203900"
+    },
+    {
+      "rank": 49,
+      "title": "I Miss You",
+      "artist": "소유 (SOYOU)",
+      "aliases": [
+        "아이미스유",
+        "아이 미스 유"
+      ],
+      "melonSongId": "30177818"
+    },
+    {
+      "rank": 50,
+      "title": "이 소설의 끝을 다시 써보려 해",
+      "artist": "한동근",
+      "aliases": [],
+      "melonSongId": "5398990"
+    }
+  ],
+  "sourceUrl": "https://www.melon.com/chart/age/index.htm?chartDate=2017&chartGenre=KPOP&chartType=YE",
+  "verifiedAt": "2026-10-23"
 }

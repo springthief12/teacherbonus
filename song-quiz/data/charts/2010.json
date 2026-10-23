@@ -4,55 +4,430 @@
   "verified": true,
   "note": "멜론 시대별 차트 2010년 연간 TOP 50 (KPOP)",
   "songs": [
-    {"rank": 1, "title": "Bad Girl Good Girl", "artist": "미쓰에이", "aliases": ["배드걸굿걸", "뱃걸굿걸", "베드걸굿걸", "배드걸굳걸", "뱃걸굳걸"]},
-    {"rank": 2, "title": "잔소리 (With 2AM 슬옹)", "artist": "아이유", "aliases": []},
-    {"rank": 3, "title": "죽을 만큼 아파서 (Feat. 멜로우)", "artist": "MC몽", "aliases": []},
-    {"rank": 4, "title": "못해 (Feat. 美)", "artist": "포맨 (4MEN)", "aliases": []},
-    {"rank": 5, "title": "죽어도 못 보내", "artist": "2am", "aliases": []},
-    {"rank": 6, "title": "Oh!", "artist": "소녀시대 (GIRLS' GENERATION)", "aliases": ["오"]},
-    {"rank": 7, "title": "2 Different Tears", "artist": "원더걸스", "aliases": ["투디퍼런트티어스", "투디프런트티어스", "투디퍼런트티얼스", "투디퍼런티어스", "2디퍼런트티어스"]},
-    {"rank": 8, "title": "너 때문에 미쳐", "artist": "티아라", "aliases": []},
-    {"rank": 9, "title": "밥만 잘 먹더라", "artist": "Homme (창민, 이현)", "aliases": []},
-    {"rank": 10, "title": "Go Away", "artist": "2NE1", "aliases": ["고어웨이", "고우어웨이"]},
-    {"rank": 11, "title": "루팡 (Lupin)", "artist": "카라", "aliases": []},
-    {"rank": 12, "title": "시간아 멈춰라", "artist": "다비치", "aliases": []},
-    {"rank": 13, "title": "Can't Nobody", "artist": "2NE1", "aliases": ["캔트노바디", "캔노바디"]},
-    {"rank": 14, "title": "외톨이야", "artist": "CNBLUE (씨엔블루)", "aliases": []},
-    {"rank": 15, "title": "그땐 그땐 그땐", "artist": "Supreme Team, 영준", "aliases": []},
-    {"rank": 16, "title": "사랑이 술을 가르쳐 (Feat. 백찬 From 8eight)", "artist": "이승기", "aliases": []},
-    {"rank": 17, "title": "고백", "artist": "뜨거운 감자", "aliases": []},
-    {"rank": 18, "title": "Love", "artist": "CNBLUE (씨엔블루)", "aliases": ["러브", "럽"]},
-    {"rank": 19, "title": "나 이런사람이야", "artist": "DJ DOC", "aliases": []},
-    {"rank": 20, "title": "HUH", "artist": "4minute", "aliases": ["허"]},
-    {"rank": 21, "title": "뱅(Bang)!", "artist": "애프터스쿨", "aliases": []},
-    {"rank": 22, "title": "Run Devil Run", "artist": "소녀시대 (GIRLS' GENERATION)", "aliases": ["런데빌런", "런대빌런", "런데블런"]},
-    {"rank": 23, "title": "NU 예삐오 (NU ABO)", "artist": "f(x)", "aliases": ["누예삐오", "뉴예삐오", "엔유예삐오", "예삐오", "누아보", "뉴아보"]},
-    {"rank": 24, "title": "Magic", "artist": "시크릿", "aliases": ["매직", "메직"]},
-    {"rank": 25, "title": "Change (Feat. 용준형 From Beast)", "artist": "현아", "aliases": ["체인지", "채인지"]},
-    {"rank": 26, "title": "Breathe", "artist": "미쓰에이", "aliases": ["브리드"]},
-    {"rank": 27, "title": "본능적으로 (Feat. Swings)", "artist": "강승윤", "aliases": []},
-    {"rank": 28, "title": "땡땡땡", "artist": "Supreme Team", "aliases": []},
-    {"rank": 29, "title": "Bubble Love", "artist": "MC몽, 서인영", "aliases": ["버블러브", "버블럽"]},
-    {"rank": 30, "title": "잘못했어", "artist": "2am", "aliases": []},
-    {"rank": 31, "title": "널 붙잡을 노래", "artist": "비", "aliases": []},
-    {"rank": 32, "title": "우리 사랑하게 됐어요.", "artist": "가인, 조권", "aliases": []},
-    {"rank": 33, "title": "별이될께", "artist": "디셈버", "aliases": ["별이될게"]},
-    {"rank": 34, "title": "전활 받지 않는 너에게", "artist": "2am", "aliases": ["전화받지않는너에게"]},
-    {"rank": 35, "title": "훗 (Hoot)", "artist": "소녀시대 (GIRLS' GENERATION)", "aliases": ["후트"]},
-    {"rank": 36, "title": "아파 (Slow)", "artist": "2NE1", "aliases": ["슬로우", "슬로"]},
-    {"rank": 37, "title": "흩어져", "artist": "먼데이 키즈", "aliases": []},
-    {"rank": 38, "title": "Shock", "artist": "비스트", "aliases": ["쇼크", "쇽"]},
-    {"rank": 39, "title": "배운게 사랑이라", "artist": "디셈버", "aliases": []},
-    {"rank": 40, "title": "다시 와주라", "artist": "바이브", "aliases": []},
-    {"rank": 41, "title": "이 거짓같은 말 (With 정엽 Of 브라운 아이드 소울)", "artist": "서영은", "aliases": []},
-    {"rank": 42, "title": "I Need A Girl (Feat. G-dragon)", "artist": "태양", "aliases": ["아이니드어걸", "아이니드걸", "아이니더걸"]},
-    {"rank": 43, "title": "원더우먼", "artist": "씨야, 다비치, 티아라", "aliases": ["wonderwoman"]},
-    {"rank": 44, "title": "박수쳐", "artist": "2NE1", "aliases": ["clapyourhands", "클랩유어핸즈"]},
-    {"rank": 45, "title": "난 너에게", "artist": "다비치", "aliases": []},
-    {"rank": 46, "title": "꺼져 줄게 잘 살아 (Feat. 용준형)", "artist": "지나", "aliases": ["꺼져줄께잘살아"]},
-    {"rank": 47, "title": "처음처럼", "artist": "티아라", "aliases": []},
-    {"rank": 48, "title": "사랑 빛", "artist": "CNBLUE (씨엔블루)", "aliases": []},
-    {"rank": 49, "title": "사랑사랑사랑", "artist": "FTISLAND (FT아일랜드)", "aliases": []},
-    {"rank": 50, "title": "Push Push (푸시 푸시)", "artist": "씨스타", "aliases": ["푸쉬푸쉬", "푸쉬푸시"]}
-  ]
+    {
+      "rank": 1,
+      "title": "Bad Girl Good Girl",
+      "artist": "미쓰에이",
+      "aliases": [
+        "배드걸굿걸",
+        "뱃걸굿걸",
+        "베드걸굿걸",
+        "배드걸굳걸",
+        "뱃걸굳걸"
+      ],
+      "melonSongId": "2741416"
+    },
+    {
+      "rank": 2,
+      "title": "잔소리 (With 2AM 슬옹)",
+      "artist": "아이유",
+      "aliases": [],
+      "melonSongId": "2705410"
+    },
+    {
+      "rank": 3,
+      "title": "죽을 만큼 아파서 (Feat. 멜로우)",
+      "artist": "MC몽",
+      "aliases": [],
+      "melonSongId": "2733249"
+    },
+    {
+      "rank": 4,
+      "title": "못해 (Feat. 美)",
+      "artist": "포맨 (4MEN)",
+      "aliases": [],
+      "melonSongId": "2544949"
+    },
+    {
+      "rank": 5,
+      "title": "죽어도 못 보내",
+      "artist": "2am",
+      "aliases": [],
+      "melonSongId": "2549955"
+    },
+    {
+      "rank": 6,
+      "title": "Oh!",
+      "artist": "소녀시대 (GIRLS' GENERATION)",
+      "aliases": [
+        "오"
+      ],
+      "melonSongId": "2554001"
+    },
+    {
+      "rank": 7,
+      "title": "2 Different Tears",
+      "artist": "원더걸스",
+      "aliases": [
+        "투디퍼런트티어스",
+        "투디프런트티어스",
+        "투디퍼런트티얼스",
+        "투디퍼런티어스",
+        "2디퍼런트티어스"
+      ],
+      "melonSongId": "2684572"
+    },
+    {
+      "rank": 8,
+      "title": "너 때문에 미쳐",
+      "artist": "티아라",
+      "aliases": [],
+      "melonSongId": "2587788"
+    },
+    {
+      "rank": 9,
+      "title": "밥만 잘 먹더라",
+      "artist": "Homme (창민, 이현)",
+      "aliases": [],
+      "melonSongId": "2776748"
+    },
+    {
+      "rank": 10,
+      "title": "Go Away",
+      "artist": "2NE1",
+      "aliases": [
+        "고어웨이",
+        "고우어웨이"
+      ],
+      "melonSongId": "2930968"
+    },
+    {
+      "rank": 11,
+      "title": "루팡 (Lupin)",
+      "artist": "카라",
+      "aliases": [],
+      "melonSongId": "2579459"
+    },
+    {
+      "rank": 12,
+      "title": "시간아 멈춰라",
+      "artist": "다비치",
+      "aliases": [],
+      "melonSongId": "2670748"
+    },
+    {
+      "rank": 13,
+      "title": "Can't Nobody",
+      "artist": "2NE1",
+      "aliases": [
+        "캔트노바디",
+        "캔노바디"
+      ],
+      "melonSongId": "2930967"
+    },
+    {
+      "rank": 14,
+      "title": "외톨이야",
+      "artist": "CNBLUE (씨엔블루)",
+      "aliases": [],
+      "melonSongId": "2540268"
+    },
+    {
+      "rank": 15,
+      "title": "그땐 그땐 그땐",
+      "artist": "Supreme Team, 영준",
+      "aliases": [],
+      "melonSongId": "2951700"
+    },
+    {
+      "rank": 16,
+      "title": "사랑이 술을 가르쳐 (Feat. 백찬 From 8eight)",
+      "artist": "이승기",
+      "aliases": [],
+      "melonSongId": "2546258"
+    },
+    {
+      "rank": 17,
+      "title": "고백",
+      "artist": "뜨거운 감자",
+      "aliases": [],
+      "melonSongId": "2627301"
+    },
+    {
+      "rank": 18,
+      "title": "Love",
+      "artist": "CNBLUE (씨엔블루)",
+      "aliases": [
+        "러브",
+        "럽"
+      ],
+      "melonSongId": "2679548"
+    },
+    {
+      "rank": 19,
+      "title": "나 이런사람이야",
+      "artist": "DJ DOC",
+      "aliases": [],
+      "melonSongId": "2783154"
+    },
+    {
+      "rank": 20,
+      "title": "HUH",
+      "artist": "4minute",
+      "aliases": [
+        "허"
+      ],
+      "melonSongId": "2688949"
+    },
+    {
+      "rank": 21,
+      "title": "뱅(Bang) !",
+      "artist": "애프터스쿨",
+      "aliases": [],
+      "melonSongId": "2621364"
+    },
+    {
+      "rank": 22,
+      "title": "Run Devil Run",
+      "artist": "소녀시대 (GIRLS' GENERATION)",
+      "aliases": [
+        "런데빌런",
+        "런대빌런",
+        "런데블런"
+      ],
+      "melonSongId": "2611648"
+    },
+    {
+      "rank": 23,
+      "title": "NU 예삐오 (NU ABO)",
+      "artist": "f(x)",
+      "aliases": [
+        "누예삐오",
+        "뉴예삐오",
+        "엔유예삐오",
+        "예삐오",
+        "누아보",
+        "뉴아보"
+      ],
+      "melonSongId": "2667293"
+    },
+    {
+      "rank": 24,
+      "title": "Magic",
+      "artist": "시크릿",
+      "aliases": [
+        "매직",
+        "메직"
+      ],
+      "melonSongId": "2629049"
+    },
+    {
+      "rank": 25,
+      "title": "Change (Feat. 용준형 From Beast)",
+      "artist": "현아",
+      "aliases": [
+        "체인지",
+        "채인지"
+      ],
+      "melonSongId": "2529931"
+    },
+    {
+      "rank": 26,
+      "title": "Breathe",
+      "artist": "미쓰에이",
+      "aliases": [
+        "브리드"
+      ],
+      "melonSongId": "2948449"
+    },
+    {
+      "rank": 27,
+      "title": "본능적으로 (Feat. Swings)",
+      "artist": "강승윤",
+      "aliases": [],
+      "melonSongId": "2967751"
+    },
+    {
+      "rank": 28,
+      "title": "땡땡땡",
+      "artist": "Supreme Team",
+      "aliases": [],
+      "melonSongId": "2705414"
+    },
+    {
+      "rank": 29,
+      "title": "Bubble Love",
+      "artist": "MC몽, 서인영",
+      "aliases": [
+        "버블러브",
+        "버블럽"
+      ],
+      "melonSongId": "2596161"
+    },
+    {
+      "rank": 30,
+      "title": "잘못했어",
+      "artist": "2am",
+      "aliases": [],
+      "melonSongId": "2609744"
+    },
+    {
+      "rank": 31,
+      "title": "널 붙잡을 노래",
+      "artist": "비",
+      "aliases": [],
+      "melonSongId": "2626610"
+    },
+    {
+      "rank": 32,
+      "title": "우리 사랑하게 됐어요.",
+      "artist": "가인, 조권",
+      "aliases": [],
+      "melonSongId": "2511561"
+    },
+    {
+      "rank": 33,
+      "title": "별이될께",
+      "artist": "디셈버",
+      "aliases": [
+        "별이될게"
+      ],
+      "melonSongId": "2682148"
+    },
+    {
+      "rank": 34,
+      "title": "전활 받지 않는 너에게",
+      "artist": "2am",
+      "aliases": [
+        "전화받지않는너에게"
+      ],
+      "melonSongId": "2979880"
+    },
+    {
+      "rank": 35,
+      "title": "훗 (Hoot)",
+      "artist": "소녀시대 (GIRLS' GENERATION)",
+      "aliases": [
+        "후트"
+      ],
+      "melonSongId": "2987448"
+    },
+    {
+      "rank": 36,
+      "title": "아파 (Slow)",
+      "artist": "2NE1",
+      "aliases": [
+        "슬로우",
+        "슬로"
+      ],
+      "melonSongId": "2930971"
+    },
+    {
+      "rank": 37,
+      "title": "흩어져",
+      "artist": "먼데이 키즈",
+      "aliases": [],
+      "melonSongId": "2650539"
+    },
+    {
+      "rank": 38,
+      "title": "Shock",
+      "artist": "비스트",
+      "aliases": [
+        "쇼크",
+        "쇽"
+      ],
+      "melonSongId": "2593618"
+    },
+    {
+      "rank": 39,
+      "title": "배운게 사랑이라",
+      "artist": "디셈버",
+      "aliases": [],
+      "melonSongId": "2596063"
+    },
+    {
+      "rank": 40,
+      "title": "다시 와주라",
+      "artist": "바이브",
+      "aliases": [],
+      "melonSongId": "2680552"
+    },
+    {
+      "rank": 41,
+      "title": "이 거지같은 말 (With 정엽 Of 브라운 아이드 소울)",
+      "artist": "서영은",
+      "aliases": [],
+      "melonSongId": "2660148"
+    },
+    {
+      "rank": 42,
+      "title": "I Need A Girl (Feat. G-dragon)",
+      "artist": "태양",
+      "aliases": [
+        "아이니드어걸",
+        "아이니드걸",
+        "아이니더걸"
+      ],
+      "melonSongId": "2741397"
+    },
+    {
+      "rank": 43,
+      "title": "원더우먼",
+      "artist": "씨야, 다비치, 티아라",
+      "aliases": [
+        "wonderwoman"
+      ],
+      "melonSongId": "2534748"
+    },
+    {
+      "rank": 44,
+      "title": "박수쳐",
+      "artist": "2NE1",
+      "aliases": [
+        "clapyourhands",
+        "클랩유어핸즈"
+      ],
+      "melonSongId": "2930969"
+    },
+    {
+      "rank": 45,
+      "title": "난 너에게",
+      "artist": "다비치",
+      "aliases": [],
+      "melonSongId": "2783260"
+    },
+    {
+      "rank": 46,
+      "title": "꺼져 줄게 잘 살아 (Feat. 용준형)",
+      "artist": "지나",
+      "aliases": [
+        "꺼져줄께잘살아"
+      ],
+      "melonSongId": "2759748"
+    },
+    {
+      "rank": 47,
+      "title": "처음처럼",
+      "artist": "티아라",
+      "aliases": [],
+      "melonSongId": "2371261"
+    },
+    {
+      "rank": 48,
+      "title": "사랑 빛",
+      "artist": "CNBLUE (씨엔블루)",
+      "aliases": [],
+      "melonSongId": "2675871"
+    },
+    {
+      "rank": 49,
+      "title": "사랑사랑사랑",
+      "artist": "FTISLAND (FT아일랜드)",
+      "aliases": [],
+      "melonSongId": "2906349"
+    },
+    {
+      "rank": 50,
+      "title": "Push Push (푸시 푸시)",
+      "artist": "씨스타",
+      "aliases": [
+        "푸쉬푸쉬",
+        "푸쉬푸시"
+      ],
+      "melonSongId": "2705407"
+    }
+  ],
+  "sourceUrl": "https://www.melon.com/chart/age/index.htm?chartDate=2010&chartGenre=KPOP&chartType=YE",
+  "verifiedAt": "2026-10-23"
 }

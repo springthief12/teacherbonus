@@ -1,0 +1,360 @@
+{
+  "year": 2008,
+  "source": "melon",
+  "verified": true,
+  "note": "멜론 시대별 차트 2008년 연간 TOP 50 (KPOP)",
+  "sourceUrl": "https://www.melon.com/chart/age/index.htm?chartDate=2008&chartGenre=KPOP&chartType=YE",
+  "verifiedAt": "2026-10-23",
+  "songs": [
+    {
+      "rank": 1,
+      "title": "So Hot",
+      "artist": "원더걸스",
+      "aliases": [],
+      "melonSongId": "1874397"
+    },
+    {
+      "rank": 2,
+      "title": "하루 하루",
+      "artist": "BIGBANG (빅뱅)",
+      "aliases": [],
+      "melonSongId": "1913501"
+    },
+    {
+      "rank": 3,
+      "title": "Love",
+      "artist": "브라운아이드걸스",
+      "aliases": [],
+      "melonSongId": "1788174"
+    },
+    {
+      "rank": 4,
+      "title": "Nobody",
+      "artist": "원더걸스",
+      "aliases": [],
+      "melonSongId": "1929329"
+    },
+    {
+      "rank": 5,
+      "title": "서커스 (Feat. 임유경 - 달래 음악단 , ＄howgun)",
+      "artist": "MC몽",
+      "aliases": [],
+      "melonSongId": "1851229"
+    },
+    {
+      "rank": 6,
+      "title": "마지막 인사",
+      "artist": "BIGBANG (빅뱅)",
+      "aliases": [],
+      "melonSongId": "1765767"
+    },
+    {
+      "rank": 7,
+      "title": "사랑과 전쟁 (Narr. 하하)",
+      "artist": "다비치",
+      "aliases": [],
+      "melonSongId": "1897011"
+    },
+    {
+      "rank": 8,
+      "title": "U-Go-Girl (With 낯선)",
+      "artist": "이효리",
+      "aliases": [],
+      "melonSongId": "1903050"
+    },
+    {
+      "rank": 9,
+      "title": "천국",
+      "artist": "BIGBANG (빅뱅)",
+      "aliases": [],
+      "melonSongId": "1913502"
+    },
+    {
+      "rank": 10,
+      "title": "가지마 가지마",
+      "artist": "브라운 아이즈",
+      "aliases": [],
+      "melonSongId": "1890405"
+    },
+    {
+      "rank": 11,
+      "title": "발자국",
+      "artist": "먼데이 키즈",
+      "aliases": [],
+      "melonSongId": "1841036"
+    },
+    {
+      "rank": 12,
+      "title": "One More Time",
+      "artist": "쥬얼리",
+      "aliases": [],
+      "melonSongId": "1807098"
+    },
+    {
+      "rank": 13,
+      "title": "아이처럼",
+      "artist": "김동률",
+      "aliases": [],
+      "melonSongId": "1797709"
+    },
+    {
+      "rank": 14,
+      "title": "이노래",
+      "artist": "2am",
+      "aliases": [],
+      "melonSongId": "1901874"
+    },
+    {
+      "rank": 15,
+      "title": "One (Feat. 지선)",
+      "artist": "에픽하이 (EPIK HIGH)",
+      "aliases": [],
+      "melonSongId": "1850242"
+    },
+    {
+      "rank": 16,
+      "title": "만약에",
+      "artist": "태연 (TAEYEON)",
+      "aliases": [],
+      "melonSongId": "1798588"
+    },
+    {
+      "rank": 17,
+      "title": "라라라",
+      "artist": "SG 워너비",
+      "aliases": [],
+      "melonSongId": "1854856"
+    },
+    {
+      "rank": 18,
+      "title": "어쩌다",
+      "artist": "브라운아이드걸스",
+      "aliases": [],
+      "melonSongId": "1927248"
+    },
+    {
+      "rank": 19,
+      "title": "보고싶은 날엔..",
+      "artist": "박지헌",
+      "aliases": [],
+      "melonSongId": "1778667"
+    },
+    {
+      "rank": 20,
+      "title": "Hey Mr. Big",
+      "artist": "이효리",
+      "aliases": [],
+      "melonSongId": "1903057"
+    },
+    {
+      "rank": 21,
+      "title": "나만 바라봐",
+      "artist": "태양",
+      "aliases": [],
+      "melonSongId": "1874996"
+    },
+    {
+      "rank": 22,
+      "title": "미워도 사랑하니까",
+      "artist": "다비치",
+      "aliases": [],
+      "melonSongId": "1798749"
+    },
+    {
+      "rank": 23,
+      "title": "사랑해 미안해",
+      "artist": "지아",
+      "aliases": [],
+      "melonSongId": "1902384"
+    },
+    {
+      "rank": 24,
+      "title": "가슴으로 외쳐 (Rap Feat. Rhymer)",
+      "artist": "먼데이 키즈",
+      "aliases": [],
+      "melonSongId": "1841034"
+    },
+    {
+      "rank": 25,
+      "title": "미안해요 (Feat. T.O.P)",
+      "artist": "거미 (GUMMY)",
+      "aliases": [],
+      "melonSongId": "1826467"
+    },
+    {
+      "rank": 26,
+      "title": "Blue Moon",
+      "artist": "씨야, 다비치, 블랙펄",
+      "aliases": [],
+      "melonSongId": "1879332"
+    },
+    {
+      "rank": 27,
+      "title": "우산 (Feat. 윤하)",
+      "artist": "에픽하이 (EPIK HIGH)",
+      "aliases": [],
+      "melonSongId": "1850253"
+    },
+    {
+      "rank": 28,
+      "title": "누난 너무 예뻐 (Replay)",
+      "artist": "SHINee (샤이니)",
+      "aliases": [],
+      "melonSongId": "1875215"
+    },
+    {
+      "rank": 29,
+      "title": "Kissing You",
+      "artist": "소녀시대 (GIRLS' GENERATION)",
+      "aliases": [],
+      "melonSongId": "1756969"
+    },
+    {
+      "rank": 30,
+      "title": "남자 때문에",
+      "artist": "JOO",
+      "aliases": [],
+      "melonSongId": "1789551"
+    },
+    {
+      "rank": 31,
+      "title": "미쳤어 (Feat. 에릭)",
+      "artist": "손담비",
+      "aliases": [],
+      "melonSongId": "1928044"
+    },
+    {
+      "rank": 32,
+      "title": "너 때문에",
+      "artist": "브라운 아이즈",
+      "aliases": [],
+      "melonSongId": "1890408"
+    },
+    {
+      "rank": 33,
+      "title": "주문-MIROTIC (Clean Ver.)",
+      "artist": "동방신기 (TVXQ!)",
+      "aliases": [],
+      "melonSongId": "1928828"
+    },
+    {
+      "rank": 34,
+      "title": "사랑해 (Feat. 윤은혜)",
+      "artist": "마이티 마우스",
+      "aliases": [],
+      "melonSongId": "1816224"
+    },
+    {
+      "rank": 35,
+      "title": "How Gee (하우지)",
+      "artist": "BIGBANG (빅뱅)",
+      "aliases": [],
+      "melonSongId": "1786851"
+    },
+    {
+      "rank": 36,
+      "title": "Beautiful Life",
+      "artist": "V.O.S",
+      "aliases": [],
+      "melonSongId": "1867568"
+    },
+    {
+      "rank": 37,
+      "title": "슬픈 다짐",
+      "artist": "다비치",
+      "aliases": [],
+      "melonSongId": "1798752"
+    },
+    {
+      "rank": 38,
+      "title": "거짓말",
+      "artist": "BIGBANG (빅뱅)",
+      "aliases": [],
+      "melonSongId": "1698598"
+    },
+    {
+      "rank": 39,
+      "title": "못된 여자 (Feat. 서인영)",
+      "artist": "원투",
+      "aliases": [],
+      "melonSongId": "1857969"
+    },
+    {
+      "rank": 40,
+      "title": "기억을 걷는 시간",
+      "artist": "넬 (NELL)",
+      "aliases": [],
+      "melonSongId": "1833966"
+    },
+    {
+      "rank": 41,
+      "title": "사랑이 그렇게 쉬워 (Feat. 태인)",
+      "artist": "나몰라패밀리 (Namolla Family)",
+      "aliases": [],
+      "melonSongId": "1914864"
+    },
+    {
+      "rank": 42,
+      "title": "신데렐라",
+      "artist": "서인영",
+      "aliases": [],
+      "melonSongId": "1906673"
+    },
+    {
+      "rank": 43,
+      "title": "추억속의 그대",
+      "artist": "이승기",
+      "aliases": [],
+      "melonSongId": "1836107"
+    },
+    {
+      "rank": 44,
+      "title": "Too Much (With 서인영) (우리결혼했어요 화제곡)",
+      "artist": "크라운제이 (CROWN J)",
+      "aliases": [],
+      "melonSongId": "1871159"
+    },
+    {
+      "rank": 45,
+      "title": "들리나요...",
+      "artist": "태연 (TAEYEON)",
+      "aliases": [],
+      "melonSongId": "1928055"
+    },
+    {
+      "rank": 46,
+      "title": "에너지 (Feat. 선예)",
+      "artist": "마이티 마우스",
+      "aliases": [],
+      "melonSongId": "1888678"
+    },
+    {
+      "rank": 47,
+      "title": "Love Story",
+      "artist": "비",
+      "aliases": [],
+      "melonSongId": "1935599"
+    },
+    {
+      "rank": 48,
+      "title": "그깟 사랑",
+      "artist": "이진성 (먼데이 키즈), 최현준 (V.O.S), 일 락",
+      "aliases": [],
+      "melonSongId": "1789828"
+    },
+    {
+      "rank": 49,
+      "title": "1분 1초 (Feat. 타루)",
+      "artist": "에픽하이 (EPIK HIGH)",
+      "aliases": [],
+      "melonSongId": "1932604"
+    },
+    {
+      "rank": 50,
+      "title": "어제보다 오늘 더",
+      "artist": "김종국",
+      "aliases": [],
+      "melonSongId": "1941619"
+    }
+  ]
+}

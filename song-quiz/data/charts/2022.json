@@ -4,55 +4,437 @@
   "verified": true,
   "note": "멜론 시대별 차트 2022년 연간 TOP 50 (KPOP)",
   "songs": [
-    { "rank": 1, "title": "LOVE DIVE", "artist": "IVE (아이브)", "aliases": ["러브다이브", "러브 다이브"] },
-    { "rank": 2, "title": "TOMBOY", "artist": "i-dle (아이들)", "aliases": ["톰보이"] },
-    { "rank": 3, "title": "취중고백", "artist": "김민석 (멜로망스)", "aliases": [] },
-    { "rank": 4, "title": "사랑인가 봐", "artist": "멜로망스", "aliases": [] },
-    { "rank": 5, "title": "사랑은 늘 도망가", "artist": "임영웅", "aliases": [] },
-    { "rank": 6, "title": "ELEVEN", "artist": "IVE (아이브)", "aliases": ["일레븐"] },
-    { "rank": 7, "title": "봄여름가을겨울 (Still Life)", "artist": "BIGBANG (빅뱅)", "aliases": ["스틸라이프", "스틸 라이프"] },
-    { "rank": 8, "title": "다정히 내 이름을 부르면", "artist": "경서예지, 전건호", "aliases": [] },
-    { "rank": 9, "title": "That That (prod. & feat. SUGA of BTS)", "artist": "싸이 (PSY)", "aliases": ["댓댓", "뎃뎃", "댓 댓"] },
-    { "rank": 10, "title": "정이라고 하자 (Feat. 10CM)", "artist": "BIG Naughty (서동현)", "aliases": [] },
-    { "rank": 11, "title": "신호등", "artist": "이무진", "aliases": [] },
-    { "rank": 12, "title": "INVU", "artist": "태연 (TAEYEON)", "aliases": ["인뷰", "아이엔뷰", "아이엔브이유"] },
-    { "rank": 13, "title": "회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "artist": "sokodomo", "aliases": [] },
-    { "rank": 14, "title": "Feel My Rhythm", "artist": "Red Velvet (레드벨벳)", "aliases": ["필마이리듬", "필 마이 리듬"] },
-    { "rank": 15, "title": "Hype Boy", "artist": "NewJeans", "aliases": ["하입보이", "하이프보이", "하입 보이"] },
-    { "rank": 16, "title": "GANADARA (Feat. 아이유)", "artist": "박재범", "aliases": ["가나다라"] },
-    { "rank": 17, "title": "Attention", "artist": "NewJeans", "aliases": ["어텐션"] },
-    { "rank": 18, "title": "After LIKE", "artist": "IVE (아이브)", "aliases": ["애프터라이크", "애프터 라이크"] },
-    { "rank": 19, "title": "나의 X에게", "artist": "경서", "aliases": ["나의 엑스에게"] },
-    { "rank": 20, "title": "그때 그 순간 그대로 (그그그)", "artist": "WSG워너비 (가야G)", "aliases": [] },
-    { "rank": 21, "title": "LOVE me", "artist": "BE'O (비오)", "aliases": ["러브미", "러브 미"] },
-    { "rank": 22, "title": "Next Level", "artist": "aespa", "aliases": ["넥스트레벨", "넥스트 레벨"] },
-    { "rank": 23, "title": "리무진 (Feat. MINO) (Prod. GRAY)", "artist": "BE'O (비오)", "aliases": ["limousine"] },
-    { "rank": 24, "title": "드라마", "artist": "아이유", "aliases": ["drama"] },
-    { "rank": 25, "title": "strawberry moon", "artist": "아이유", "aliases": ["스트로베리문", "스트로베리 문"] },
-    { "rank": 26, "title": "너의 모든 순간", "artist": "성시경", "aliases": [] },
-    { "rank": 27, "title": "내가 아니라도", "artist": "주호", "aliases": [] },
-    { "rank": 28, "title": "듣고 싶을까", "artist": "MSG워너비(M.O.M)", "aliases": [] },
-    { "rank": 29, "title": "너를 생각해", "artist": "주시크 (Joosiq)", "aliases": [] },
-    { "rank": 30, "title": "Dynamite", "artist": "방탄소년단", "aliases": ["다이너마이트", "다이나마이트"] },
-    { "rank": 31, "title": "보고싶었어", "artist": "WSG워너비(4FIRE)", "aliases": [] },
-    { "rank": 32, "title": "SMILEY (Feat. BIBI)", "artist": "YENA (최예나)", "aliases": ["스마일리"] },
-    { "rank": 33, "title": "Weekend", "artist": "태연 (TAEYEON)", "aliases": ["위켄드", "위캔드"] },
-    { "rank": 34, "title": "FEARLESS", "artist": "LE SSERAFIM (르세라핌)", "aliases": ["피어리스"] },
-    { "rank": 35, "title": "Butter", "artist": "방탄소년단", "aliases": ["버터"] },
-    { "rank": 36, "title": "Pink Venom", "artist": "BLACKPINK", "aliases": ["핑크베놈", "핑크 베놈"] },
-    { "rank": 37, "title": "언제나 사랑해", "artist": "케이시 (Kassy)", "aliases": [] },
-    { "rank": 38, "title": "밤하늘의 별을(2020)", "artist": "경서", "aliases": [] },
-    { "rank": 39, "title": "새삥 (Prod. ZICO) (Feat. 호미들)", "artist": "지코 (ZICO)", "aliases": [] },
-    { "rank": 40, "title": "Counting Stars (Feat. Beenzino)", "artist": "BE'O (비오)", "aliases": ["카운팅스타즈", "카운팅스타스", "카운팅 스타즈"] },
-    { "rank": 41, "title": "모든 날, 모든 순간 (Every day, Every Moment)", "artist": "폴킴", "aliases": ["에브리데이에브리모먼트"] },
-    { "rank": 42, "title": "눈이 오잖아(Feat.헤이즈)", "artist": "이무진", "aliases": [] },
-    { "rank": 43, "title": "이제 나만 믿어요", "artist": "임영웅", "aliases": [] },
-    { "rank": 44, "title": "OHAYO MY NIGHT", "artist": "디핵 (D-Hack), PATEKO (파테코)", "aliases": ["오하요마이나잇", "오하요 마이 나이트"] },
-    { "rank": 45, "title": "내 손을 잡아", "artist": "아이유", "aliases": [] },
-    { "rank": 46, "title": "Permission to Dance", "artist": "방탄소년단", "aliases": ["퍼미션투댄스", "퍼미션 투 댄스"] },
-    { "rank": 47, "title": "우리들의 블루스", "artist": "임영웅", "aliases": [] },
-    { "rank": 48, "title": "바라만 본다", "artist": "MSG워너비(M.O.M)", "aliases": [] },
-    { "rank": 49, "title": "사건의 지평선", "artist": "윤하 (YOUNHA)", "aliases": ["event horizon", "이벤트호라이즌"] },
-    { "rank": 50, "title": "Step Back", "artist": "GOT the beat", "aliases": ["스텝백", "스텝 백"] }
-  ]
+    {
+      "rank": 1,
+      "title": "LOVE DIVE",
+      "artist": "IVE (아이브)",
+      "aliases": [
+        "러브다이브",
+        "러브 다이브"
+      ],
+      "melonSongId": "34847378"
+    },
+    {
+      "rank": 2,
+      "title": "TOMBOY",
+      "artist": "i-dle (아이들)",
+      "aliases": [
+        "톰보이"
+      ],
+      "melonSongId": "34754292"
+    },
+    {
+      "rank": 3,
+      "title": "취중고백",
+      "artist": "김민석 (멜로망스)",
+      "aliases": [],
+      "melonSongId": "34431086"
+    },
+    {
+      "rank": 4,
+      "title": "사랑인가 봐",
+      "artist": "멜로망스",
+      "aliases": [],
+      "melonSongId": "34657844"
+    },
+    {
+      "rank": 5,
+      "title": "사랑은 늘 도망가",
+      "artist": "임영웅",
+      "aliases": [],
+      "melonSongId": "34061322"
+    },
+    {
+      "rank": 6,
+      "title": "ELEVEN",
+      "artist": "IVE (아이브)",
+      "aliases": [
+        "일레븐"
+      ],
+      "melonSongId": "34349913"
+    },
+    {
+      "rank": 7,
+      "title": "봄여름가을겨울 (Still Life)",
+      "artist": "BIGBANG (빅뱅)",
+      "aliases": [
+        "스틸라이프",
+        "스틸 라이프"
+      ],
+      "melonSongId": "34845949"
+    },
+    {
+      "rank": 8,
+      "title": "다정히 내 이름을 부르면",
+      "artist": "경서예지, 전건호",
+      "aliases": [],
+      "melonSongId": "33496587"
+    },
+    {
+      "rank": 9,
+      "title": "That That (prod. & feat. SUGA of BTS)",
+      "artist": "싸이 (PSY)",
+      "aliases": [
+        "댓댓",
+        "뎃뎃",
+        "댓 댓"
+      ],
+      "melonSongId": "34997078"
+    },
+    {
+      "rank": 10,
+      "title": "정이라고 하자 (Feat. 10CM)",
+      "artist": "BIG Naughty (서동현)",
+      "aliases": [],
+      "melonSongId": "34927767"
+    },
+    {
+      "rank": 11,
+      "title": "신호등",
+      "artist": "이무진",
+      "aliases": [],
+      "melonSongId": "33480898"
+    },
+    {
+      "rank": 12,
+      "title": "INVU",
+      "artist": "태연 (TAEYEON)",
+      "aliases": [
+        "인뷰",
+        "아이엔뷰",
+        "아이엔브이유"
+      ],
+      "melonSongId": "34626109"
+    },
+    {
+      "rank": 13,
+      "title": "회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)",
+      "artist": "sokodomo",
+      "aliases": [],
+      "melonSongId": "34256568"
+    },
+    {
+      "rank": 14,
+      "title": "Feel My Rhythm",
+      "artist": "Red Velvet (레드벨벳)",
+      "aliases": [
+        "필마이리듬",
+        "필 마이 리듬"
+      ],
+      "melonSongId": "34772475"
+    },
+    {
+      "rank": 15,
+      "title": "Hype Boy",
+      "artist": "NewJeans",
+      "aliases": [
+        "하입보이",
+        "하이프보이",
+        "하입 보이"
+      ],
+      "melonSongId": "35454426"
+    },
+    {
+      "rank": 16,
+      "title": "GANADARA (Feat. 아이유)",
+      "artist": "박재범",
+      "aliases": [
+        "가나다라"
+      ],
+      "melonSongId": "34752700"
+    },
+    {
+      "rank": 17,
+      "title": "Attention",
+      "artist": "NewJeans",
+      "aliases": [
+        "어텐션"
+      ],
+      "melonSongId": "35454425"
+    },
+    {
+      "rank": 18,
+      "title": "After LIKE",
+      "artist": "IVE (아이브)",
+      "aliases": [
+        "애프터라이크",
+        "애프터 라이크"
+      ],
+      "melonSongId": "35546497"
+    },
+    {
+      "rank": 19,
+      "title": "나의 X에게",
+      "artist": "경서",
+      "aliases": [
+        "나의 엑스에게"
+      ],
+      "melonSongId": "34943312"
+    },
+    {
+      "rank": 20,
+      "title": "그때 그 순간 그대로 (그그그)",
+      "artist": "WSG워너비 (가야G)",
+      "aliases": [],
+      "melonSongId": "35383397"
+    },
+    {
+      "rank": 21,
+      "title": "LOVE me",
+      "artist": "BE'O (비오)",
+      "aliases": [
+        "러브미",
+        "러브 미"
+      ],
+      "melonSongId": "34875621"
+    },
+    {
+      "rank": 22,
+      "title": "Next Level",
+      "artist": "aespa",
+      "aliases": [
+        "넥스트레벨",
+        "넥스트 레벨"
+      ],
+      "melonSongId": "33487342"
+    },
+    {
+      "rank": 23,
+      "title": "리무진 (Feat. MINO) (Prod. GRAY)",
+      "artist": "BE'O (비오)",
+      "aliases": [
+        "limousine"
+      ],
+      "melonSongId": "34298499"
+    },
+    {
+      "rank": 24,
+      "title": "드라마",
+      "artist": "아이유",
+      "aliases": [
+        "drama"
+      ],
+      "melonSongId": "34481680"
+    },
+    {
+      "rank": 25,
+      "title": "strawberry moon",
+      "artist": "아이유",
+      "aliases": [
+        "스트로베리문",
+        "스트로베리 문"
+      ],
+      "melonSongId": "34101563"
+    },
+    {
+      "rank": 26,
+      "title": "너의 모든 순간",
+      "artist": "성시경",
+      "aliases": [],
+      "melonSongId": "4446485"
+    },
+    {
+      "rank": 27,
+      "title": "내가 아니라도",
+      "artist": "주호",
+      "aliases": [],
+      "melonSongId": "34787226"
+    },
+    {
+      "rank": 28,
+      "title": "듣고 싶을까",
+      "artist": "MSG워너비(M.O.M)",
+      "aliases": [],
+      "melonSongId": "34701627"
+    },
+    {
+      "rank": 29,
+      "title": "너를 생각해",
+      "artist": "주시크 (Joosiq)",
+      "aliases": [],
+      "melonSongId": "33978183"
+    },
+    {
+      "rank": 30,
+      "title": "Dynamite",
+      "artist": "방탄소년단",
+      "aliases": [
+        "다이너마이트",
+        "다이나마이트"
+      ],
+      "melonSongId": "32872978"
+    },
+    {
+      "rank": 31,
+      "title": "보고싶었어",
+      "artist": "WSG워너비(4FIRE)",
+      "aliases": [],
+      "melonSongId": "35383398"
+    },
+    {
+      "rank": 32,
+      "title": "SMILEY (Feat. BIBI)",
+      "artist": "YENA (최예나)",
+      "aliases": [
+        "스마일리"
+      ],
+      "melonSongId": "34538515"
+    },
+    {
+      "rank": 33,
+      "title": "Weekend",
+      "artist": "태연 (TAEYEON)",
+      "aliases": [
+        "위켄드",
+        "위캔드"
+      ],
+      "melonSongId": "33655994"
+    },
+    {
+      "rank": 34,
+      "title": "FEARLESS",
+      "artist": "LE SSERAFIM (르세라핌)",
+      "aliases": [
+        "피어리스"
+      ],
+      "melonSongId": "35009233"
+    },
+    {
+      "rank": 35,
+      "title": "Butter",
+      "artist": "방탄소년단",
+      "aliases": [
+        "버터"
+      ],
+      "melonSongId": "33507137"
+    },
+    {
+      "rank": 36,
+      "title": "Pink Venom",
+      "artist": "BLACKPINK",
+      "aliases": [
+        "핑크베놈",
+        "핑크 베놈"
+      ],
+      "melonSongId": "35542908"
+    },
+    {
+      "rank": 37,
+      "title": "언제나 사랑해",
+      "artist": "케이시 (Kassy)",
+      "aliases": [],
+      "melonSongId": "34599917"
+    },
+    {
+      "rank": 38,
+      "title": "밤하늘의 별을(2020)",
+      "artist": "경서",
+      "aliases": [],
+      "melonSongId": "33061995"
+    },
+    {
+      "rank": 39,
+      "title": "새삥 (Prod. ZICO) (Feat. 호미들)",
+      "artist": "지코 (ZICO)",
+      "aliases": [],
+      "melonSongId": "35595136"
+    },
+    {
+      "rank": 40,
+      "title": "Counting Stars (Feat. Beenzino)",
+      "artist": "BE'O (비오)",
+      "aliases": [
+        "카운팅스타즈",
+        "카운팅스타스",
+        "카운팅 스타즈"
+      ],
+      "melonSongId": "34398735"
+    },
+    {
+      "rank": 41,
+      "title": "모든 날, 모든 순간 (Every day, Every Moment)",
+      "artist": "폴킴",
+      "aliases": [
+        "에브리데이에브리모먼트"
+      ],
+      "melonSongId": "30962526"
+    },
+    {
+      "rank": 42,
+      "title": "눈이 오잖아(Feat.헤이즈)",
+      "artist": "이무진",
+      "aliases": [],
+      "melonSongId": "34360855"
+    },
+    {
+      "rank": 43,
+      "title": "이제 나만 믿어요",
+      "artist": "임영웅",
+      "aliases": [],
+      "melonSongId": "32508053"
+    },
+    {
+      "rank": 44,
+      "title": "OHAYO MY NIGHT",
+      "artist": "디핵 (D-Hack), PATEKO (파테코)",
+      "aliases": [
+        "오하요마이나잇",
+        "오하요 마이 나이트"
+      ],
+      "melonSongId": "32698101"
+    },
+    {
+      "rank": 45,
+      "title": "내 손을 잡아",
+      "artist": "아이유",
+      "aliases": [],
+      "melonSongId": "3414749"
+    },
+    {
+      "rank": 46,
+      "title": "Permission to Dance",
+      "artist": "방탄소년단",
+      "aliases": [
+        "퍼미션투댄스",
+        "퍼미션 투 댄스"
+      ],
+      "melonSongId": "33666269"
+    },
+    {
+      "rank": 47,
+      "title": "우리들의 블루스",
+      "artist": "임영웅",
+      "aliases": [],
+      "melonSongId": "34908740"
+    },
+    {
+      "rank": 48,
+      "title": "바라만 본다",
+      "artist": "MSG워너비(M.O.M)",
+      "aliases": [],
+      "melonSongId": "33625988"
+    },
+    {
+      "rank": 49,
+      "title": "사건의 지평선",
+      "artist": "윤하 (YOUNHA)",
+      "aliases": [
+        "event horizon",
+        "이벤트호라이즌"
+      ],
+      "melonSongId": "34819473"
+    },
+    {
+      "rank": 50,
+      "title": "Step Back",
+      "artist": "GOT the beat",
+      "aliases": [
+        "스텝백",
+        "스텝 백"
+      ],
+      "melonSongId": "34494149"
+    }
+  ],
+  "sourceUrl": "https://www.melon.com/chart/age/index.htm?chartDate=2022&chartGenre=KPOP&chartType=YE",
+  "verifiedAt": "2026-10-23"
 }

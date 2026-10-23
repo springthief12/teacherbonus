@@ -1,0 +1,360 @@
+{
+  "year": 2009,
+  "source": "melon",
+  "verified": true,
+  "note": "멜론 시대별 차트 2009년 연간 TOP 50 (KPOP)",
+  "sourceUrl": "https://www.melon.com/chart/age/index.htm?chartDate=2009&chartGenre=KPOP&chartType=YE",
+  "verifiedAt": "2026-10-23",
+  "songs": [
+    {
+      "rank": 1,
+      "title": "Gee",
+      "artist": "소녀시대 (GIRLS' GENERATION)",
+      "aliases": [],
+      "melonSongId": "2012282"
+    },
+    {
+      "rank": 2,
+      "title": "I Don't Care",
+      "artist": "2NE1",
+      "aliases": [],
+      "melonSongId": "2212365"
+    },
+    {
+      "rank": 3,
+      "title": "Abracadabra",
+      "artist": "브라운아이드걸스",
+      "aliases": [],
+      "melonSongId": "2229259"
+    },
+    {
+      "rank": 4,
+      "title": "Heartbreaker",
+      "artist": "G-DRAGON",
+      "aliases": [],
+      "melonSongId": "2258761"
+    },
+    {
+      "rank": 5,
+      "title": "Again＆Again",
+      "artist": "2PM",
+      "aliases": [],
+      "melonSongId": "2135469"
+    },
+    {
+      "rank": 6,
+      "title": "심장이 없어",
+      "artist": "에이트",
+      "aliases": [],
+      "melonSongId": "2101157"
+    },
+    {
+      "rank": 7,
+      "title": "사랑비",
+      "artist": "김태우",
+      "aliases": [],
+      "melonSongId": "2276194"
+    },
+    {
+      "rank": 8,
+      "title": "Fire",
+      "artist": "2NE1",
+      "aliases": [],
+      "melonSongId": "2160048"
+    },
+    {
+      "rank": 9,
+      "title": "쏘리 쏘리 (Sorry, Sorry)",
+      "artist": "SUPER JUNIOR (슈퍼주니어)",
+      "aliases": [],
+      "melonSongId": "2100540"
+    },
+    {
+      "rank": 10,
+      "title": "Lollipop",
+      "artist": "BIGBANG (빅뱅), 2NE1",
+      "aliases": [],
+      "melonSongId": "2117748"
+    },
+    {
+      "rank": 11,
+      "title": "외톨이",
+      "artist": "아웃사이더",
+      "aliases": [],
+      "melonSongId": "2185577"
+    },
+    {
+      "rank": 12,
+      "title": "8282",
+      "artist": "다비치",
+      "aliases": [],
+      "melonSongId": "2093360"
+    },
+    {
+      "rank": 13,
+      "title": "눈물이 뚝뚝",
+      "artist": "케이윌",
+      "aliases": [],
+      "melonSongId": "2119816"
+    },
+    {
+      "rank": 14,
+      "title": "사고쳤어요",
+      "artist": "다비치",
+      "aliases": [],
+      "melonSongId": "2093361"
+    },
+    {
+      "rank": 15,
+      "title": "TTL (Time To Love)",
+      "artist": "티아라, 초신성",
+      "aliases": [],
+      "melonSongId": "2289852"
+    },
+    {
+      "rank": 16,
+      "title": "소원을 말해봐 (Genie)",
+      "artist": "소녀시대 (GIRLS' GENERATION)",
+      "aliases": [],
+      "melonSongId": "2203097"
+    },
+    {
+      "rank": 17,
+      "title": "사랑한 후에",
+      "artist": "박효신",
+      "aliases": [],
+      "melonSongId": "2289924"
+    },
+    {
+      "rank": 18,
+      "title": "헤어지지 못하는 여자, 떠나가지 못하는 남자 (Feat. 정인)",
+      "artist": "리쌍",
+      "aliases": [],
+      "melonSongId": "2312253"
+    },
+    {
+      "rank": 19,
+      "title": "토요일밤에",
+      "artist": "손담비",
+      "aliases": [],
+      "melonSongId": "2112982"
+    },
+    {
+      "rank": 20,
+      "title": "Hot Issue",
+      "artist": "4minute",
+      "aliases": [],
+      "melonSongId": "2197448"
+    },
+    {
+      "rank": 21,
+      "title": "Muzik",
+      "artist": "4minute",
+      "aliases": [],
+      "melonSongId": "2269959"
+    },
+    {
+      "rank": 22,
+      "title": "Diva",
+      "artist": "애프터스쿨",
+      "aliases": [],
+      "melonSongId": "2129151"
+    },
+    {
+      "rank": 23,
+      "title": "미스터",
+      "artist": "카라",
+      "aliases": [],
+      "melonSongId": "2238379"
+    },
+    {
+      "rank": 24,
+      "title": "Insomnia (불면증)",
+      "artist": "휘성 (Realslow)",
+      "aliases": [],
+      "melonSongId": "2063248"
+    },
+    {
+      "rank": 25,
+      "title": "My Man",
+      "artist": "다비치",
+      "aliases": [],
+      "melonSongId": "2093362"
+    },
+    {
+      "rank": 26,
+      "title": "YOU AND I",
+      "artist": "박봄 (Park Bom)",
+      "aliases": [],
+      "melonSongId": "2338186"
+    },
+    {
+      "rank": 27,
+      "title": "내 귀에 캔디 (Feat. 택연 Of 2PM)",
+      "artist": "백지영",
+      "aliases": [],
+      "melonSongId": "2253748"
+    },
+    {
+      "rank": 28,
+      "title": "사랑..그 놈",
+      "artist": "바비 킴",
+      "aliases": [],
+      "melonSongId": "2019681"
+    },
+    {
+      "rank": 29,
+      "title": "반쪽",
+      "artist": "박화요비",
+      "aliases": [],
+      "melonSongId": "2049250"
+    },
+    {
+      "rank": 30,
+      "title": "이젠 남이야 (Feat. Baby-J Of Jewelry)",
+      "artist": "김경록 (V.O.S)",
+      "aliases": [],
+      "melonSongId": "1996934"
+    },
+    {
+      "rank": 31,
+      "title": "여성시대",
+      "artist": "씨야, 다비치, 티아라",
+      "aliases": [],
+      "melonSongId": "2159715"
+    },
+    {
+      "rank": 32,
+      "title": "잊지 말아요",
+      "artist": "백지영",
+      "aliases": [],
+      "melonSongId": "2319548"
+    },
+    {
+      "rank": 33,
+      "title": "니가 밉다",
+      "artist": "2PM",
+      "aliases": [],
+      "melonSongId": "2135470"
+    },
+    {
+      "rank": 34,
+      "title": "결혼해 줄래 (Feat. BIZNIZ)",
+      "artist": "이승기",
+      "aliases": [],
+      "melonSongId": "2200798"
+    },
+    {
+      "rank": 35,
+      "title": "Wanna",
+      "artist": "카라",
+      "aliases": [],
+      "melonSongId": "2235965"
+    },
+    {
+      "rank": 36,
+      "title": "잘가요 내사랑",
+      "artist": "에이트",
+      "aliases": [],
+      "melonSongId": "2194773"
+    },
+    {
+      "rank": 37,
+      "title": "거짓말 (Part.1)",
+      "artist": "티아라",
+      "aliases": [],
+      "melonSongId": "2234748"
+    },
+    {
+      "rank": 38,
+      "title": "Ring Ding Dong",
+      "artist": "SHINee (샤이니)",
+      "aliases": [],
+      "melonSongId": "2320988"
+    },
+    {
+      "rank": 39,
+      "title": "Sign",
+      "artist": "브라운아이드걸스",
+      "aliases": [],
+      "melonSongId": "2339048"
+    },
+    {
+      "rank": 40,
+      "title": "우리 헤어지자",
+      "artist": "이승기",
+      "aliases": [],
+      "melonSongId": "2293482"
+    },
+    {
+      "rank": 41,
+      "title": "Honey",
+      "artist": "카라",
+      "aliases": [],
+      "melonSongId": "2056871"
+    },
+    {
+      "rank": 42,
+      "title": "큰일이다",
+      "artist": "V.O.S",
+      "aliases": [],
+      "melonSongId": "2180148"
+    },
+    {
+      "rank": 43,
+      "title": "AH",
+      "artist": "애프터스쿨",
+      "aliases": [],
+      "melonSongId": "2024974"
+    },
+    {
+      "rank": 44,
+      "title": "라차타 (LA chA TA)",
+      "artist": "f(x)",
+      "aliases": [],
+      "melonSongId": "2271648"
+    },
+    {
+      "rank": 45,
+      "title": "사랑해 (Feat. 유리상자 박승화)",
+      "artist": "SG 워너비",
+      "aliases": [],
+      "melonSongId": "2135848"
+    },
+    {
+      "rank": 46,
+      "title": "친구의 고백",
+      "artist": "2am",
+      "aliases": [],
+      "melonSongId": "2109706"
+    },
+    {
+      "rank": 47,
+      "title": "부른다",
+      "artist": "서인국",
+      "aliases": [],
+      "melonSongId": "2336218"
+    },
+    {
+      "rank": 48,
+      "title": "비와 당신 (영화 '라디오스타' 삽입곡)",
+      "artist": "럼블피쉬",
+      "aliases": [],
+      "melonSongId": "1964754"
+    },
+    {
+      "rank": 49,
+      "title": "오랜만이야",
+      "artist": "임창정",
+      "aliases": [],
+      "melonSongId": "2101171"
+    },
+    {
+      "rank": 50,
+      "title": "바래",
+      "artist": "FTISLAND (FT아일랜드)",
+      "aliases": [],
+      "melonSongId": "2226049"
+    }
+  ]
+}
