@@ -2688,6 +2688,12 @@
       "title": "Hey Mr. Big",
       "artist": "이효리",
       "updatedAt": 1792756751880
+    },
+    "2008|박지헌|보고싶은날엔": {
+      "disabled": true,
+      "title": "보고싶은 날엔..",
+      "artist": "박지헌",
+      "updatedAt": 1792756754781
     }
   }
 }
