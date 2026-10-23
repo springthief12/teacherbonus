@@ -835,7 +835,8 @@
       "videoChannel": "웅키",
       "title": "이제 나만 믿어요",
       "artist": "임영웅",
-      "updatedAt": 1792717593080
+      "updatedAt": 1792756576111,
+      "disabled": true
     },
     "2021|경서예지|사실나는feat전건호": {
       "youtubeId": "buMrlJYb1aU",
@@ -2563,6 +2564,12 @@
       "title": "눈이 오잖아(Feat.헤이즈)",
       "artist": "이무진",
       "updatedAt": 1792756574239
+    },
+    "2022|임영웅|이제나만믿어요": {
+      "disabled": true,
+      "title": "이제 나만 믿어요",
+      "artist": "임영웅",
+      "updatedAt": 1792756576111
     }
   }
 }
