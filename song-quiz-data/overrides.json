@@ -500,7 +500,8 @@
       "videoChannel": "Seullya",
       "title": "다정히 내 이름을 부르면",
       "artist": "경서예지, 전건호",
-      "updatedAt": 1792717177024
+      "updatedAt": 1792728759932,
+      "disabled": true
     },
     "2025|idle아이들|나는아픈건딱질색이니까": {
       "youtubeId": "VBtVfmzep9M",
@@ -1965,6 +1966,12 @@
       "title": "압구정 날라리",
       "artist": "처진 달팽이 (유재석 & 이적)",
       "updatedAt": 1792720264086
+    },
+    "2021|경서예지전건호|다정히내이름을부르면": {
+      "disabled": true,
+      "title": "다정히 내 이름을 부르면",
+      "artist": "경서예지, 전건호",
+      "updatedAt": 1792728759932
     }
   }
 }
