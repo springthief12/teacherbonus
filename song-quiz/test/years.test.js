@@ -82,6 +82,52 @@ test('2020년에서 확인한 음원을 2021년 같은 곡에도 쓴다', async 
   assert.equal(overrides.get(d21).youtubeId, 'DYN2020xxxx');
 });
 
+test('영상 없이 제외한 기존 곡은 추가 연도에서도 제외되고 시작 위치는 유지된다', (t) => {
+  const original = song(2025, '너의 모든 순간');
+  const added = song(2014, '너의 모든 순간');
+  assert.ok(original && added, '기존/추가 차트에 모두 있는 실제 곡으로 검사');
+  const { squash } = require('../server/answer');
+  const key = (s) => `${s.year}|${squash(s.artist)}|${squash(s.title)}`;
+  const overrides = loadOverrides(t, { songs: {
+    [key(original)]: { disabled: true, title: original.title, artist: original.artist, updatedAt: 10 },
+    [key(added)]: { start: 9, title: added.title, artist: added.artist, updatedAt: 20 },
+  } });
+  const got = overrides.get(added);
+  assert.equal(got.disabled, true, 'youtubeId가 없는 제외 설정도 공유해야 함');
+  assert.equal(got.start, 9, '추가 연도에서 지정한 시작 위치는 유지');
+  assert.equal(got.youtubeId, undefined, '제외 설정만 있는 곡에 영상 설정을 만들면 안 됨');
+  const pool = charts.buildPool([2014], (s) => !(overrides.get(s) || {}).disabled);
+  assert.ok(!pool.some((s) => songKey(s) === songKey(original)));
+});
+
+test('추가 연도에 별도 영상을 지정해도 기존 제외 설정이 적용되고 모두 활성화하면 해제된다', async (t) => {
+  const original = song(2025, '너의 모든 순간');
+  const added = song(2014, '너의 모든 순간');
+  const other = song(2022, '너의 모든 순간');
+  const { squash } = require('../server/answer');
+  const key = (s) => `${s.year}|${squash(s.artist)}|${squash(s.title)}`;
+  const overrides = loadOverrides(t, { songs: {
+    [key(original)]: { youtubeId: 'ORIGINALxxx', disabled: true, start: 5, title: original.title, artist: original.artist, updatedAt: 10 },
+    [key(added)]: { youtubeId: 'ADDED2014xx', start: 9, title: added.title, artist: added.artist, updatedAt: 20 },
+    [key(other)]: { disabled: true, title: other.title, artist: other.artist, updatedAt: 30 },
+  } });
+  let got = overrides.get(added);
+  assert.equal(got.disabled, true, '추가 연도에 별도 고정 영상이 있어도 제외해야 함');
+  assert.equal(got.youtubeId, 'ADDED2014xx');
+  assert.equal(got.start, 9);
+  assert.equal(got.inheritedFrom, undefined, '자기 연도의 영상은 상속 영상으로 표시하지 않음');
+  await overrides.set(original, { disabled: null });
+  assert.equal(overrides.get(added).disabled, true, '다른 해에 남아 있는 제외 설정도 반영');
+  const copies = [added, ...charts.sameSongs(added)];
+  await overrides.setMany(copies.map((s) => [s, { disabled: null }]));
+  for (const s of copies) assert.ok(!(overrides.get(s) || {}).disabled, `${s.year}년 제외 설정이 남음`);
+  got = overrides.get(added);
+  assert.equal(got.youtubeId, 'ADDED2014xx', '활성화해도 별도 고정 영상 유지');
+  assert.equal(got.start, 9, '활성화해도 별도 시작 위치 유지');
+  assert.equal(overrides.get(original).youtubeId, 'ORIGINALxxx', '기존 해 영상도 유지');
+  assert.equal(overrides.get(original).start, 5);
+});
+
 test('직접 넣은 음원 파일도 다른 해의 같은 곡에서 같이 쓴다', (t) => {
   const d20 = song(2020, 'Dynamite');
   const d21 = song(2021, 'Dynamite');
