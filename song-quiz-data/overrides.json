@@ -1222,7 +1222,8 @@
       "videoChannel": "쎈언니",
       "title": "My Way",
       "artist": "이수 (엠씨더맥스)",
-      "updatedAt": 1792718032623
+      "updatedAt": 1792729967667,
+      "disabled": true
     },
     "2018|방탄소년단|dna": {
       "youtubeId": "l9433KDRsRA",
