@@ -105,6 +105,8 @@ function chosungHint(text) {
         } else if (/[a-z]/i.test(ch)) {
           out += latinStarted ? '_' : ch.toUpperCase();
           latinStarted = true;
+        } else if (latinStarted && /[₩$@*€¥£]/.test(ch)) {
+          out += '_'; // 글자 대신 쓴 기호(PO₩ER의 ₩)는 글자처럼 가린다
         } else {
           out += ch;
           if (ch !== "'" && ch !== '’') latinStarted = false;

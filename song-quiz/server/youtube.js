@@ -37,6 +37,8 @@ const ARTIST_EN = {
   브레이브걸스: 'Brave Girls', 이무진: 'Lee Mu Jin', MSG워너비: 'MSG Wannabe', 헤이즈: 'Heize', 미란이: 'Mirani',
   양요섭: 'Yang Yoseob', 적재: 'Jukjae', SG워너비: 'SG Wannabe', 호미들: 'Homies', 태연: 'TAEYEON', 정동하: 'Jung Dong Ha',
   디핵: 'D-Hack', 임영웅: 'Lim Young Woong', 로제: 'ROSÉ', 임창정: 'Lim Chang Jung',
+  제니: 'JENNIE', 로이킴: 'Roy Kim', 이창섭: 'Lee Changsub', 이클립스: 'ECLIPSE', 우디: 'Woody', 너드커넥션: 'Nerd Connection',
+  성시경: 'Sung Si Kyung', 잔나비: 'JANNABI', 아일릿: 'ILLIT', 멜로망스: 'MeloMance', 박재정: 'Parc Jae Jung',
 };
 
 let cache = {};
