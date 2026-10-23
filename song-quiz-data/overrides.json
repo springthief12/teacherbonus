@@ -1056,7 +1056,8 @@
       "videoChannel": "Streaming K-Pop Music",
       "title": "사랑이란 멜로는 없어",
       "artist": "전상근",
-      "updatedAt": 1792717785411
+      "updatedAt": 1792729911675,
+      "disabled": true
     },
     "2020|진민호|반만": {
       "youtubeId": "NrzslcexbpI",
