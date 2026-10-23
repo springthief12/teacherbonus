@@ -1173,7 +1173,8 @@
       "videoChannel": "발라드 가수들 - Topic",
       "title": "그때 헤어지면 돼",
       "artist": "로이킴",
-      "updatedAt": 1792717988321
+      "updatedAt": 1792729960383,
+      "disabled": true
     },
     "2018|볼빨간사춘기|여행": {
       "youtubeId": "g6U2SS-ZMy8",
