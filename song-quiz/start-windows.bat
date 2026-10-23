@@ -1,6 +1,6 @@
 @echo off
 chcp 65001 > nul
-title 그때 그 노래 서버
+title 무제 서버
 cd /d "%~dp0"
 
 where node > nul 2>&1

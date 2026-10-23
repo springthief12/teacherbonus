@@ -1,6 +1,6 @@
 {
-  "name": "geuttae-geu-norae",
-  "version": "0.13.0",
+  "name": "muje",
+  "version": "0.14.0",
   "description": "멜론 연도별 차트 노래 맞히기 – 실시간 멀티플레이",
   "main": "server/index.js",
   "scripts": {

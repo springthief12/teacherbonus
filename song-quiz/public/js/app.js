@@ -1,4 +1,4 @@
-// 그때 그 노래 – 클라이언트
+// 무제 – 클라이언트
 (function () {
   const $ = (sel) => document.querySelector(sel);
   const esc = Avatar.escape;

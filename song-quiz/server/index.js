@@ -204,7 +204,7 @@ function lanAddresses() {
 
 server.listen(PORT, () => {
   console.log('');
-  console.log('  그때 그 노래 서버가 켜졌어요.');
+  console.log('  무제 서버가 켜졌어요.');
   console.log(`  이 컴퓨터에서:   http://localhost:${PORT}`);
   for (const ip of lanAddresses()) console.log(`  같은 와이파이:   http://${ip}:${PORT}`);
   console.log(`  음원 관리:       http://localhost:${PORT}/admin  (이 PC에서는 비밀번호 없이)`);

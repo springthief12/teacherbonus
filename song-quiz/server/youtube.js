@@ -39,6 +39,9 @@ const ARTIST_EN = {
   디핵: 'D-Hack', 임영웅: 'Lim Young Woong', 로제: 'ROSÉ', 임창정: 'Lim Chang Jung',
   제니: 'JENNIE', 로이킴: 'Roy Kim', 이창섭: 'Lee Changsub', 이클립스: 'ECLIPSE', 우디: 'Woody', 너드커넥션: 'Nerd Connection',
   성시경: 'Sung Si Kyung', 잔나비: 'JANNABI', 아일릿: 'ILLIT', 멜로망스: 'MeloMance', 박재정: 'Parc Jae Jung',
+  장덕철: 'Jang Deok Cheol', 닐로: 'Nilo', 로꼬: 'Loco', 이수: 'Lee Soo', 양다일: 'Yang Da Il', 문문: 'MoonMoon',
+  길구봉구: 'Gilgu Bonggu', 펀치: 'Punch', 김하온: 'HAON', 용준형: 'Yong Jun Hyung', 박원: 'Park Won', 선미: 'SUNMI',
+  청하: 'CHUNG HA', 숀: 'SHAUN', 모모랜드: 'MOMOLAND', 윤종신: 'Yoon Jong Shin', 벤: 'Ben', 비투비: 'BTOB', 여자친구: 'GFRIEND',
 };
 
 let cache = {};
