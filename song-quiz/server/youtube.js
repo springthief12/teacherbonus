@@ -1,8 +1,10 @@
 // 곡 → 유튜브 영상 ID 찾기 (캐시 저장)
 // 뮤직비디오 대신 '노래가 바로 시작하는 음원 버전'을 고른다.
-//  - 1순위: 음반사가 올린 음원 전용 영상 (채널 이름이 "가수 - Topic")
-//  - 2순위: Official Audio / 음원 영상
-//  - 뮤직비디오·티저·무대·커버 등은 후보에서 뺀다
+//  - 1순위: 가사 영상 (Lyrics / 가사, 가수 이름이 맞는 것) – 음원이 처음부터 그대로 나오는 경우가 가장 많다
+//  - 2순위: 음반사가 올린 음원 전용 영상 (채널 이름이 "가수 - Topic")
+//  - 3순위: Official Audio / 음원 영상
+//  - 뮤직비디오·티저·무대·커버·빠르게/느리게 바꾼 버전 등은 후보에서 뺀다
+// 관리자가 '확인'한 곡은 고정된 영상을 그대로 쓰고 다시 검색하지 않는다.
 // 찾는 순서: 데이터 파일의 youtubeId → data/youtube-cache.json → 검색
 //           (YT_API_KEY가 있으면 YouTube Data API, 없으면 yt-search)
 const fs = require('fs');
@@ -12,7 +14,7 @@ const { squash, stripExtras } = require('./answer');
 const overrides = require('./overrides');
 
 const CACHE_FILE = path.join(__dirname, '..', 'data', 'youtube-cache.json');
-const CACHE_VERSION = 3; // 후보 정보(제목·채널)까지 저장하는 형식
+const CACHE_VERSION = 4; // 4: 가사 영상 우선 방식 (이전 방식으로 찾은 기록은 다시 검색)
 const API_KEY = process.env.YT_API_KEY || '';
 
 // 유튜브 음원 채널은 영문 이름이 많아서, 한글 가수명과 함께 비교한다
@@ -89,12 +91,20 @@ function artistNames(artist) {
   return [...names].map(squash).filter((n) => n.length >= 2);
 }
 
+// 영상이 붙은 버전: 음원이 아닐 가능성이 커서 감점
 const MV_WORDS = [
   'mv', 'm/v', '뮤직비디오', 'musicvideo', 'officialvideo', 'teaser', '티저', 'performance', '퍼포먼스',
-  'dancepractice', '안무', 'live', '라이브', 'stage', '무대', '교차편집', 'cover', '커버', 'reaction', '리액션',
-  'remix', 'inst', 'karaoke', '노래방', '1시간', '1hour', '반복', 'spedup', 'nightcore', 'piano', '피아노',
-  'fancam', '직캠', 'shorts', 'behind', '비하인드', 'making', '메이킹', 'mr제거', 'acapella',
+  'dancepractice', '안무', 'stage', '무대', '교차편집', 'reaction', '리액션', 'fancam', '직캠', 'shorts',
+  'behind', '비하인드', 'making', '메이킹', 'playlist', '플레이리스트', '모음', 'fullalbum',
 ];
+// 소리 자체가 원곡과 다른 버전(빠르게·느리게·편곡·다른 언어·라이브 등): 퀴즈에 못 쓰므로 크게 감점해 후보에서 뺀다
+const VARIANT_WORDS = [
+  'spedup', 'slowed', 'reverb', 'nightcore', '8d', 'bassboost', 'mashup', 'cover', '커버', 'remix', '리믹스',
+  'inst', 'karaoke', '노래방', 'mr제거', 'acapella', 'piano', '피아노', '1시간', '1hour', '반복', 'live', '라이브',
+  'japanesever', 'japanver', 'jpver', 'englishver', 'engver', 'chinesever', 'malever', 'femalever', '남자버전', '여자버전',
+];
+
+const LYRIC = /lyric|가사/i; // Lyrics, Lyric Video, Color Coded Lyrics, [가사] …
 
 function scoreCandidate(song, video) {
   const title = squash(video.title);
@@ -104,16 +114,20 @@ function scoreCandidate(song, video) {
   const want = squash(stripExtras(song.title)) || squash(song.title);
   const names = artistNames(song.artist);
 
+  const artistHit = names.some((n) => channel.includes(n) || title.includes(n));
   let score = 0;
   if (title.includes(want)) score += 6; else score -= 6;
+  // 가사 영상이 1순위: 가수까지 맞으면 음원 전용 채널(Topic)보다 높게.
+  // 가수가 안 맞는 가사 영상은 같은 제목의 다른 노래일 수 있어 조금만 더한다.
+  if (LYRIC.test(raw) && !LYRIC.test(want)) score += artistHit ? 14 : 4;
   if (isTopic) score += 10; // 음원 전용 영상: 영상 없이 노래가 바로 시작
-  if (names.some((n) => channel.includes(n) || title.includes(n))) score += 4;
-  if (/official\s*audio|audio|음원|lyric/i.test(raw)) score += 2;
+  if (artistHit) score += 4;
+  if (/official\s*audio|audio|음원/i.test(raw)) score += 2;
   const compact = raw.replace(/\s+/g, '');
-  for (const w of MV_WORDS) {
-    // 노래 제목 자체에 들어 있는 단어(예: Alive의 live)는 감점하지 않는다
-    if (compact.includes(w) && !want.includes(squash(w))) score -= 8;
-  }
+  // 노래 제목 자체에 들어 있는 단어(예: Alive의 live, instagram의 inst)는 감점하지 않는다
+  const has = (w) => compact.includes(w) && !want.includes(squash(w));
+  for (const w of MV_WORDS) if (has(w)) score -= 8;
+  for (const w of VARIANT_WORDS) if (has(w)) score -= 30; // 가사 영상·가수 일치 점수를 다 더해도 기준(4점) 아래로
   if (video.seconds) {
     if (video.seconds >= 120 && video.seconds <= 420) score += 2;
     else score -= 4;
@@ -179,36 +193,43 @@ function ytsearch(query) {
   return require('yt-search')({ query, hl: 'ko', gl: 'KR' });
 }
 
-async function searchWithYtSearch(song) {
+// 검색어 순서: 가사 영상(영어 → 한국어) → 음원 전용 채널. 가수·제목이 맞는 가사 영상이 나오면 거기서 멈춘다.
+const GOOD_LYRIC = 24; // 제목 6 + 가사 영상 14 + 가수 4
+function searchQueries(song) {
   const { title, artist, artistKo } = queryParts(song);
-  const queries = [`${artist} ${title} topic`, `${artistKo} ${title} audio`];
+  return [`${artist} ${title} lyrics`, `${artistKo} ${title} 가사`, `${artist} ${title} topic`];
+}
+
+async function collect(song, runQuery) {
   const seen = new Map();
-  for (const q of queries) {
-    const result = await ytsearch(q);
-    for (const v of (result.videos || []).slice(0, 15)) {
-      if (!seen.has(v.videoId)) {
-        seen.set(v.videoId, { id: v.videoId, title: v.title, seconds: v.seconds, channel: v.author && v.author.name });
-      }
-    }
-    // 첫 검색에서 음원 전용 영상을 찾았으면 두 번째 검색은 생략
-    if ([...seen.values()].some((v) => scoreCandidate(song, v) >= 14)) break;
+  for (const q of searchQueries(song)) {
+    for (const v of await runQuery(q)) if (!seen.has(v.id)) seen.set(v.id, v);
+    if ([...seen.values()].some((v) => scoreCandidate(song, v) >= GOOD_LYRIC)) break;
   }
   return [...seen.values()];
 }
 
-async function searchWithApi(song) {
-  const { title, artist } = queryParts(song);
-  const q = encodeURIComponent(`${artist} ${title} topic`);
-  const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoEmbeddable=true&maxResults=15&regionCode=KR&q=${q}&key=${API_KEY}`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`YouTube API ${res.status}`);
-  const data = await res.json();
-  return (data.items || []).map((it) => ({
-    id: it.id.videoId,
-    title: it.snippet.title,
-    channel: it.snippet.channelTitle,
-    seconds: null,
-  }));
+function searchWithYtSearch(song) {
+  return collect(song, async (q) => {
+    const result = await ytsearch(q);
+    return (result.videos || []).slice(0, 15)
+      .map((v) => ({ id: v.videoId, title: v.title, seconds: v.seconds, channel: v.author && v.author.name }));
+  });
+}
+
+function searchWithApi(song) {
+  return collect(song, async (q) => {
+    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoEmbeddable=true&maxResults=15&regionCode=KR&q=${encodeURIComponent(q)}&key=${API_KEY}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`YouTube API ${res.status}`);
+    const data = await res.json();
+    return (data.items || []).map((it) => ({
+      id: it.id.videoId,
+      title: it.snippet.title,
+      channel: it.snippet.channelTitle,
+      seconds: null,
+    }));
+  });
 }
 
 /** 후보에 점수를 매겨 정렬 (같은 점수면 유튜브 검색 순서 유지) */
@@ -216,7 +237,7 @@ function scoreAll(song, videos) {
   return videos
     .map((v, i) => ({ ...v, i, score: scoreCandidate(song, v) }))
     .sort((a, b) => b.score - a.score || a.i - b.i)
-    .map(({ i, ...v }) => ({ ...v, ok: v.score > 4 }));
+    .map(({ i, ...v }) => ({ ...v, ok: v.score > 4, lyric: LYRIC.test(String(v.title)) }));
 }
 
 /** 음원 버전으로 인정되는 후보 ID만 (뮤직비디오는 대안으로도 쓰지 않음) */
@@ -237,11 +258,11 @@ async function searchCandidates(song) {
   const job = (async () => {
     const videos = API_KEY ? await searchWithApi(song) : await searchWithYtSearch(song);
     const scored = scoreAll(song, videos);
-    const prev = cacheEntry(song);
+    const prev = cache[key]; // 예전 방식 기록이라도 '재생 불가' 표시는 이어 받는다
     cache[key] = {
       v: CACHE_VERSION,
       candidates: scored.slice(0, 10),
-      bad: prev ? prev.bad : [],
+      bad: prev && Array.isArray(prev.bad) ? prev.bad : [],
       checkedAt: Date.now(),
     };
     saveCache();
@@ -330,5 +351,5 @@ function clearBad(song) {
 
 module.exports = {
   resolveVideo, markBad, clearBad, searchCandidates, knownMissing, status,
-  scoreCandidate, rank, artistNames, queryParts,
+  scoreCandidate, scoreAll, rank, artistNames, queryParts, searchQueries, collect, CACHE_VERSION,
 };

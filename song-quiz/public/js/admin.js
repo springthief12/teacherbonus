@@ -223,6 +223,7 @@
                 <span>${esc(c.channel || '')}</span>
                 ${c.seconds ? `<span>${fmtTime(c.seconds)}</span>` : ''}
                 <span class="cand-tag ${c.ok ? 'ok' : 'no'}">${c.ok ? '음원 버전' : '음원 버전 아님'}</span>
+                ${c.lyric && c.ok ? '<span class="cand-tag ok">가사 영상</span>' : ''}
                 ${blocked ? '<span class="cand-tag no">재생 불가로 표시됨</span>' : ''}
                 ${current ? '<span class="cand-tag ok">지금 사용 중</span>' : ''}
               </div>

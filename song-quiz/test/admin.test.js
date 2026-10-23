@@ -35,6 +35,7 @@ function restore() {
 //  6위: 검사 전 / 7위: 셔플에서 뺌(검사 전) / 8위: 확인함(검색 기록 없이 설정만 남은 상태 = 서버 재시작 뒤)
 //  나머지: '음원 없음'으로 검사된 상태
 const { squash } = require('../server/answer');
+const { CACHE_VERSION } = require('../server/youtube');
 const chart = require('../data/charts/2010.json');
 const song = (rank) => chart.songs.find((s) => s.rank === rank);
 const AUTO_TITLE = `${song(5).artist} - ${song(5).title} (Audio)`;
@@ -42,7 +43,7 @@ const cache = {};
 for (const s of chart.songs) {
   if (s.rank <= 3 || s.rank >= 6 && s.rank <= 8) continue;
   cache[`${squash(s.artist)}|${squash(s.title)}`] = {
-    v: 3,
+    v: CACHE_VERSION,
     candidates: s.rank === 4
       ? [{ id: 'AAAAAAAAAAA', title: `${s.title} (Official MV)`, channel: '어딘가', seconds: 230, score: 2, ok: false }]
       : s.rank === 5

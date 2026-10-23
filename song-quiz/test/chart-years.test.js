@@ -12,6 +12,7 @@ const { test } = require('node:test');
 const { io } = require('socket.io-client');
 const charts = require('../server/charts');
 const { songKey, squash } = require('../server/answer');
+const { CACHE_VERSION } = require('../server/youtube'); // 검색 방식이 바뀌면 올라가는 기록 형식 번호
 
 const ROOT = path.resolve(__dirname, '..');
 const YEARS = Array.from({ length: 18 }, (_, i) => 2008 + i);
@@ -49,7 +50,7 @@ async function fixtureServer(t, { localAudio = true, overrides = { songs: {} } }
   // 캐시에서 음원 없음으로 확인된 곡도 로컬 음원이나 관리자 지정 영상이 있으면 재생해야 한다.
   const cache = Object.fromEntries(ALL_SONGS.map((song) => [
     `${squash(song.artist)}|${squash(song.title)}`,
-    { v: 3, candidates: [], bad: [], checkedAt: 1 },
+    { v: CACHE_VERSION, candidates: [], bad: [], checkedAt: 1 },
   ]));
   fs.writeFileSync(path.join(root, 'data', 'youtube-cache.json'), JSON.stringify(cache));
   if (localAudio) {
