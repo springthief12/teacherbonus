@@ -2275,6 +2275,12 @@
       "title": "우리들의 블루스",
       "artist": "임영웅",
       "updatedAt": 1792756286663
+    },
+    "2023|테이|monologue": {
+      "disabled": true,
+      "title": "Monologue",
+      "artist": "테이",
+      "updatedAt": 1792756294572
     }
   }
 }
