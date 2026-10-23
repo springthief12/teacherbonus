@@ -840,7 +840,8 @@
       "videoChannel": "경서예지 GyeongseoYeji Channel",
       "title": "사실 나는 (Feat.전건호)",
       "artist": "경서예지",
-      "updatedAt": 1792717598379
+      "updatedAt": 1792728806358,
+      "disabled": true
     },
     "2021|로제ros|ontheground": {
       "youtubeId": "M2M5Tm64swM",
