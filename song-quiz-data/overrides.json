@@ -2720,6 +2720,12 @@
       "title": "그깟 사랑",
       "artist": "이진성 (먼데이 키즈), 최현준 (V.O.S), 일 락",
       "updatedAt": 1792756851289
+    },
+    "2008|비|lovestory": {
+      "disabled": true,
+      "title": "Love Story",
+      "artist": "비",
+      "updatedAt": 1792756858327
     }
   }
 }
