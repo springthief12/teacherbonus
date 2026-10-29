@@ -3194,6 +3194,12 @@
       "title": "Love Shot",
       "artist": "EXO",
       "updatedAt": 1793232732272
+    },
+    "2019|박효신|goodbye": {
+      "disabled": true,
+      "title": "Goodbye",
+      "artist": "박효신",
+      "updatedAt": 1793232737426
     }
   }
 }
