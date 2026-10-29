@@ -3866,6 +3866,12 @@
       "title": "어깨",
       "artist": "소유 (SOYOU), 권정열",
       "updatedAt": 1793233235654
+    },
+    "2015|엠씨더맥스mcthemax|바라보기": {
+      "disabled": true,
+      "title": "바라보기",
+      "artist": "엠씨더맥스 (M.C the MAX)",
+      "updatedAt": 1793233241082
     }
   }
 }
