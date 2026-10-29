@@ -4579,7 +4579,8 @@
       "videoChannel": "버스커버스커 BuskerBusker - Topic",
       "title": "잘할 걸",
       "artist": "버스커 버스커",
-      "updatedAt": 1793233806261
+      "updatedAt": 1793233812028,
+      "disabled": true
     }
   }
 }
