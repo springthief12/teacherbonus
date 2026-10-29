@@ -4595,6 +4595,12 @@
       "title": "하루 끝",
       "artist": "아이유",
       "updatedAt": 1793233863912
+    },
+    "2012|나얼|바람기억": {
+      "disabled": true,
+      "title": "바람기억",
+      "artist": "나얼",
+      "updatedAt": 1793233866206
     }
   }
 }
